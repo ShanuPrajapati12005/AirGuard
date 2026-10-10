@@ -18,7 +18,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
       name: 'Running',
       icon: '🏃',
       status: isHigh ? 'Avoid now' : 'Permissible',
-      color: isHigh ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-[var(--ac)] bg-[var(--ac)]/10 border-[var(--ac)]/30',
+      color: isHigh ? 'text-rose-700 dark:text-rose-300 bg-rose-500/10 border-rose-500/30' : 'text-[var(--ac)] bg-[var(--ac)]/10 border-[var(--ac)]/30',
     },
     {
       name: 'Walking',
@@ -30,7 +30,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
       name: 'Cycling',
       icon: '🚲',
       status: isHigh ? 'Not recommended' : 'Acceptable',
-      color: isHigh ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-[var(--ac2)] bg-[var(--ac2)]/10 border-[var(--ac2)]/30',
+      color: isHigh ? 'text-rose-700 dark:text-rose-300 bg-rose-500/10 border-rose-500/30' : 'text-[var(--ac2)] bg-[var(--ac2)]/10 border-[var(--ac2)]/30',
     },
     {
       name: 'Indoor',
@@ -41,7 +41,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
   ];
 
   return (
-    <div className="card p-5 border border-[var(--line)] shadow-[var(--sh)] flex flex-col justify-between h-full">
+    <div className="card card-3d p-5 border border-[var(--line)] shadow-[var(--sh-3d)] flex flex-col justify-between h-full">
       {/* Header */}
       <div>
         <div className="flex items-center justify-between pb-3.5 border-b border-[var(--line)]">

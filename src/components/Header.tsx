@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   RefreshCw,
   MapPin,
@@ -21,9 +21,10 @@ import { Badge } from '@/components/ui/badge';
 interface HeaderProps {
   onOpenSettings: () => void;
   onOpenLocation: () => void;
+  onGoToLanding?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation, onGoToLanding }) => {
   const {
     airData,
     scenario,
@@ -35,20 +36,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
   const { theme, toggleTheme } = useTheme();
 
   const scenarios: { key: ScenarioType; label: string; icon: string }[] = [
-    { key: 'normal', label: 'Normal Ambient Air', icon: 'ðŸŒ¿' },
-    { key: 'high_pollution', label: 'Winter Smog Alert', icon: 'âš ï¸' },
-    { key: 'rush_hour', label: 'Peak Highway Traffic', icon: 'ðŸš—' },
-    { key: 'school_alert', label: 'Campus Safety Warning', icon: 'ðŸ«' },
-    { key: 'industrial_plume', label: 'Industrial Plume Spike', icon: 'ðŸ­' },
+    { key: 'normal', label: 'Normal Ambient Air', icon: '🌱' },
+    { key: 'high_pollution', label: 'Winter Smog Alert', icon: '⚠️' },
+    { key: 'rush_hour', label: 'Peak Highway Traffic', icon: '🚗' },
+    { key: 'school_alert', label: 'Campus Safety Warning', icon: '🏫' },
+    { key: 'industrial_plume', label: 'Industrial Plume Spike', icon: '🏭' },
   ];
 
   return (
-    <header className="bg-[var(--card)]/85 backdrop-blur-md border-b border-[var(--line)] sticky top-0 z-20 px-6 py-3.5 shadow-[var(--sh)] flex flex-col md:flex-row items-center justify-between gap-4">
+    <header className="bg-[var(--card)]/85 backdrop-blur-md border-b border-[var(--line)] sticky top-0 z-20 px-4 sm:px-6 py-3.5 shadow-[var(--sh)] flex flex-col md:flex-row items-center justify-between gap-4">
       {/* Left: Greeting & Location */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2.5">
-            <h2 className="font-display text-lg font-medium text-[var(--ink)] tracking-tight">
+            <h2 className="font-display text-base sm:text-lg font-medium text-[var(--ink)] tracking-tight">
               Good afternoon, {userProfile.name}
             </h2>
             <Badge variant="accent" className="gap-1.5 py-0.5">
@@ -56,19 +57,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
               Live Telemetry
             </Badge>
           </div>
-          <div className="flex items-center gap-2 text-xs text-[var(--mut)] mt-1">
+          <div className="flex items-center gap-2 text-xs text-[var(--mut)] mt-1 flex-wrap">
             <button
               onClick={onOpenLocation}
               className="inline-flex items-center gap-1.5 font-medium text-[var(--ink)] hover:text-[var(--ac)] bg-[var(--bg)] hover:bg-[var(--card)] px-2.5 py-1 rounded-[8px] transition-all border border-[var(--line)] cursor-pointer group shadow-2xs"
               title="Click to change location"
             >
               <MapPin className="w-3.5 h-3.5 text-[var(--mut)] group-hover:text-[var(--ac)] transition-colors" />
-              <span className="max-w-[280px] truncate">{airData.locationName}</span>
+              <span className="max-w-[200px] sm:max-w-[280px] truncate">{airData.locationName}</span>
               <span className="text-[9px] text-[var(--mut)] uppercase font-semibold tracking-wide ml-1 bg-[var(--card)] px-1.5 py-0.2 rounded border border-[var(--line)] hidden sm:inline-block">
                 Change
               </span>
             </button>
-            <span className="text-[var(--line)]">â€¢</span>
+            <span className="text-[var(--line)]">•</span>
             <span className="text-[11px] text-[var(--mut)]">Synced {airData.updatedAt}</span>
           </div>
         </div>
@@ -87,15 +88,28 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
       </div>
 
       {/* Right: Atmospheric Conditions & User Profile */}
-      <div className="flex items-center flex-wrap gap-3">
+      <div className="flex items-center flex-wrap gap-2.5 sm:gap-3">
+        {/* Landing Page Link */}
+        {onGoToLanding && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onGoToLanding}
+            className="h-8 px-2.5 text-xs text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)]"
+            title="Return to Landing Page"
+          >
+            Landing
+          </Button>
+        )}
+
         {/* Scenario / Condition Profile */}
         <div className="flex items-center gap-2">
           <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-[var(--mut)] font-medium uppercase">
             <SlidersHorizontal className="w-3.5 h-3.5" />
-            Atmospheric Mode:
+            Atmosphere:
           </div>
           <Select value={scenario} onValueChange={(val) => setScenario(val as ScenarioType)}>
-            <SelectTrigger className="w-[195px] h-8 text-[12px] font-medium bg-[var(--bg)] border-[var(--line)] rounded-[8px] shadow-2xs">
+            <SelectTrigger className="w-[180px] sm:w-[195px] h-8 text-[12px] font-medium bg-[var(--bg)] border-[var(--line)] rounded-[8px] shadow-2xs">
               <SelectValue placeholder="Select Scenario" />
             </SelectTrigger>
             <SelectContent className="border-[var(--line)] bg-[var(--card)] shadow-md rounded-[9px]">
@@ -109,15 +123,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
           </Select>
         </div>
 
-                {/* Dark/Light Theme Toggle */}
+        {/* Dark/Light Theme Toggle */}
         <Button
           variant="outline"
-          size="icon"
+          size="sm"
           onClick={toggleTheme}
-          className="h-8 w-8 text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px]"
-          title="Toggle Warm / Dark Theme"
+          className="h-8 px-2.5 gap-1.5 text-xs text-[var(--ink)] bg-[var(--card)] hover:bg-[var(--bg)] border-[var(--line)] rounded-[8px] shadow-2xs transition-all"
+          title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
         >
-          {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-[var(--ac2)]" /> : <Moon className="w-3.5 h-3.5 text-[var(--ink)]" />}
+          {theme === 'dark' ? (
+            <>
+              <Sun className="w-3.5 h-3.5 text-[var(--ac2)]" />
+              <span className="hidden sm:inline text-[11px] font-medium">Light</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-3.5 h-3.5 text-[var(--ink)]" />
+              <span className="hidden sm:inline text-[11px] font-medium">Dark</span>
+            </>
+          )}
         </Button>
 
         {/* Profile Pill */}

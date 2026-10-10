@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Send,
   Bot,
@@ -76,7 +76,7 @@ export const AIGuardianChat: React.FC = () => {
   };
 
   return (
-    <div className="card flex flex-col h-[600px] border border-[var(--line)] shadow-[var(--sh)] overflow-hidden">
+    <div className="card card-3d flex flex-col h-[600px] border border-[var(--line)] shadow-[var(--sh-3d)] overflow-hidden">
       {/* Header */}
       <div className="p-4 bg-[var(--card)] border-b border-[var(--line)] flex items-center justify-between">
         <div className="flex items-center gap-3">

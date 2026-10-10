@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   BarChart,
   Bar,
@@ -23,7 +23,7 @@ export const InsightsHistory: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Weekly Summary Metrics Header */}
-      <div className="card p-5 sm:p-6 border border-[var(--line)] shadow-[var(--sh)]">
+      <div className="card card-3d p-5 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
           <div>
             <div className="flex items-center gap-2">

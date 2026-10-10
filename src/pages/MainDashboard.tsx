@@ -29,18 +29,18 @@ export const MainDashboard: React.FC = () => {
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1240px] mx-auto space-y-6">
       {/* Realtime Atmosphere Alert (only if active alert in condition) */}
       {currentPreset.alertTitle && (
-        <div className="card p-4 bg-rose-50/70 border border-rose-200/80 flex items-start justify-between gap-3 shadow-xs">
+        <div className="card card-3d p-4 bg-rose-500/10 border border-rose-500/30 flex items-start justify-between gap-3 shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-rose-100/80 rounded-[8px] text-rose-700 mt-0.5">
+            <div className="p-2 bg-rose-500/20 rounded-[8px] text-rose-600 dark:text-rose-400 mt-0.5">
               <AlertTriangle className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="font-display text-sm font-medium text-rose-900">{currentPreset.alertTitle}</h4>
-              <p className="text-xs text-rose-700 mt-0.5">{currentPreset.alertMessage}</p>
+              <h4 className="font-display text-sm font-medium text-rose-900 dark:text-rose-200">{currentPreset.alertTitle}</h4>
+              <p className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">{currentPreset.alertMessage}</p>
             </div>
           </div>
           {scenario === 'school_alert' && (
-            <div className="hidden md:flex items-center gap-2 text-xs font-semibold bg-rose-200/60 text-rose-900 px-3 py-1.5 rounded-[8px]">
+            <div className="hidden md:flex items-center gap-2 text-xs font-semibold bg-rose-500/20 text-rose-900 dark:text-rose-200 px-3 py-1.5 rounded-[8px] border border-rose-500/30">
               <GraduationCap className="w-4 h-4" />
               <span>Campus Protocol Activated</span>
             </div>
@@ -52,7 +52,7 @@ export const MainDashboard: React.FC = () => {
       {activeTab === 'dashboard' && (
         <div className="space-y-6">
           {/* Top At-A-Glance Hero Section */}
-          <div className="card p-5 sm:p-6 shadow-[var(--sh)]">
+          <div className="card card-3d p-5 sm:p-6 shadow-[var(--sh-3d)]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:divide-x divide-[var(--line)]">
               <MainAQICard />
               <div className="pl-0 md:pl-8">
@@ -71,7 +71,7 @@ export const MainDashboard: React.FC = () => {
                   </h3>
                   <span className="text-[11px] font-medium text-[var(--mut)]">Open-Meteo Telemetry</span>
                 </div>
-                <div className="card p-2 shadow-[var(--sh)]">
+                <div className="card card-3d p-2 shadow-[var(--sh-3d)]">
                   <React.Suspense fallback={
                     <div className="h-[400px] w-full flex items-center justify-center bg-[var(--bg)] rounded-[10px]">
                       <Loader2 className="w-5 h-5 text-[var(--ac)] animate-spin" />
@@ -83,7 +83,7 @@ export const MainDashboard: React.FC = () => {
               </div>
 
               {/* Planning Tools */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-6">
                 <BestTimePlanner />
                 <SmartRouteComparison />
               </div>

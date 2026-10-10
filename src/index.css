@@ -4,16 +4,17 @@
 
 :root {
   box-sizing: border-box;
-  --bg: #f5f4f2;
+  --bg: #f6f5f3;
   --card: #ffffff;
   --ink: #111110;
-  --mut: #5f5d57;
-  --line: #e6e3dd;
-  --ac: #2c4a3e;
+  --mut: #54524c;
+  --line: #e2dfd7;
+  --ac: #1e3f32;
   --onac: #ffffff;
-  --ac2: #a8741f;
-  --ok: #13a56b;
-  --sh: 0 1px 2px rgba(30, 25, 15, 0.05);
+  --ac2: #92580c;
+  --ok: #15803d;
+  --sh: 0 1px 3px rgba(25, 20, 10, 0.04), 0 4px 12px -2px rgba(25, 20, 10, 0.05);
+  --sh-3d: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -4px rgba(20, 20, 20, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
   --font-display: 'Fraunces', Georgia, serif;
@@ -29,27 +30,33 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121211;
-    --card: #1a1a18;
+    --bg: #0f1011;
+    --card: #18191b;
     --ink: #fdfcf9;
-    --mut: #aba89f;
-    --line: #2b2a27;
-    --ac: #7fbf9f;
-    --onac: #0d1a14;
-    --sh: 0 1px 2px #0006;
+    --mut: #a9a7a0;
+    --line: #292a2e;
+    --ac: #4ade80;
+    --onac: #052e16;
+    --ac2: #fbbf24;
+    --ok: #34d399;
+    --sh: 0 2px 6px rgba(0, 0, 0, 0.45), 0 10px 24px -4px rgba(0, 0, 0, 0.65);
+    --sh-3d: 0 2px 6px rgba(0, 0, 0, 0.5), 0 14px 34px -6px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 }
 
 :root[data-theme="dark"],
 .dark {
-  --bg: #121211;
-  --card: #1a1a18;
+  --bg: #0f1011;
+  --card: #18191b;
   --ink: #fdfcf9;
-  --mut: #aba89f;
-  --line: #2b2a27;
-  --ac: #7fbf9f;
-  --onac: #0d1a14;
-  --sh: 0 1px 2px #0006;
+  --mut: #a9a7a0;
+  --line: #292a2e;
+  --ac: #4ade80;
+  --onac: #052e16;
+  --ac2: #fbbf24;
+  --ok: #34d399;
+  --sh: 0 2px 6px rgba(0, 0, 0, 0.45), 0 10px 24px -4px rgba(0, 0, 0, 0.65);
+  --sh-3d: 0 2px 6px rgba(0, 0, 0, 0.5), 0 14px 34px -6px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -146,7 +153,28 @@ h1, h2, h3, .font-display, .logo {
     border: 1px solid var(--line);
     border-radius: 12px;
     box-shadow: var(--sh);
-    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.2s;
+    transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.2s;
+  }
+
+  .card-3d {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--sh-3d);
+    position: relative;
+    transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.2s;
+  }
+
+  .card-3d:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--ink) 20%, var(--line));
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 16px 36px -6px rgba(20,20,20,0.1), inset 0 1px 0 rgba(255,255,255,1);
+  }
+
+  :root[data-theme="dark"] .card-3d:hover,
+  .dark .card-3d:hover {
+    border-color: color-mix(in srgb, var(--ac) 45%, var(--line));
+    box-shadow: 0 4px 10px rgba(0,0,0,0.7), 0 22px 44px -8px rgba(0,0,0,0.85), 0 0 18px -4px color-mix(in srgb, var(--ac) 28%, transparent), inset 0 1px 0 rgba(255,255,255,0.14);
   }
 
   .card.h:hover {

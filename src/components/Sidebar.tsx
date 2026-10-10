@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   LayoutDashboard,
   Wind,
@@ -19,9 +19,10 @@ import { SeverityDot } from './ui/SeverityDot';
 
 interface SidebarProps {
   onOpenSettings: () => void;
+  onGoToLanding?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onOpenSettings }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ onOpenSettings, onGoToLanding }) => {
   const { activeTab, setActiveTab, airData } = useAirGuard();
 
   const navItems = [
@@ -44,7 +45,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenSettings }) => {
         <div className="p-6 flex items-center justify-between border-b border-[var(--line)]/60">
           <div
             className="flex items-center space-x-3 cursor-pointer group"
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => {
+              if (onGoToLanding) onGoToLanding();
+              else setActiveTab('dashboard');
+            }}
+            title="Click to visit Landing Page"
           >
             <div className="w-8 h-8 rounded-[9px] bg-[var(--ac)] flex items-center justify-center text-[var(--onac)] shadow-xs transition-transform group-hover:scale-105">
               <Wind className="w-4 h-4" strokeWidth={2.2} />

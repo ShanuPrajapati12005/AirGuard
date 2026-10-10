@@ -29,7 +29,7 @@ export const PersonalExposureCard: React.FC<PersonalExposureCardProps> = ({ onVi
         </div>
         <div className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full border shadow-2xs ${
           isHigh
-            ? 'bg-rose-50 border-rose-200 text-rose-700'
+            ? 'bg-rose-500/10 border-rose-500/30 text-rose-700 dark:text-rose-300'
             : 'bg-[var(--ac2)]/10 border-[var(--ac2)]/30 text-[var(--ac2)]'
         }`}>
           {isHigh ? 'High Risk' : 'Moderate'}

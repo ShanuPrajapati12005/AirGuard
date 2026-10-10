@@ -59,13 +59,17 @@ const AppContent: React.FC = () => {
       <div className="animated-pattern" />
 
       {/* Persistent Sidebar */}
-      <Sidebar onOpenSettings={() => setIsSettingsOpen(true)} />
+      <Sidebar
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        onGoToLanding={() => setShowLanding(true)}
+      />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 z-10">
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenLocation={() => setIsLocationOpen(true)}
+          onGoToLanding={() => setShowLanding(true)}
         />
 
         <main className="flex-1 overflow-y-auto relative">
