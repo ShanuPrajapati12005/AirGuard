@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   LayoutDashboard,
   Wind,
@@ -39,7 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenSettings }) => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="w-[260px] bg-[var(--card)] flex-col h-screen sticky top-0 shrink-0 border-r border-[var(--line)] select-none z-30 hidden md:flex shadow-[var(--sh)]">
+      <aside role="navigation" aria-label="Main sidebar navigation" className="w-[260px] bg-[var(--card)] flex-col h-screen sticky top-0 shrink-0 border-r border-[var(--line)] select-none z-30 hidden md:flex shadow-[var(--sh)]">
         {/* Brand Header */}
         <div className="p-6 flex items-center justify-between border-b border-[var(--line)]/60">
           <div
@@ -177,3 +177,4 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenSettings }) => {
     </>
   );
 };
+
