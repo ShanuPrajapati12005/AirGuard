@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   LineChart,
   Line,
@@ -12,9 +12,12 @@ import { useAirGuard } from '../context/AirGuardContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { validateSensorReading } from '../utils/telemetryValidator';
+import { ShieldCheck } from 'lucide-react';
 
 export const LiveSensorMonitor: React.FC = () => {
   const { sensor, connectSensor, airData } = useAirGuard();
+  const anomalies = validateSensorReading(sensor);
 
   return (
     <div className="card p-5 border border-[var(--line)] shadow-[var(--sh)]">
@@ -71,7 +74,7 @@ export const LiveSensorMonitor: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--ok)] animate-pulse"></span>
           </div>
           <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
-            {sensor.pm25} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">µg/m³</span>
+            {sensor.pm25} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">Âµg/mÂ³</span>
           </div>
         </div>
 
@@ -81,7 +84,7 @@ export const LiveSensorMonitor: React.FC = () => {
             <span>PM10</span>
           </div>
           <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
-            {sensor.pm10} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">µg/m³</span>
+            {sensor.pm10} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">Âµg/mÂ³</span>
           </div>
         </div>
 
@@ -91,7 +94,7 @@ export const LiveSensorMonitor: React.FC = () => {
             <span>TEMP</span>
           </div>
           <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
-            {sensor.temperature}°C
+            {sensor.temperature}Â°C
           </div>
         </div>
 
@@ -161,7 +164,7 @@ export const LiveSensorMonitor: React.FC = () => {
             <Badge variant="secondary" className="text-[9px] px-1.5 py-0.2">MODERATE</Badge>
           </div>
           <div className="font-display text-lg font-medium text-[var(--ink)]">
-            PM2.5: {sensor.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">µg/m³</span>
+            PM2.5: {sensor.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">Âµg/mÂ³</span>
           </div>
           <p className="text-[11px] text-[var(--mut)] mt-0.5">HEPA purifier active in bedroom</p>
         </div>
@@ -172,7 +175,7 @@ export const LiveSensorMonitor: React.FC = () => {
             <Badge variant="destructive" className="text-[9px] px-1.5 py-0.2">HIGH</Badge>
           </div>
           <div className="font-display text-lg font-medium text-[var(--ink)]">
-            PM2.5: {airData.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">µg/m³</span>
+            PM2.5: {airData.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">Âµg/mÂ³</span>
           </div>
           <p className="text-[11px] text-[var(--mut)] mt-0.5">
             Outdoor air is {Math.round((airData.pm25 / Math.max(sensor.pm25, 1)) * 100 - 100)}% dirtier
@@ -182,3 +185,4 @@ export const LiveSensorMonitor: React.FC = () => {
     </div>
   );
 };
+
