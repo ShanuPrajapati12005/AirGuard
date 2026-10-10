@@ -1,4 +1,4 @@
-﻿import { calculateExposureScore } from '../aqiCalculator';
+import { calculateExposureScore } from '../aqiCalculator';
 import { UserProfile } from '../../types';
 
 export function runAqiCalculationsAudit() {
@@ -6,8 +6,9 @@ export function runAqiCalculationsAudit() {
     name: 'Test Runner',
     age: 25,
     healthConditions: ['None'],
+    commuteMode: 'walking',
     sensitivityLevel: 'normal',
-    preferredActivities: ['Running'],
+    dailyOutdoorGoalMinutes: 45,
   };
 
   const goodScore = calculateExposureScore(45, 30, 'Walking', mockProfile);

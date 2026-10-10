@@ -1,4 +1,4 @@
-﻿export function exportToCsv(filename: string, rows: Record<string, any>[]) {
+export function exportToCsv(filename: string, rows: Record<string, any>[]) {
   if (!rows || !rows.length) return;
   const headers = Object.keys(rows[0]);
   const csvContent = [
@@ -7,7 +7,7 @@
       headers
         .map((header) => {
           const val = row[header] ?? '';
-          return typeof val === 'string' && val.includes(',') ? \"\"\ : String(val);
+          return typeof val === 'string' && val.includes(',') ? `"${val}"` : String(val);
         })
         .join(',')
     ),
@@ -17,7 +17,7 @@
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);
-  link.setAttribute('download', \\.csv\);
+  link.setAttribute('download', `${filename}.csv`);
   link.style.visibility = 'hidden';
   document.body.appendChild(link);
   link.click();
