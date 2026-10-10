@@ -1,0 +1,16 @@
+﻿{
+  "name": "AirGuard | Personal Air Pollution Guardian",
+  "short_name": "AirGuard",
+  "description": "Proactive personal respiratory intake and route optimization engine",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f4f2",
+  "theme_color": "#2c4a3e",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
