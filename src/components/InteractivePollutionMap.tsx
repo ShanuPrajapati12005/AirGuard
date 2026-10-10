@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -12,15 +12,9 @@ import L from 'leaflet';
 import {
   MapPin,
   AlertOctagon,
-  Flame,
-  Layers,
-  Info,
-  Maximize2,
   Navigation,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
-import { Hotspot } from '../types';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
@@ -33,18 +27,19 @@ const createCustomIcon = (color: string, label: string) => {
         background-color: ${color};
         color: white;
         border: 2px solid white;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
         border-radius: 9999px;
-        padding: 4px 8px;
+        padding: 3px 8px;
         font-size: 11px;
-        font-weight: 800;
+        font-weight: 600;
         display: flex;
         align-items: center;
         gap: 4px;
         white-space: nowrap;
         transform: translate(-50%, -50%);
+        font-family: 'Instrument Sans', system-ui, sans-serif;
       ">
-        <span style="font-size: 10px;">📍</span> ${label}
+        <span>📍</span> ${label}
       </div>
     `,
     iconSize: [0, 0],
@@ -69,55 +64,53 @@ export const InteractivePollutionMap: React.FC = () => {
     selectedRoute,
   } = useAirGuard();
 
-  const [activeLayer, setActiveLayer] = useState<'all' | 'hotspots' | 'routes'>('all');
-
   const centerCoords: [number, number] = currentLocation.coordinates || [28.629, 77.368];
 
   const getHotspotColor = (aqi: number) => {
-    if (aqi > 300) return '#ef4444'; // Very poor / severe
+    if (aqi > 300) return '#ef4444'; // Severe
     if (aqi > 200) return '#f97316'; // Poor
-    if (aqi > 100) return '#f59e0b'; // Moderate
-    return '#10b981'; // Good
+    if (aqi > 100) return '#a8741f'; // Moderate
+    return '#13a56b'; // Good
   };
 
   return (
-    <Card className="p-6 bg-white shadow-sm border-slate-200">
+    <div className="card p-5 border border-[var(--line)] shadow-[var(--sh)]">
       {/* Map Header & Controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100 shadow-sm">
+            <div className="w-7 h-7 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 shadow-2xs">
               <MapPin className="w-4 h-4" />
             </div>
-            <h3 className="text-base font-bold text-slate-800">
-              Interactive Pollution Heatmap & Zones
+            <h3 className="font-display text-base font-medium text-[var(--ink)]">
+              Geospatial Pollution Heatmap
             </h3>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Geospatial particulate telemetry, canopy microclimates & congestion plumes
+          <p className="text-xs text-[var(--mut)] mt-1 font-normal">
+            Microclimate satellite telemetry, vegetative corridors & traffic emission plumes
           </p>
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-2.5 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold shadow-sm">
-          <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">AQI:</span>
-          <span className="flex items-center gap-1.5 text-emerald-700">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm"></span> Good
+        <div className="flex items-center gap-2.5 bg-[var(--bg)] px-3 py-1.5 rounded-full border border-[var(--line)] text-xs shadow-2xs">
+          <span className="text-[10px] text-[var(--mut)] uppercase font-semibold">Scale:</span>
+          <span className="flex items-center gap-1.5 text-[var(--ok)] font-medium">
+            <span className="w-2 h-2 rounded-full bg-[var(--ok)]"></span> Good
           </span>
-          <span className="flex items-center gap-1.5 text-amber-700">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-sm"></span> Mod
+          <span className="flex items-center gap-1.5 text-[var(--ac2)] font-medium">
+            <span className="w-2 h-2 rounded-full bg-[var(--ac2)]"></span> Mod
           </span>
-          <span className="flex items-center gap-1.5 text-orange-700">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-sm"></span> Poor
+          <span className="flex items-center gap-1.5 text-orange-600 font-medium">
+            <span className="w-2 h-2 rounded-full bg-orange-500"></span> Poor
           </span>
-          <span className="flex items-center gap-1.5 text-rose-700">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm"></span> Severe
+          <span className="flex items-center gap-1.5 text-rose-600 font-medium">
+            <span className="w-2 h-2 rounded-full bg-rose-500"></span> Severe
           </span>
         </div>
       </div>
 
       {/* Map Canvas Container */}
-      <div className="relative w-full h-[400px] rounded-xl overflow-hidden mt-5 border border-slate-200 shadow-inner">
+      <div className="relative w-full h-[400px] rounded-[12px] overflow-hidden mt-4 border border-[var(--line)]">
         <MapContainer
           center={centerCoords}
           zoom={13}
@@ -133,13 +126,13 @@ export const InteractivePollutionMap: React.FC = () => {
           {/* User Current Location Pin */}
           <Marker
             position={centerCoords}
-            icon={createCustomIcon('#3b82f6', currentLocation.name)}
+            icon={createCustomIcon('var(--ac)', currentLocation.name)}
           >
             <Popup>
-              <div className="p-1 font-sans">
-                <div className="font-bold text-xs text-blue-600">📍 Active Location</div>
-                <div className="text-[11px] text-slate-800 font-semibold mt-0.5">{currentLocation.name}</div>
-                <div className="text-[10px] text-slate-500">{currentLocation.city}</div>
+              <div className="p-1 font-sans text-xs">
+                <div className="font-semibold text-[var(--ac)]">📍 Active Telemetry Station</div>
+                <div className="font-medium text-[var(--ink)] mt-0.5">{currentLocation.name}</div>
+                <div className="text-[11px] text-[var(--mut)]">{currentLocation.city}</div>
               </div>
             </Popup>
           </Marker>
@@ -149,13 +142,12 @@ export const InteractivePollutionMap: React.FC = () => {
             const color = getHotspotColor(h.aqi);
             return (
               <React.Fragment key={h.id}>
-                {/* Simulated pollution dispersion radius */}
                 <Circle
                   center={h.coordinates}
                   radius={h.type === 'highway' ? 850 : 600}
                   pathOptions={{
                     fillColor: color,
-                    fillOpacity: 0.28,
+                    fillOpacity: 0.25,
                     stroke: true,
                     color: color,
                     weight: 1.5,
@@ -169,12 +161,12 @@ export const InteractivePollutionMap: React.FC = () => {
                   }}
                 >
                   <Popup>
-                    <div className="p-1 font-sans">
-                      <div className="font-bold text-xs text-slate-800">{h.name}</div>
-                      <div className="text-[11px] font-bold mt-1" style={{ color }}>
+                    <div className="p-1 font-sans text-xs">
+                      <div className="font-semibold text-[var(--ink)]">{h.name}</div>
+                      <div className="font-medium mt-0.5" style={{ color }}>
                         AQI {h.aqi} • {h.deltaText}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-1">{h.description}</div>
+                      <div className="text-[10px] text-[var(--mut)] mt-1">{h.description}</div>
                     </div>
                   </Popup>
                 </Marker>
@@ -187,7 +179,7 @@ export const InteractivePollutionMap: React.FC = () => {
             positions={selectedRoute.coordinates}
             pathOptions={{
               color: selectedRoute.exposureColor,
-              weight: 6,
+              weight: 5,
               opacity: 0.9,
               dashArray: selectedRoute.id === 'route-clean' ? '8, 8' : undefined,
             }}
@@ -195,25 +187,25 @@ export const InteractivePollutionMap: React.FC = () => {
         </MapContainer>
 
         {/* Floating Active Route Badge */}
-        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl border border-slate-200/80 shadow-md z-[1000] text-xs transition-all">
-          <div className="font-bold text-slate-800 flex items-center gap-2">
-            <Navigation className="w-4 h-4 text-emerald-600" />
+        <div className="absolute top-3.5 right-3.5 card bg-[var(--card)]/90 backdrop-blur-md p-3 rounded-[10px] border border-[var(--line)] shadow-md z-[1000] text-xs">
+          <div className="font-medium text-[var(--ink)] flex items-center gap-2">
+            <Navigation className="w-3.5 h-3.5 text-[var(--ac)]" />
             <span>Active Overlay: {selectedRoute.tag}</span>
           </div>
-          <div className="text-[11px] text-slate-500 mt-1 font-medium">
+          <div className="text-[11px] text-[var(--mut)] mt-0.5 font-mono">
             {selectedRoute.durationMinutes} min • Exposure: {selectedRoute.exposureScore}/100
           </div>
         </div>
       </div>
 
       {/* Hotspots Quick Cards Strip */}
-      <div className="mt-6">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5 ml-1">
-          <AlertOctagon className="w-3.5 h-3.5 text-amber-500" />
-          <span>Nearby Pollution Hotspots (Click to inspect)</span>
+      <div className="mt-5">
+        <h4 className="text-[11px] font-medium uppercase tracking-wider text-[var(--mut)] mb-2.5 flex items-center gap-1.5 ml-1">
+          <AlertOctagon className="w-3.5 h-3.5 text-[var(--ac2)]" />
+          <span>Local Microclimate Hotspots</span>
         </h4>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
           {hotspots.slice(0, 4).map((h) => {
             const color = getHotspotColor(h.aqi);
             const isChosen = selectedHotspot?.id === h.id;
@@ -222,25 +214,25 @@ export const InteractivePollutionMap: React.FC = () => {
                 key={h.id}
                 onClick={() => setSelectedHotspot(h)}
                 className={cn(
-                  "p-3.5 rounded-xl border transition-all cursor-pointer shadow-sm",
+                  "card p-3 transition-all cursor-pointer shadow-2xs",
                   isChosen
-                    ? "border-indigo-500 bg-indigo-50/40 ring-2 ring-indigo-500/20 ring-offset-1"
-                    : "border-slate-200 bg-slate-50/60 hover:bg-white hover:border-slate-300"
+                    ? "border-[var(--ac)] bg-[var(--ac)]/5"
+                    : "border-[var(--line)] bg-[var(--bg)] hover:bg-[var(--card)] hover:border-[var(--line)]"
                 )}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-800 truncate mr-2">
+                  <span className="font-display text-xs font-medium text-[var(--ink)] truncate mr-2">
                     {h.name}
                   </span>
                   <Badge
                     variant="outline"
-                    className="text-[10px] font-black px-2 py-0.5"
-                    style={{ backgroundColor: `${color}15`, color, borderColor: `${color}40` }}
+                    className="text-[10px] font-semibold px-2 py-0.2"
+                    style={{ backgroundColor: `${color}15`, color, borderColor: `${color}35` }}
                   >
                     AQI {h.aqi}
                   </Badge>
                 </div>
-                <div className="text-[11px] font-medium text-slate-500 mt-2">
+                <div className="text-[11px] text-[var(--mut)] mt-1.5">
                   {h.deltaText}
                 </div>
               </div>
@@ -248,6 +240,6 @@ export const InteractivePollutionMap: React.FC = () => {
           })}
         </div>
       </div>
-    </Card>
+    </div>
   );
 };

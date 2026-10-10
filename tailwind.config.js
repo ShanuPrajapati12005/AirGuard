@@ -8,43 +8,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "var(--bg)",
+        card: "var(--card)",
+        ink: "var(--ink)",
+        muted: "var(--mut)",
+        line: "var(--line)",
+        accent: "var(--ac)",
+        "on-accent": "var(--onac)",
+        "accent-2": "var(--ac2)",
+        ok: "var(--ok)",
+        border: "var(--line)",
+        input: "var(--line)",
+        ring: "var(--ac)",
+        foreground: "var(--ink)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--ac)",
+          foreground: "var(--onac)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--ink)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#ef4444",
+          foreground: "#ffffff",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--ink)",
         },
         aqi: {
-          good: "#10b981", // 0-50
+          good: "#13a56b", // 0-50
           satisfactory: "#84cc16", // 51-100
-          moderate: "#f59e0b", // 101-200
+          moderate: "#a8741f", // 101-200
           poor: "#f97316", // 201-300
           verypoor: "#ef4444", // 301-400
           severe: "#8b5cf6", // 401-500
@@ -55,10 +51,23 @@ export default {
           950: "#020617",
         }
       },
+      fontFamily: {
+        sans: ["var(--font-sans)", "Instrument Sans", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Fraunces", "Georgia", "serif"],
+      },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        card: "12px",
+        btn: "9px",
+        lg: "12px",
+        md: "9px",
+        sm: "6px",
+      },
+      boxShadow: {
+        card: "var(--sh)",
+      },
+      maxWidth: {
+        page: "1160px",
+        landing: "1120px",
       },
       animation: {
         'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

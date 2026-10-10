@@ -2,18 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Navigation,
   CheckCircle2,
-  AlertTriangle,
-  Clock,
   MapPin,
   Sparkles,
-  ArrowRight,
-  ShieldCheck,
   Compass,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { SMART_ROUTES } from '../data/mockData';
-import { RouteOption } from '../types';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -34,75 +28,77 @@ export const SmartRouteComparison: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-white border border-zinc-200/60 rounded-2xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)]">
+    <div className="card p-5 border border-[var(--line)] shadow-[var(--sh)]">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-900 flex items-center justify-center border border-zinc-200/60 shadow-none">
+            <div className="w-7 h-7 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 shadow-2xs">
               <Navigation className="w-4 h-4" />
             </div>
-            <h3 className="text-[14px] font-semibold text-zinc-900 tracking-tight">Smart Route Comparison</h3>
+            <h3 className="font-display text-sm font-medium text-[var(--ink)] tracking-tight">
+              Smart Route Comparison
+            </h3>
           </div>
-          <p className="text-[11px] text-zinc-500 mt-1 font-medium tracking-tight">
-            Compare travel duration against cumulative particulate exposure
+          <p className="text-[11px] text-[var(--mut)] mt-1 font-normal">
+            Evaluate commute duration vs cumulative particulate exposure
           </p>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-zinc-500 font-medium tracking-tight">Mode:</span>
-          <Badge variant="outline" className="font-medium text-zinc-700 bg-white px-2 py-1 rounded border-zinc-200/60 shadow-none tracking-tight">
-            🚶 Walking / Commute
+          <span className="text-[var(--mut)] font-normal">Mode:</span>
+          <Badge variant="secondary" className="text-[11px] py-0.5">
+            🚶 Commute / Transit
           </Badge>
         </div>
       </div>
 
       {/* Input Form Strip */}
-      {/* Input Form Strip */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 my-6 bg-zinc-50/50 p-3 rounded-xl border border-zinc-200/60 shadow-none">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 my-4 card bg-[var(--bg)] p-3 border border-[var(--line)]">
         <div className="md:col-span-5">
-          <label className="text-[10px] font-medium text-zinc-500 block mb-1.5 ml-1 tracking-tight">
+          <label className="text-[10px] text-[var(--mut)] block mb-1 uppercase tracking-wider">
             Origin
           </label>
-          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-zinc-200 text-[12px] font-medium text-zinc-700 shadow-none transition-all">
-            <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+          <div className="flex items-center gap-2 bg-[var(--card)] px-3 py-1.5 rounded-[8px] border border-[var(--line)] text-xs text-[var(--ink)] shadow-2xs">
+            <MapPin className="w-3.5 h-3.5 text-[var(--mut)] shrink-0" />
             <input
               type="text"
               value={fromLoc}
               onChange={(e) => setFromLoc(e.target.value)}
-              className="bg-transparent w-full focus:outline-hidden tracking-tight"
+              className="bg-transparent w-full focus:outline-hidden text-xs text-[var(--ink)] p-0 border-0"
             />
           </div>
         </div>
 
         <div className="md:col-span-5">
-          <label className="text-[10px] font-medium text-zinc-500 block mb-1.5 ml-1 tracking-tight">
+          <label className="text-[10px] text-[var(--mut)] block mb-1 uppercase tracking-wider">
             Destination
           </label>
-          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-zinc-200 text-[12px] font-medium text-zinc-700 shadow-none transition-all">
-            <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+          <div className="flex items-center gap-2 bg-[var(--card)] px-3 py-1.5 rounded-[8px] border border-[var(--line)] text-xs text-[var(--ink)] shadow-2xs">
+            <MapPin className="w-3.5 h-3.5 text-[var(--mut)] shrink-0" />
             <input
               type="text"
               value={toLoc}
               onChange={(e) => setToLoc(e.target.value)}
-              className="bg-transparent w-full focus:outline-hidden tracking-tight"
+              className="bg-transparent w-full focus:outline-hidden text-xs text-[var(--ink)] p-0 border-0"
             />
           </div>
         </div>
 
         <div className="md:col-span-2 flex items-end">
           <Button
+            variant="primary"
             onClick={handleCompare}
-            className="w-full h-[30px] bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-[11px] font-medium transition-all shadow-none"
+            className="w-full h-8 text-xs font-semibold rounded-[8px]"
           >
-            <Compass className={cn("w-3 h-3 mr-1.5", isComparing ? "animate-spin" : "")} />
+            <Compass className={cn("w-3.5 h-3.5 mr-1.5", isComparing ? "animate-spin" : "")} />
             Compare
           </Button>
         </div>
       </div>
 
       {/* Routes Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 mt-2">
         {(routes && routes.length > 0 ? routes : SMART_ROUTES).map((route) => {
           const isSelected = selectedRoute.id === route.id;
           return (
@@ -110,50 +106,45 @@ export const SmartRouteComparison: React.FC = () => {
               key={route.id}
               onClick={() => setSelectedRoute(route)}
               className={cn(
-                "rounded-xl p-4 border transition-all cursor-pointer relative shadow-none",
+                "card p-4 transition-all cursor-pointer relative",
                 isSelected
-                  ? "border-emerald-500 bg-emerald-50/20"
-                  : "border-zinc-200/60 bg-white hover:border-zinc-300 hover:bg-zinc-50/50"
+                  ? "border-[var(--ac)] bg-[var(--ac)]/5 shadow-xs"
+                  : "border-[var(--line)] bg-[var(--card)] hover:border-[var(--ac)]/40"
               )}
             >
               {/* Badge Header */}
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-2.5">
                 <Badge
-                  variant="outline"
-                  className={cn(
-                    "text-[9px] font-semibold uppercase px-2 py-0.5 rounded-sm tracking-widest shadow-none",
-                    route.isRecommended
-                      ? "bg-emerald-50 text-emerald-700 border-emerald-200/60"
-                      : "bg-rose-50 text-rose-700 border-rose-200/60"
-                  )}
+                  variant={route.isRecommended ? "accent" : "destructive"}
+                  className="text-[10px] uppercase font-semibold"
                 >
                   {route.tag}
                 </Badge>
 
                 {isSelected && (
-                  <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-600 tracking-tight">
+                  <span className="flex items-center gap-1 text-[11px] font-semibold text-[var(--ac)]">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     Selected
                   </span>
                 )}
               </div>
 
-              <h4 className="text-[13px] font-semibold text-zinc-900 mb-1 tracking-tight">{route.name}</h4>
-              <p className="text-[11px] text-zinc-500 leading-snug mb-4 h-8 tracking-tight">{route.description}</p>
+              <h4 className="font-display text-sm font-medium text-[var(--ink)] mb-0.5">{route.name}</h4>
+              <p className="text-xs text-[var(--mut)] leading-relaxed mb-3 h-8">{route.description}</p>
 
               {/* Stats Bar */}
-              <div className="grid grid-cols-3 gap-2 bg-zinc-50/50 p-2.5 rounded-lg border border-zinc-200/60 text-center shadow-none">
+              <div className="grid grid-cols-3 gap-2 card bg-[var(--bg)] p-2.5 rounded-[8px] border border-[var(--line)] text-center">
                 <div>
-                  <span className="text-[10px] text-zinc-500 block font-medium tracking-tight">Time / Dist</span>
-                  <span className="text-[12px] font-semibold text-zinc-800 mt-0.5 block tracking-tight">
-                    {route.durationMinutes}m <span className="font-normal text-zinc-400">({route.distanceKm}km)</span>
+                  <span className="text-[10px] text-[var(--mut)] block">Duration</span>
+                  <span className="font-display text-xs font-medium text-[var(--ink)] mt-0.5 block">
+                    {route.durationMinutes}m <span className="font-sans text-[10px] text-[var(--mut)]">({route.distanceKm}km)</span>
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] text-zinc-500 block font-medium tracking-tight">Exposure</span>
+                  <span className="text-[10px] text-[var(--mut)] block">Exposure</span>
                   <span
-                    className="text-[12px] font-semibold mt-0.5 block tracking-tight capitalize"
+                    className="font-display text-xs font-medium mt-0.5 block capitalize"
                     style={{ color: route.exposureColor }}
                   >
                     {route.exposureLevel}
@@ -161,9 +152,9 @@ export const SmartRouteComparison: React.FC = () => {
                 </div>
 
                 <div>
-                  <span className="text-[10px] text-zinc-500 block font-medium tracking-tight">Score</span>
+                  <span className="text-[10px] text-[var(--mut)] block">Score</span>
                   <span
-                    className="text-[12px] font-semibold mt-0.5 block tracking-tight"
+                    className="font-display text-xs font-medium mt-0.5 block"
                     style={{ color: route.exposureColor }}
                   >
                     {route.exposureScore}/100
@@ -172,23 +163,20 @@ export const SmartRouteComparison: React.FC = () => {
               </div>
 
               {/* Button */}
-              <div className="mt-4 pt-4 flex items-center justify-between border-t border-zinc-100">
-                <span className="text-[11px] text-zinc-500 font-medium tracking-tight">
-                  Traffic: <strong className="text-zinc-700 capitalize">{route.trafficIntensity}</strong>
+              <div className="mt-3.5 pt-3 flex items-center justify-between border-t border-[var(--line)]">
+                <span className="text-xs text-[var(--mut)]">
+                  Traffic: <strong className="text-[var(--ink)] capitalize">{route.trafficIntensity}</strong>
                 </span>
                 <Button
                   size="sm"
-                  variant={isSelected ? "default" : "outline"}
+                  variant={isSelected ? "primary" : "outline"}
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedRoute(route);
                   }}
-                  className={cn(
-                    "text-[10px] font-medium h-7 px-3 rounded-md transition-colors shadow-none",
-                    isSelected ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "border-zinc-200/60 text-zinc-600"
-                  )}
+                  className="text-[11px] h-7 px-3 rounded-[8px]"
                 >
-                  {isSelected ? 'Active Route' : `Choose Route`}
+                  {isSelected ? 'Active Route' : 'Choose Route'}
                 </Button>
               </div>
             </div>
@@ -197,17 +185,18 @@ export const SmartRouteComparison: React.FC = () => {
       </div>
 
       {/* Comparison Callout */}
-      <div className="mt-4 p-3 bg-zinc-50 border border-zinc-200/60 rounded-xl flex items-center justify-between gap-3 text-[11px] text-zinc-700 shadow-none">
-        <div className="flex items-center gap-2.5">
-          <Sparkles className="w-4 h-4 text-emerald-500 shrink-0" />
-          <span className="leading-relaxed tracking-tight">
-            <strong>Route B</strong> takes <strong>4 minutes longer</strong> but reduces estimated PM2.5 inhalation by <strong className="text-emerald-600">48%</strong>!
+      <div className="mt-3.5 p-3 card bg-[var(--bg)] border border-[var(--line)] flex items-center justify-between gap-3 text-xs text-[var(--ink)]">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[var(--ac)] shrink-0" />
+          <span className="leading-relaxed">
+            <strong className="text-[var(--ink)] font-semibold">Route B</strong> adds <strong>4 minutes duration</strong> but reduces estimated PM2.5 inhalation by <strong className="text-[var(--ac)]">48%</strong>.
           </span>
         </div>
         <Button
           variant="outline"
+          size="sm"
           onClick={() => setSelectedRoute(SMART_ROUTES[1])}
-          className="bg-white border-zinc-200/60 hover:bg-zinc-50 text-zinc-700 rounded-lg font-medium text-[11px] shrink-0 h-7 px-3 shadow-none"
+          className="text-xs shrink-0 h-7 px-3 rounded-[8px]"
         >
           Choose Route B
         </Button>

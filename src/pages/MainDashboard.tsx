@@ -10,14 +10,11 @@ import { AIGuardianChat } from '../components/AIGuardianChat';
 import { LiveSensorMonitor } from '../components/LiveSensorMonitor';
 import { InsightsHistory } from '../components/InsightsHistory';
 import { SCENARIO_PRESETS } from '../data/mockData';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle, Info, GraduationCap } from 'lucide-react';
 
-const InteractivePollutionMap = React.lazy(() => import('../components/InteractivePollutionMap').then(module => ({ default: module.InteractivePollutionMap })));
-import {
-  AlertTriangle,
-  Info,
-  GraduationCap,
-} from 'lucide-react';
+const InteractivePollutionMap = React.lazy(() =>
+  import('../components/InteractivePollutionMap').then(module => ({ default: module.InteractivePollutionMap }))
+);
 
 export const MainDashboard: React.FC = () => {
   const {
@@ -29,21 +26,21 @@ export const MainDashboard: React.FC = () => {
   const currentPreset = SCENARIO_PRESETS[scenario];
 
   return (
-    <div className="p-4 md:p-8 max-w-[1400px] mx-auto space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1240px] mx-auto space-y-6">
       {/* Realtime Atmosphere Alert (only if active alert in condition) */}
       {currentPreset.alertTitle && (
-        <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4 flex items-start justify-between gap-3 shadow-2xs">
+        <div className="card p-4 bg-rose-50/70 border border-rose-200/80 flex items-start justify-between gap-3 shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-rose-100 rounded-xl text-rose-700 mt-0.5">
-              <AlertTriangle className="w-5 h-5" />
+            <div className="p-2 bg-rose-100/80 rounded-[8px] text-rose-700 mt-0.5">
+              <AlertTriangle className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-rose-900">{currentPreset.alertTitle}</h4>
+              <h4 className="font-display text-sm font-medium text-rose-900">{currentPreset.alertTitle}</h4>
               <p className="text-xs text-rose-700 mt-0.5">{currentPreset.alertMessage}</p>
             </div>
           </div>
           {scenario === 'school_alert' && (
-            <div className="hidden md:flex items-center gap-2 text-xs font-bold bg-rose-200/60 text-rose-900 px-3 py-1.5 rounded-xl">
+            <div className="hidden md:flex items-center gap-2 text-xs font-semibold bg-rose-200/60 text-rose-900 px-3 py-1.5 rounded-[8px]">
               <GraduationCap className="w-4 h-4" />
               <span>Campus Protocol Activated</span>
             </div>
@@ -53,10 +50,10 @@ export const MainDashboard: React.FC = () => {
 
       {/* Primary Dashboard View (When activeTab is 'dashboard') */}
       {activeTab === 'dashboard' && (
-        <div className="space-y-8">
+        <div className="space-y-6">
           {/* Top At-A-Glance Hero Section */}
-          <div className="bg-white border border-zinc-200/60 rounded-2xl p-2 sm:p-6 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:divide-x divide-zinc-100">
+          <div className="card p-5 sm:p-6 shadow-[var(--sh)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:divide-x divide-[var(--line)]">
               <MainAQICard />
               <div className="pl-0 md:pl-8">
                 <PersonalExposureCard onViewDetailed={() => setActiveTab('exposure')} />
@@ -64,18 +61,20 @@ export const MainDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div className="xl:col-span-2 space-y-8">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div className="xl:col-span-2 space-y-6">
               {/* Interactive Map Section */}
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-zinc-900 tracking-tight">Geospatial Pollution Map</h3>
-                  <span className="text-[11px] font-medium text-zinc-500">Live API</span>
+                  <h3 className="font-display text-base font-medium text-[var(--ink)] tracking-tight">
+                    Geospatial Pollution Map
+                  </h3>
+                  <span className="text-[11px] font-medium text-[var(--mut)]">Open-Meteo Telemetry</span>
                 </div>
-                <div className="bg-white border border-zinc-200/60 p-2 rounded-2xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)]">
+                <div className="card p-2 shadow-[var(--sh)]">
                   <React.Suspense fallback={
-                    <div className="h-[400px] w-full flex items-center justify-center bg-zinc-50 rounded-xl">
-                      <Loader2 className="w-5 h-5 text-zinc-400 animate-spin" />
+                    <div className="h-[400px] w-full flex items-center justify-center bg-[var(--bg)] rounded-[10px]">
+                      <Loader2 className="w-5 h-5 text-[var(--ac)] animate-spin" />
                     </div>
                   }>
                     <InteractivePollutionMap />
@@ -84,13 +83,13 @@ export const MainDashboard: React.FC = () => {
               </div>
 
               {/* Planning Tools */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <BestTimePlanner />
                 <SmartRouteComparison />
               </div>
             </div>
 
-            <div className="xl:col-span-1 space-y-8">
+            <div className="xl:col-span-1 space-y-6">
               <AIRecommendationCard onAskAirGuard={() => setActiveTab('ai-guardian')} />
               <ActivityRiskCalculator />
               <LiveSensorMonitor />
@@ -123,8 +122,8 @@ export const MainDashboard: React.FC = () => {
       {activeTab === 'map' && (
         <div className="space-y-6">
           <React.Suspense fallback={
-            <div className="h-[400px] w-full flex items-center justify-center bg-white rounded-2xl border border-slate-200">
-              <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+            <div className="h-[400px] w-full flex items-center justify-center card">
+              <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
             </div>
           }>
             <InteractivePollutionMap />
@@ -136,8 +135,8 @@ export const MainDashboard: React.FC = () => {
         <div className="space-y-6">
           <SmartRouteComparison />
           <React.Suspense fallback={
-            <div className="h-[400px] w-full flex items-center justify-center bg-white rounded-2xl border border-slate-200">
-              <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+            <div className="h-[400px] w-full flex items-center justify-center card">
+              <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
             </div>
           }>
             <InteractivePollutionMap />
@@ -171,24 +170,24 @@ export const MainDashboard: React.FC = () => {
       )}
 
       {/* Footer / About Section */}
-      <footer className="mt-16 pt-8 border-t border-zinc-200/50 text-xs text-zinc-500 space-y-4">
+      <footer className="mt-14 pt-6 border-t border-[var(--line)] text-xs text-[var(--mut)] space-y-3">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h5 className="font-semibold text-zinc-800 text-[13px] tracking-tight">About AirGuard</h5>
-            <p className="text-zinc-500 mt-1 max-w-2xl leading-relaxed tracking-tight">
-              AirGuard transforms raw air-quality data into personalized exposure intelligence. Built with realtime Open-Meteo meteorological API telemetry, interactive Leaflet routing, and AI synthesis.
+            <h5 className="font-display font-medium text-[var(--ink)] text-[14px]">About AirGuard</h5>
+            <p className="text-[var(--mut)] mt-0.5 max-w-2xl leading-relaxed">
+              AirGuard translates atmospheric telemetry into individualized inhalation exposure metrics. Powered by Open-Meteo meteorological models, interactive GIS route planning, and AI advisory synthesis.
             </p>
           </div>
-          <div className="text-left sm:text-right text-[11px] text-zinc-400 space-y-0.5">
-            <div>Data Standard: <strong className="text-zinc-500 font-medium">India NAQI & US AQI Standards</strong></div>
-            <div>Exposure Model: <strong className="text-zinc-500 font-medium">AirGuard Physiological Index v1.2</strong></div>
+          <div className="text-left sm:text-right text-[11px] text-[var(--mut)] space-y-0.5 font-mono">
+            <div>Data Standard: <span className="text-[var(--ink)] font-medium">India NAQI & US EPA AQI</span></div>
+            <div>Exposure Index: <span className="text-[var(--ink)] font-medium">AirGuard Physiological v1.2</span></div>
           </div>
         </div>
 
-        <div className="p-3 bg-zinc-50/50 rounded-lg text-zinc-500 text-[11px] flex items-center gap-2 border border-zinc-200/50 tracking-tight">
-          <Info className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+        <div className="card p-3 bg-[var(--bg)] text-[var(--mut)] text-[11px] flex items-center gap-2">
+          <Info className="w-3.5 h-3.5 text-[var(--mut)] shrink-0" />
           <span>
-            <strong className="font-semibold text-zinc-700">Disclaimer:</strong> Exposure estimates and activity advice are informational and do not constitute clinical or medical advice.
+            <strong className="text-[var(--ink)] font-semibold">Advisory Disclaimer:</strong> Personal exposure calculations and recommended timing windows are informational aids and do not constitute clinical guidance.
           </span>
         </div>
       </footer>

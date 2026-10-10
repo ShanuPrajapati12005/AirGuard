@@ -10,17 +10,17 @@ interface SectionCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 't
 
 export function SectionCard({ title, subtitle, headerAction, children, className, ...props }: SectionCardProps) {
   return (
-    <Card className={cn("overflow-hidden border-slate-200/60 shadow-sm", className)} {...props}>
+    <Card className={cn("overflow-hidden border border-[var(--line)] shadow-[var(--sh)]", className)} {...props}>
       {(title || headerAction) && (
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="px-5 py-3.5 border-b border-[var(--line)] flex items-center justify-between bg-[var(--bg)]/40">
           <div>
-            {title && <h3 className="text-base font-semibold text-slate-800">{title}</h3>}
-            {subtitle && <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>}
+            {title && <h3 className="font-display text-base font-medium text-[var(--ink)]">{title}</h3>}
+            {subtitle && <p className="text-xs text-[var(--mut)] mt-0.5">{subtitle}</p>}
           </div>
           {headerAction && <div>{headerAction}</div>}
         </div>
       )}
-      <div className="p-6">
+      <div className="p-5">
         {children}
       </div>
     </Card>

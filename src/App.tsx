@@ -12,13 +12,13 @@ const SettingsModal = React.lazy(() => import('./components/SettingsModal').then
 const LocationModal = React.lazy(() => import('./components/LocationModal').then(module => ({ default: module.LocationModal })));
 
 const FallbackComponent = ({ error, resetErrorBoundary }: any) => (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 text-slate-800 p-4">
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-rose-200 max-w-md w-full">
-      <h2 className="text-lg font-bold text-rose-700 mb-2">Something went wrong</h2>
-      <p className="text-sm text-slate-600 mb-4 font-mono overflow-auto text-wrap">{error.message}</p>
+  <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--bg)] text-[var(--ink)] p-4">
+    <div className="card p-6 max-w-md w-full border border-rose-200/80 shadow-md">
+      <h2 className="text-lg font-medium text-rose-700 mb-2 font-display">Something went wrong</h2>
+      <p className="text-xs text-[var(--mut)] mb-4 font-mono overflow-auto">{error.message}</p>
       <button 
         onClick={resetErrorBoundary}
-        className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold text-sm hover:bg-emerald-700 transition-colors"
+        className="btn p text-xs font-semibold"
       >
         Try again
       </button>
@@ -27,8 +27,8 @@ const FallbackComponent = ({ error, resetErrorBoundary }: any) => (
 );
 
 const FullPageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen bg-slate-50">
-    <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+  <div className="flex items-center justify-center min-h-screen bg-[var(--bg)]">
+    <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
   </div>
 );
 
@@ -43,19 +43,26 @@ const AppContent: React.FC = () => {
 
   if (showLanding) {
     return (
-      <Suspense fallback={<FullPageLoader />}>
-        <LandingHero onExploreDashboard={handleExploreDashboard} />
-      </Suspense>
+      <div className="relative min-h-screen bg-[var(--bg)] text-[var(--ink)]">
+        <div className="animated-grid" />
+        <div className="animated-pattern" />
+        <Suspense fallback={<FullPageLoader />}>
+          <LandingHero onExploreDashboard={handleExploreDashboard} />
+        </Suspense>
+      </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="relative flex min-h-screen bg-[var(--bg)] text-[var(--ink)] font-sans">
+      <div className="animated-grid" />
+      <div className="animated-pattern" />
+
       {/* Persistent Sidebar */}
       <Sidebar onOpenSettings={() => setIsSettingsOpen(true)} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 z-10">
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenLocation={() => setIsLocationOpen(true)}
@@ -64,8 +71,8 @@ const AppContent: React.FC = () => {
         <main className="flex-1 overflow-y-auto relative">
           <ErrorBoundary FallbackComponent={FallbackComponent}>
             <Suspense fallback={
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-50/50 backdrop-blur-sm z-10">
-                <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg)]/60 backdrop-blur-xs z-10">
+                <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
               </div>
             }>
               <MainDashboard />

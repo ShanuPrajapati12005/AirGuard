@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Calculator } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { calculateExposureScore } from '../utils/aqiCalculator';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
@@ -18,42 +17,44 @@ export const ActivityRiskCalculator: React.FC = () => {
   const result = calculateExposureScore(airData.aqi, selectedDuration, selectedActivity, userProfile);
 
   return (
-    <div className="p-6 bg-white border border-zinc-200/60 rounded-2xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)]">
+    <div className="card p-5 border border-[var(--line)] shadow-[var(--sh)]">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-900 flex items-center justify-center border border-zinc-200/60 shadow-none">
+            <div className="w-7 h-7 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 shadow-2xs">
               <Calculator className="w-4 h-4" />
             </div>
-            <h3 className="text-[14px] font-semibold text-zinc-900 tracking-tight">Activity Risk Calculator</h3>
+            <h3 className="font-display text-sm font-medium text-[var(--ink)] tracking-tight">
+              Activity Risk Simulator
+            </h3>
           </div>
-          <p className="text-[11px] text-zinc-500 mt-1 font-medium tracking-tight">
-            How risky is your activity under current ambient conditions?
+          <p className="text-[11px] text-[var(--mut)] mt-1 font-normal">
+            Compute inhalation risk factors based on exercise cadence and duration
           </p>
         </div>
-        <Badge variant="outline" className="text-[9px] font-medium uppercase tracking-widest text-zinc-500 bg-zinc-50 px-2 py-0.5 rounded-sm border-zinc-200/60 shadow-none">
-          Demo Model
+        <Badge variant="accent" className="text-[10px] uppercase font-semibold">
+          Model v1.2
         </Badge>
       </div>
 
       {/* Selectors */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
         {/* Activity selection */}
         <div>
-          <label className="text-[11px] font-medium text-zinc-500 mb-2 block tracking-tight">
-            Physical Activity
+          <label className="text-[11px] font-medium text-[var(--mut)] mb-1.5 block">
+            Physical Exertion Tier
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-1.5">
             {activities.map((act) => (
               <button
                 key={act}
                 onClick={() => setSelectedActivity(act)}
                 className={cn(
-                  "py-2 px-2.5 rounded-lg text-[11px] font-medium transition-all border cursor-pointer shadow-none tracking-tight",
+                  "py-1.5 px-2 rounded-[8px] text-[11px] font-medium transition-all border cursor-pointer",
                   selectedActivity === act
-                    ? "bg-zinc-900 text-white border-zinc-900"
-                    : "bg-zinc-50 text-zinc-600 border-zinc-200/60 hover:bg-zinc-100"
+                    ? "bg-[var(--ac)] text-[var(--onac)] border-[var(--ac)] shadow-2xs"
+                    : "bg-[var(--bg)] text-[var(--mut)] border-[var(--line)] hover:text-[var(--ink)] hover:border-[var(--mut)]"
                 )}
               >
                 {act}
@@ -64,19 +65,19 @@ export const ActivityRiskCalculator: React.FC = () => {
 
         {/* Duration selection */}
         <div>
-          <label className="text-[11px] font-medium text-zinc-500 mb-2 block tracking-tight">
-            Duration
+          <label className="text-[11px] font-medium text-[var(--mut)] mb-1.5 block">
+            Exposure Duration
           </label>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 gap-1.5">
             {durations.map((dur) => (
               <button
                 key={dur}
                 onClick={() => setSelectedDuration(dur)}
                 className={cn(
-                  "py-2 px-2 rounded-lg text-[11px] font-medium transition-all border cursor-pointer shadow-none tracking-tight",
+                  "py-1.5 px-2 rounded-[8px] text-[11px] font-medium transition-all border cursor-pointer",
                   selectedDuration === dur
-                    ? "bg-emerald-600 text-white border-emerald-600"
-                    : "bg-zinc-50 text-zinc-600 border-zinc-200/60 hover:bg-zinc-100"
+                    ? "bg-[var(--ink)] text-white border-[var(--ink)] shadow-2xs"
+                    : "bg-[var(--bg)] text-[var(--mut)] border-[var(--line)] hover:text-[var(--ink)] hover:border-[var(--mut)]"
                 )}
               >
                 {dur >= 60 ? `${dur / 60}h` : `${dur}m`}
@@ -87,31 +88,30 @@ export const ActivityRiskCalculator: React.FC = () => {
       </div>
 
       {/* Exposure Score Result Bar */}
-      <div className="bg-zinc-50/50 rounded-xl p-4 border border-zinc-200/60 mt-2 shadow-none">
+      <div className="card p-4 bg-[var(--bg)] border border-[var(--line)]">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <span className="text-[10px] font-medium text-zinc-500 uppercase tracking-widest block">
-              Estimated Exposure
+            <span className="text-[10px] text-[var(--mut)] uppercase tracking-wider block">
+              Calculated Inhalation Load
             </span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-3xl font-semibold text-zinc-900 tracking-tight">{result.score}%</span>
-              <Badge
-                variant="outline"
-                className="text-[9px] font-semibold uppercase px-2 py-0.5 border shadow-none"
-                style={{ backgroundColor: `${result.color}10`, color: result.color, borderColor: `${result.color}40` }}
+            <div className="flex items-baseline gap-2 mt-0.5">
+              <span className="font-display text-3xl font-normal text-[var(--ink)]">{result.score}%</span>
+              <span
+                className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full border"
+                style={{ backgroundColor: `${result.color}15`, color: result.color, borderColor: `${result.color}35` }}
               >
                 {result.level} RISK
-              </Badge>
+              </span>
             </div>
           </div>
-          <div className="text-right text-[11px] text-zinc-500 font-medium bg-white p-2 rounded-lg border border-zinc-200/60 shadow-none tracking-tight">
-            <div className="mb-0.5">Current AQI: <strong className="text-zinc-800">{airData.aqi}</strong></div>
-            <div>Sensitivity: <strong className="text-zinc-800 capitalize">{userProfile.sensitivityLevel}</strong></div>
+          <div className="text-right text-[11px] text-[var(--mut)] bg-[var(--card)] p-2 rounded-[8px] border border-[var(--line)]">
+            <div>Current AQI: <strong className="text-[var(--ink)]">{airData.aqi}</strong></div>
+            <div>Sensitivity: <strong className="text-[var(--ink)] capitalize">{userProfile.sensitivityLevel}</strong></div>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-zinc-200/60 rounded-full h-1.5 overflow-hidden">
+        <div className="w-full bg-[var(--line)] rounded-full h-1.5 overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-700 ease-out"
             style={{ width: `${result.score}%`, backgroundColor: result.color }}
@@ -119,16 +119,16 @@ export const ActivityRiskCalculator: React.FC = () => {
         </div>
 
         {/* Simulation Context Advice */}
-        <p className="text-[11px] font-medium text-zinc-500 mt-4 leading-relaxed bg-white/60 p-2.5 rounded-lg border border-zinc-100 tracking-tight">
+        <p className="text-xs text-[var(--mut)] mt-3 leading-relaxed bg-[var(--card)] p-2.5 rounded-[8px] border border-[var(--line)]">
           {selectedActivity === 'Running' || selectedActivity === 'Outdoor Sports' ? (
             <>
-              Running or playing sports for {selectedDuration} minutes in current conditions results in
-              <strong className="text-rose-600 font-semibold"> significantly higher particulate ventilation</strong> than a relaxed 20-minute walk.
+              High minute-ventilation exercise for {selectedDuration} minutes exposes pulmonary alveoli to
+              <strong className="text-rose-600 font-medium"> significantly higher particulate inhalation</strong> compared to low-intensity transit.
             </>
           ) : (
             <>
-              {selectedActivity} for {selectedDuration} minutes has an estimated exposure factor of {result.score}%.
-              Consider wearing a well-fitted N95 mask if outdoors near traffic corridors.
+              {selectedActivity} for {selectedDuration} minutes reflects an estimated exposure index of {result.score}%.
+              Equip an N95 respirator if traversing congested transit arteries.
             </>
           )}
         </p>

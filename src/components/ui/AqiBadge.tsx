@@ -1,6 +1,5 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
 
 interface AqiBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   aqi: number;

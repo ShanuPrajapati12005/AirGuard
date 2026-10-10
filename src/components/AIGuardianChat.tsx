@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import {
   Send,
   Bot,
-  User,
   Sparkles,
-  HelpCircle,
-  Clock,
-  ArrowRight,
-  ShieldCheck,
-  Zap,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { queryAIGuardian } from '../services/aiService';
 import { ChatMessage } from '../types';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +19,7 @@ export const AIGuardianChat: React.FC = () => {
     {
       id: 'm-init',
       sender: 'assistant',
-      content: `Hello ${userProfile.name}! 👋 I'm **AirGuard Guardian**, your personal air-pollution assistant.\n\nToday's ambient AQI is **${airData.aqi} (${airData.categoryLabel})** at ${airData.locationName}. How can I help you navigate your activities or minimize your exposure today?`,
+      content: `Hello ${userProfile.name}! 👋 I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at ${airData.locationName}. How can I assist with your routine transit or outdoor exposure schedule today?`,
       timestamp: 'Just now',
     },
   ]);
@@ -35,12 +28,11 @@ export const AIGuardianChat: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
 
   const suggestedQuestions = [
-    'Can I go running now?',
-    "What's the safest time to go outside?",
-    'Which route should I take?',
-    'Why is pollution high today?',
-    'Is my college area safe?',
-    'Compare today with yesterday.',
+    'Can I run outdoors right now?',
+    'What is the cleanest window today?',
+    'Which route minimizes PM2.5?',
+    'Why is smog elevated this afternoon?',
+    'Advice for mild asthma profile',
   ];
 
   const handleSend = async (questionText?: string) => {
@@ -72,7 +64,7 @@ export const AIGuardianChat: React.FC = () => {
       const errorMsg: ChatMessage = {
         id: `ai-err-${Date.now()}`,
         sender: 'assistant',
-        content: `⚠️ Sorry, I encountered a temporary error while processing that question. Please try asking again or check your network connection.`,
+        content: `⚠️ Note: The assistant encountered a temporary connectivity delay. Please retry your inquiry or verify credentials in Preferences.`,
         timestamp: 'Just now',
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -82,41 +74,41 @@ export const AIGuardianChat: React.FC = () => {
   };
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm flex flex-col h-[600px] overflow-hidden">
+    <div className="card flex flex-col h-[600px] border border-[var(--line)] shadow-[var(--sh)] overflow-hidden">
       {/* Header */}
-      <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
+      <div className="p-4 bg-[var(--card)] border-b border-[var(--line)] flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-400 to-teal-500 text-slate-950 flex items-center justify-center font-bold shadow-md shadow-emerald-500/20">
-            <Bot className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-[8px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center font-bold shadow-2xs">
+            <Bot className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold tracking-tight flex items-center gap-2">
-              Ask AirGuard
-              <Badge variant="outline" className="text-[10px] font-semibold bg-slate-800 text-emerald-400 px-2 py-0.5 rounded border-slate-700 hover:bg-slate-800">
-                AI Powered
+            <h3 className="font-display text-base font-medium tracking-tight text-[var(--ink)] flex items-center gap-2">
+              AirGuard Copilot
+              <Badge variant="accent" className="text-[10px] uppercase font-semibold">
+                AI Synthesis
               </Badge>
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5 font-medium">Your personal environmental health decision assistant</p>
+            <p className="text-[11px] text-[var(--mut)]">Personalized respiratory decision support</p>
           </div>
         </div>
 
-        <div className="text-right text-[11px] text-slate-400 hidden sm:block bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/50">
-          <div className="mb-0.5">Current AQI: <strong className="text-emerald-400">{airData.aqi}</strong></div>
-          <div>User: <strong className="text-slate-200">{userProfile.name} ({userProfile.age}y)</strong></div>
+        <div className="text-right text-[11px] text-[var(--mut)] hidden sm:block bg-[var(--bg)] px-3 py-1.5 rounded-[8px] border border-[var(--line)] font-mono">
+          <div>Current AQI: <strong className="text-[var(--ac)]">{airData.aqi}</strong></div>
+          <div>User: <span className="text-[var(--ink)]">{userProfile.name}</span></div>
         </div>
       </div>
 
       {/* Suggested Questions Pills */}
-      <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center gap-2 overflow-x-auto text-xs no-scrollbar shadow-inner">
-        <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-        <span className="text-slate-500 text-[11px] font-bold uppercase tracking-wider shrink-0">Try Asking:</span>
+      <div className="bg-[var(--bg)] border-b border-[var(--line)] px-4 py-2.5 flex items-center gap-2 overflow-x-auto text-xs">
+        <Sparkles className="w-3.5 h-3.5 text-[var(--ac2)] shrink-0" />
+        <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider shrink-0">Prompts:</span>
         {suggestedQuestions.map((sq) => (
           <Button
             key={sq}
             variant="outline"
             size="sm"
             onClick={() => handleSend(sq)}
-            className="h-7 px-2.5 rounded-lg border-slate-200 text-[11px] font-semibold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 hover:border-emerald-200 whitespace-nowrap transition-colors shadow-none"
+            className="h-7 px-2.5 rounded-full text-[11px] font-normal text-[var(--ink)] hover:border-[var(--ac)] hover:bg-[var(--card)] whitespace-nowrap"
           >
             {sq}
           </Button>
@@ -124,65 +116,58 @@ export const AIGuardianChat: React.FC = () => {
       </div>
 
       {/* Message History */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-5 bg-slate-50/50">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--bg)]/40">
         {messages.map((m) => {
           const isUser = m.sender === 'user';
           return (
             <div
               key={m.id}
-              className={`flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}
+              className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
             >
               {!isUser && (
-                <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-xs font-bold mt-1 shadow-sm border border-emerald-200">
+                <div className="w-7 h-7 rounded-[7px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center shrink-0 text-xs font-bold mt-1 border border-[var(--ac)]/20 shadow-2xs">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
 
               <div
                 className={cn(
-                  "max-w-[85%] rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-sm",
+                  "max-w-[85%] rounded-[12px] px-4 py-3 text-xs leading-relaxed",
                   isUser
-                    ? "bg-slate-900 text-white rounded-tr-sm"
-                    : "bg-white text-slate-800 border border-slate-200 rounded-tl-sm"
+                    ? "bg-[var(--ink)] text-white shadow-xs"
+                    : "card bg-[var(--card)] text-[var(--ink)] border border-[var(--line)] shadow-2xs"
                 )}
               >
-                {/* Render markdown-style bold and bullet points cleanly */}
                 <div className="whitespace-pre-wrap font-sans">
                   {m.content.split('\n').map((line, idx) => {
                     if (line.startsWith('• ') || line.startsWith('- ')) {
                       return (
                         <div key={idx} className="ml-2 my-1 flex items-start gap-1.5">
-                          <span className={cn("font-bold", isUser ? "text-slate-400" : "text-emerald-600")}>•</span>
+                          <span className={cn("font-bold", isUser ? "text-white/60" : "text-[var(--ac)]")}>•</span>
                           <span>{line.replace(/^[•-]\s*/, '')}</span>
                         </div>
                       );
                     }
-                    // Simple bold parser
                     const parts = line.split(/(\*\*.*?\*\*)/g);
                     return (
                       <p key={idx} className={idx > 0 ? "mt-2" : ""}>
                         {parts.map((part, pIdx) => {
-                           if (part.startsWith('**') && part.endsWith('**')) {
-                             return <strong key={pIdx} className={isUser ? "text-white" : "text-slate-900"}>{part.slice(2, -2)}</strong>;
-                           }
-                           return part;
+                          if (part.startsWith('**') && part.endsWith('**')) {
+                            return <strong key={pIdx} className={isUser ? "text-white font-semibold" : "text-[var(--ink)] font-semibold"}>{part.slice(2, -2)}</strong>;
+                          }
+                          return part;
                         })}
                       </p>
                     );
                   })}
                 </div>
-                <div
-                  className={cn(
-                    "text-[9px] mt-2 font-medium text-right",
-                    isUser ? "text-slate-400" : "text-slate-400"
-                  )}
-                >
+                <div className={cn("text-[9px] mt-1.5 font-mono text-right", isUser ? "text-white/60" : "text-[var(--mut)]")}>
                   {m.timestamp}
                 </div>
               </div>
 
               {isUser && (
-                <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 text-xs font-bold mt-1 shadow-sm border border-indigo-700">
+                <div className="w-7 h-7 rounded-[7px] bg-[var(--ink)] text-white flex items-center justify-center shrink-0 text-xs font-medium mt-1">
                   {userProfile.name[0]}
                 </div>
               )}
@@ -192,22 +177,22 @@ export const AIGuardianChat: React.FC = () => {
 
         {/* Typing indicator */}
         {isTyping && (
-          <div className="flex gap-3 items-center text-xs text-slate-500 italic mt-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-xs shadow-sm border border-emerald-200">
-               <Bot className="w-4 h-4" />
+          <div className="flex gap-2.5 items-center text-xs text-[var(--mut)] italic">
+            <div className="w-7 h-7 rounded-[7px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center shrink-0 text-xs border border-[var(--ac)]/20 shadow-2xs">
+              <Bot className="w-4 h-4" />
             </div>
-            <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5 shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:0.2s]"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:0.4s]"></span>
-              <span className="text-[11px] text-slate-500 font-sans ml-2 font-medium">AirGuard is thinking...</span>
+            <div className="card bg-[var(--card)] border border-[var(--line)] rounded-[12px] px-3.5 py-2.5 flex items-center gap-1.5 shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--ac)] animate-bounce"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--ac)] animate-bounce [animation-delay:0.2s]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--ac)] animate-bounce [animation-delay:0.4s]"></span>
+              <span className="text-[11px] text-[var(--mut)] ml-2">AirGuard synthesis in progress...</span>
             </div>
           </div>
         )}
       </div>
 
       {/* Input Bar */}
-      <div className="p-4 bg-white border-t border-slate-200 flex items-center gap-3">
+      <div className="p-3.5 bg-[var(--card)] border-t border-[var(--line)] flex items-center gap-2.5">
         <Input
           type="text"
           value={input}
@@ -215,18 +200,19 @@ export const AIGuardianChat: React.FC = () => {
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') handleSend();
           }}
-          placeholder="Ask anything (e.g. Can I walk outside with asthma?)"
-          className="flex-1 bg-slate-50 border-slate-200 h-10 text-xs rounded-xl focus-visible:ring-emerald-500/30"
+          placeholder="Ask anything (e.g. Can I walk outside with asthma today?)"
+          className="flex-1 bg-[var(--bg)] border-[var(--line)] h-9 text-xs rounded-[9px] focus-visible:ring-[var(--ac)]"
         />
         <Button
+          variant="primary"
           onClick={() => handleSend()}
           disabled={!input.trim() || isTyping}
-          className="h-10 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+          className="h-9 px-4 text-xs font-semibold rounded-[9px]"
         >
           Send
           <Send className="w-3.5 h-3.5 ml-1.5" />
         </Button>
       </div>
-    </Card>
+    </div>
   );
 };

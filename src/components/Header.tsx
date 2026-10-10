@@ -40,33 +40,33 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
   ];
 
   return (
-    <header className="bg-white/80 backdrop-blur-md border-b border-zinc-200/50 sticky top-0 z-20 px-6 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center justify-between gap-4">
+    <header className="bg-[var(--card)]/85 backdrop-blur-md border-b border-[var(--line)] sticky top-0 z-20 px-6 py-3.5 shadow-[var(--sh)] flex flex-col md:flex-row items-center justify-between gap-4">
       {/* Left: Greeting & Location */}
       <div className="flex items-center gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-base font-semibold text-zinc-900 tracking-tight">
+          <div className="flex items-center gap-2.5">
+            <h2 className="font-display text-lg font-medium text-[var(--ink)] tracking-tight">
               Good afternoon, {userProfile.name}
             </h2>
-            <Badge variant="secondary" className="bg-zinc-100/50 text-zinc-600 border-zinc-200/50 gap-1.5 px-2 py-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse-subtle"></span>
+            <Badge variant="accent" className="gap-1.5 py-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--ac)] animate-pulse"></span>
               Live Telemetry
             </Badge>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium mt-1 tracking-tight">
+          <div className="flex items-center gap-2 text-xs text-[var(--mut)] mt-1">
             <button
               onClick={onOpenLocation}
-              className="inline-flex items-center gap-1.5 font-medium text-zinc-700 hover:text-zinc-900 bg-zinc-100/50 hover:bg-zinc-100 px-2 py-1 rounded-md transition-all border border-zinc-200/50 cursor-pointer group"
+              className="inline-flex items-center gap-1.5 font-medium text-[var(--ink)] hover:text-[var(--ac)] bg-[var(--bg)] hover:bg-[var(--card)] px-2.5 py-1 rounded-[8px] transition-all border border-[var(--line)] cursor-pointer group shadow-2xs"
               title="Click to change location"
             >
-              <MapPin className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-600 transition-colors" />
+              <MapPin className="w-3.5 h-3.5 text-[var(--mut)] group-hover:text-[var(--ac)] transition-colors" />
               <span className="max-w-[280px] truncate">{airData.locationName}</span>
-              <span className="text-[9px] text-zinc-500 uppercase font-semibold tracking-wide ml-1 bg-zinc-200/50 px-1.5 rounded-sm hidden sm:inline-block">
+              <span className="text-[9px] text-[var(--mut)] uppercase font-semibold tracking-wide ml-1 bg-[var(--card)] px-1.5 py-0.2 rounded border border-[var(--line)] hidden sm:inline-block">
                 Change
               </span>
             </button>
-            <span className="text-zinc-300">•</span>
-            <span className="text-zinc-400">Updated {airData.updatedAt}</span>
+            <span className="text-[var(--line)]">•</span>
+            <span className="text-[11px] text-[var(--mut)]">Synced {airData.updatedAt}</span>
           </div>
         </div>
 
@@ -76,10 +76,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
           size="icon"
           onClick={refreshAirData}
           disabled={isRefreshing}
-          className="h-8 w-8 text-zinc-500 hover:text-zinc-900 border-zinc-200/50 bg-white shadow-none"
+          className="h-8 w-8 text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px]"
           title="Refresh live atmospheric readings"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-zinc-900' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[var(--ac)]' : ''}`} />
         </Button>
       </div>
 
@@ -87,15 +87,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
       <div className="flex items-center flex-wrap gap-3">
         {/* Scenario / Condition Profile */}
         <div className="flex items-center gap-2">
-          <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-zinc-400 font-medium tracking-tight uppercase">
+          <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-[var(--mut)] font-medium uppercase">
             <SlidersHorizontal className="w-3.5 h-3.5" />
-            Atmospheric Filter:
+            Atmospheric Mode:
           </div>
           <Select value={scenario} onValueChange={(val) => setScenario(val as ScenarioType)}>
-            <SelectTrigger className="w-[200px] h-8 text-[12px] font-medium bg-zinc-50 border-zinc-200/50 shadow-none focus:ring-1 focus:ring-zinc-900/10 transition-all rounded-md">
+            <SelectTrigger className="w-[195px] h-8 text-[12px] font-medium bg-[var(--bg)] border-[var(--line)] rounded-[8px] shadow-2xs">
               <SelectValue placeholder="Select Scenario" />
             </SelectTrigger>
-            <SelectContent className="border-zinc-200 shadow-sm rounded-lg">
+            <SelectContent className="border-[var(--line)] bg-[var(--card)] shadow-md rounded-[9px]">
               {scenarios.map((sc) => (
                 <SelectItem key={sc.key} value={sc.key} className="text-xs font-medium cursor-pointer">
                   <span className="mr-2">{sc.icon}</span>
@@ -110,15 +110,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
         <Button
           variant="outline"
           onClick={onOpenSettings}
-          className="flex items-center gap-2 h-8 pl-1 pr-3 bg-white border-zinc-200/50 hover:bg-zinc-50 text-zinc-700 shadow-[0_1px_2px_rgba(0,0,0,0.02)] rounded-full transition-all"
+          className="flex items-center gap-2 h-8 pl-1 pr-3 rounded-full border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs"
           title="Open Profile & API Settings"
         >
-          <div className="w-6 h-6 rounded-full bg-zinc-900 text-white flex items-center justify-center text-[10px] font-semibold">
+          <div className="w-6 h-6 rounded-full bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center text-[10px] font-semibold">
             {userProfile.name[0]}
           </div>
-          <div className="flex flex-col items-start leading-none gap-0.5">
-            <span className="text-[12px] font-medium tracking-tight">{userProfile.name}</span>
-          </div>
+          <span className="text-[12px] font-medium">{userProfile.name}</span>
         </Button>
       </div>
     </header>
