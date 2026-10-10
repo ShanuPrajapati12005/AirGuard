@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Send,
   Bot,
@@ -19,7 +19,7 @@ export const AIGuardianChat: React.FC = () => {
     {
       id: 'm-init',
       sender: 'assistant',
-      content: `Hello ${userProfile.name}! 👋 I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at ${airData.locationName}. How can I assist with your routine transit or outdoor exposure schedule today?`,
+      content: `Hello ${userProfile.name}! ðŸ‘‹ I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at ${airData.locationName}. How can I assist with your routine transit or outdoor exposure schedule today?`,
       timestamp: 'Just now',
     },
   ]);
@@ -33,6 +33,8 @@ export const AIGuardianChat: React.FC = () => {
     'Which route minimizes PM2.5?',
     'Why is smog elevated this afternoon?',
     'Advice for mild asthma profile',
+    'Is school commute safe for kids today?',
+    'N95 vs surgical mask filtration efficiency',
   ];
 
   const handleSend = async (questionText?: string) => {
@@ -64,7 +66,7 @@ export const AIGuardianChat: React.FC = () => {
       const errorMsg: ChatMessage = {
         id: `ai-err-${Date.now()}`,
         sender: 'assistant',
-        content: `⚠️ Note: The assistant encountered a temporary connectivity delay. Please retry your inquiry or verify credentials in Preferences.`,
+        content: `âš ï¸ Note: The assistant encountered a temporary connectivity delay. Please retry your inquiry or verify credentials in Preferences.`,
         timestamp: 'Just now',
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -140,11 +142,11 @@ export const AIGuardianChat: React.FC = () => {
               >
                 <div className="whitespace-pre-wrap font-sans">
                   {m.content.split('\n').map((line, idx) => {
-                    if (line.startsWith('• ') || line.startsWith('- ')) {
+                    if (line.startsWith('â€¢ ') || line.startsWith('- ')) {
                       return (
                         <div key={idx} className="ml-2 my-1 flex items-start gap-1.5">
-                          <span className={cn("font-bold", isUser ? "text-white/60" : "text-[var(--ac)]")}>•</span>
-                          <span>{line.replace(/^[•-]\s*/, '')}</span>
+                          <span className={cn("font-bold", isUser ? "text-white/60" : "text-[var(--ac)]")}>â€¢</span>
+                          <span>{line.replace(/^[â€¢-]\s*/, '')}</span>
                         </div>
                       );
                     }
@@ -216,3 +218,4 @@ export const AIGuardianChat: React.FC = () => {
     </div>
   );
 };
+
