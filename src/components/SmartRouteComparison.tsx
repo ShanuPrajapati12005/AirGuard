@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Navigation,
   CheckCircle2,
@@ -48,7 +48,7 @@ export const SmartRouteComparison: React.FC = () => {
         <div className="flex items-center gap-2 text-xs">
           <span className="text-[var(--mut)] font-normal">Mode:</span>
           <Badge variant="secondary" className="text-[11px] py-0.5">
-            🚶 Commute / Transit
+            ðŸš¶ Commute / Transit
           </Badge>
         </div>
       </div>
@@ -116,7 +116,7 @@ export const SmartRouteComparison: React.FC = () => {
               <div className="flex items-center justify-between mb-2.5">
                 <Badge
                   variant={route.isRecommended ? "accent" : "destructive"}
-                  className="text-[10px] uppercase font-semibold"
+                  className="text-[10px] uppercase font-semibold tracking-wider transition-transform hover:scale-105"
                 >
                   {route.tag}
                 </Badge>
@@ -204,3 +204,4 @@ export const SmartRouteComparison: React.FC = () => {
     </div>
   );
 };
+
