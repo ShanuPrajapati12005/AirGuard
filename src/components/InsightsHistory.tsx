@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   BarChart,
   Bar,
@@ -15,6 +15,9 @@ import {
 import { WEEKLY_DATA, DAILY_TIMELINE } from '../data/mockData';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { exportToCsv } from '../utils/exportUtils';
+import { Download } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const InsightsHistory: React.FC = () => {
   return (
@@ -37,10 +40,21 @@ export const InsightsHistory: React.FC = () => {
           </div>
 
           {/* Gamification Streak Banner */}
-          <Badge variant="accent" className="gap-2 px-3 py-1 font-semibold text-xs">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => exportToCsv('airguard_exposure_history', WEEKLY_DATA.daysData)}
+              className="text-xs h-7 px-2.5 rounded-[8px] gap-1.5"
+            >
+              <Download className="w-3 h-3 text-[var(--ac)]" />
+              <span>Export CSV</span>
+            </Button>
+            <Badge variant="accent" className="gap-2 px-3 py-1 font-semibold text-xs">
             <Flame className="w-3.5 h-3.5 text-[var(--ac2)] fill-[var(--ac2)]" />
             <span>5-Day Clean Path Streak</span>
           </Badge>
+          </div>
         </div>
 
         {/* 4 Summary Stat Boxes */}
@@ -142,7 +156,7 @@ export const InsightsHistory: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-xs font-normal text-[var(--mut)] self-start sm:self-center mt-2 sm:mt-0 bg-[var(--card)] px-2.5 py-1 rounded-[6px] border border-[var(--line)] font-mono">
-                    <span className="text-[var(--ink)]">{item.time}</span> <span className="opacity-40 mx-1">•</span> {item.duration}
+                    <span className="text-[var(--ink)]">{item.time}</span> <span className="opacity-40 mx-1">â€¢</span> {item.duration}
                   </div>
                 </div>
               </div>
@@ -153,3 +167,4 @@ export const InsightsHistory: React.FC = () => {
     </div>
   );
 };
+
