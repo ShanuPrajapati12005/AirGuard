@@ -1,10 +1,12 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   RefreshCw,
   MapPin,
   SlidersHorizontal,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
+import { useTheme } from '../hooks/useTheme';
+import { Moon, Sun } from 'lucide-react';
 import { ScenarioType } from '../types';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,13 +32,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
     isRefreshing,
     userProfile,
   } = useAirGuard();
+  const { theme, toggleTheme } = useTheme();
 
   const scenarios: { key: ScenarioType; label: string; icon: string }[] = [
-    { key: 'normal', label: 'Normal Ambient Air', icon: '🌿' },
-    { key: 'high_pollution', label: 'Winter Smog Alert', icon: '⚠️' },
-    { key: 'rush_hour', label: 'Peak Highway Traffic', icon: '🚗' },
-    { key: 'school_alert', label: 'Campus Safety Warning', icon: '🏫' },
-    { key: 'industrial_plume', label: 'Industrial Plume Spike', icon: '🏭' },
+    { key: 'normal', label: 'Normal Ambient Air', icon: 'ðŸŒ¿' },
+    { key: 'high_pollution', label: 'Winter Smog Alert', icon: 'âš ï¸' },
+    { key: 'rush_hour', label: 'Peak Highway Traffic', icon: 'ðŸš—' },
+    { key: 'school_alert', label: 'Campus Safety Warning', icon: 'ðŸ«' },
+    { key: 'industrial_plume', label: 'Industrial Plume Spike', icon: 'ðŸ­' },
   ];
 
   return (
@@ -65,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
                 Change
               </span>
             </button>
-            <span className="text-[var(--line)]">•</span>
+            <span className="text-[var(--line)]">â€¢</span>
             <span className="text-[11px] text-[var(--mut)]">Synced {airData.updatedAt}</span>
           </div>
         </div>
@@ -106,6 +109,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
           </Select>
         </div>
 
+                {/* Dark/Light Theme Toggle */}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleTheme}
+          className="h-8 w-8 text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px]"
+          title="Toggle Warm / Dark Theme"
+        >
+          {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-[var(--ac2)]" /> : <Moon className="w-3.5 h-3.5 text-[var(--ink)]" />}
+        </Button>
+
         {/* Profile Pill */}
         <Button
           variant="outline"
@@ -122,3 +136,4 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation }
     </header>
   );
 };
+
