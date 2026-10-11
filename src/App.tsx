@@ -1,6 +1,6 @@
 import React, { useState, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { AirGuardProvider, useAirGuard } from './context/AirGuardContext';
+import { AirGuardProvider } from './context/AirGuardContext';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { Loader2 } from 'lucide-react';
@@ -34,8 +34,31 @@ const FullPageLoader = () => (
 
 const AppContent: React.FC = () => {
   const [showLanding, setShowLanding] = useState(true);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isFirstTime] = useState<boolean>(() => {
+    try {
+      return !localStorage.getItem('airguard_profile_configured');
+    } catch {
+      return false;
+    }
+  });
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(() => {
+    try {
+      // Auto-show popup for general users when they visit the website
+      return !localStorage.getItem('airguard_profile_configured');
+    } catch {
+      return true;
+    }
+  });
   const [isLocationOpen, setIsLocationOpen] = useState(false);
+
+  const handleCloseSettings = () => {
+    setIsSettingsOpen(false);
+    try {
+      localStorage.setItem('airguard_profile_configured', 'true');
+    } catch (e) {
+      console.warn('Failed to mark profile configured:', e);
+    }
+  };
 
   const handleExploreDashboard = () => {
     setShowLanding(false);
@@ -47,8 +70,27 @@ const AppContent: React.FC = () => {
         <div className="animated-grid" />
         <div className="animated-pattern" />
         <Suspense fallback={<FullPageLoader />}>
-          <LandingHero onExploreDashboard={handleExploreDashboard} />
+          <LandingHero
+            onExploreDashboard={handleExploreDashboard}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+          />
         </Suspense>
+
+        {/* Global Modals on Landing Page */}
+        <ErrorBoundary FallbackComponent={FallbackComponent}>
+          <Suspense fallback={null}>
+            <SettingsModal
+              key={isSettingsOpen ? 'settings-open-landing' : 'settings-closed-landing'}
+              isOpen={isSettingsOpen}
+              onClose={handleCloseSettings}
+              isFirstTime={isFirstTime}
+            />
+            <LocationModal
+              isOpen={isLocationOpen}
+              onClose={() => setIsLocationOpen(false)}
+            />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     );
   }
@@ -85,12 +127,14 @@ const AppContent: React.FC = () => {
         </main>
       </div>
 
-      {/* Modals */}
+      {/* Modals on Dashboard */}
       <ErrorBoundary FallbackComponent={FallbackComponent}>
         <Suspense fallback={null}>
           <SettingsModal
+            key={isSettingsOpen ? 'settings-open-dashboard' : 'settings-closed-dashboard'}
             isOpen={isSettingsOpen}
-            onClose={() => setIsSettingsOpen(false)}
+            onClose={handleCloseSettings}
+            isFirstTime={isFirstTime}
           />
           <LocationModal
             isOpen={isLocationOpen}

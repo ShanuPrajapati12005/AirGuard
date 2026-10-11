@@ -11,7 +11,17 @@ export const PersonalExposureCard: React.FC<PersonalExposureCardProps> = ({ onVi
   const { airData, userProfile } = useAirGuard();
 
   // Dynamic calculation based on AQI and profile
-  const exposureScore = Math.min(Math.round((airData.aqi / 300) * 65 + (userProfile.age > 60 || userProfile.healthConditions.includes('Mild Asthma') ? 12 : 5)), 98);
+  const hasVulnerability =
+    userProfile.age > 60 ||
+    userProfile.age < 12 ||
+    (userProfile.healthConditions &&
+      userProfile.healthConditions.some(
+        (c) => c && c.trim().toLowerCase() !== 'none'
+      ));
+  const exposureScore = Math.min(
+    Math.round((airData.aqi / 300) * 65 + (hasVulnerability ? 12 : 5)),
+    98
+  );
   const isHigh = exposureScore > 65;
 
   // Circular progress calculation

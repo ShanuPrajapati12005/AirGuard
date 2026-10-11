@@ -20,6 +20,7 @@ import {
   Thermometer,
   Droplets,
   AlertCircle,
+  User,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { useTheme } from '../hooks/useTheme';
@@ -30,12 +31,14 @@ import { cn } from '@/lib/utils';
 
 interface LandingHeroProps {
   onExploreDashboard: () => void;
+  onOpenSettings?: () => void;
 }
 
 export const LandingHero: React.FC<LandingHeroProps> = ({
   onExploreDashboard,
+  onOpenSettings,
 }) => {
-  const { airData, currentLocation, routes } = useAirGuard();
+  const { airData, currentLocation, routes, userProfile } = useAirGuard();
   const { theme, toggleTheme } = useTheme();
 
   // Interactive showcase state
@@ -165,6 +168,22 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 </>
               )}
             </Button>
+
+            {/* Profile Customization Button */}
+            {onOpenSettings && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onOpenSettings}
+                className="h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all flex items-center gap-1.5"
+                title="Customize user profile and physiological parameters"
+              >
+                <div className="w-5 h-5 rounded-full bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center text-[10px] font-semibold">
+                  {userProfile.name ? userProfile.name[0].toUpperCase() : <User className="w-3 h-3" />}
+                </div>
+                <span className="hidden sm:inline text-[11px] font-medium">{userProfile.name || 'Set Profile'}</span>
+              </Button>
+            )}
 
             {/* Launch Dashboard Button */}
             <Button

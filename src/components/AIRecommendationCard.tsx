@@ -95,7 +95,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
       {/* Action Footer */}
       <div className="pt-3.5 mt-3.5 border-t border-[var(--line)] flex items-center justify-between">
         <span className="text-[11px] text-[var(--mut)]">
-          Profile: {userProfile.name} ({userProfile.age}y, {userProfile.healthConditions[0]})
+          Profile: {userProfile.name || 'User'} ({userProfile.age || 26}y, {userProfile.healthConditions?.[0] || 'None'})
         </span>
         <Button
           onClick={onAskAirGuard}
