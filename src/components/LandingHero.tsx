@@ -21,6 +21,7 @@ import {
   Droplets,
   AlertCircle,
   User,
+  MapPin,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { useTheme } from '../hooks/useTheme';
@@ -32,11 +33,13 @@ import { cn } from '@/lib/utils';
 interface LandingHeroProps {
   onExploreDashboard: () => void;
   onOpenSettings?: () => void;
+  onOpenLocation?: () => void;
 }
 
 export const LandingHero: React.FC<LandingHeroProps> = ({
   onExploreDashboard,
   onOpenSettings,
+  onOpenLocation,
 }) => {
   const { airData, currentLocation, routes, userProfile } = useAirGuard();
   const { theme, toggleTheme } = useTheme();
@@ -169,6 +172,23 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
               )}
             </Button>
 
+            {/* Location Selector Button */}
+            {onOpenLocation && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onOpenLocation}
+                className="h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all flex items-center gap-1.5"
+                title="Change telemetry location or station"
+              >
+                <MapPin className="w-3.5 h-3.5 text-[var(--ac)]" />
+                <span className="hidden sm:inline max-w-[120px] truncate text-[11px] font-medium">
+                  {currentLocation.city || currentLocation.name}
+                </span>
+                <span className="sm:hidden text-[11px] font-medium">Location</span>
+              </Button>
+            )}
+
             {/* Profile Customization Button */}
             {onOpenSettings && (
               <Button
@@ -286,10 +306,27 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
 
             {/* Live Station & Location Header */}
             <div className="flex items-center justify-between text-xs text-[var(--mut)]">
-              <div className="flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5 text-[var(--ac)]" />
-                <span className="font-medium text-[var(--ink)]">{currentLocation.name}</span>
-              </div>
+              {onOpenLocation ? (
+                <button
+                  type="button"
+                  onClick={onOpenLocation}
+                  className="flex items-center gap-1.5 hover:text-[var(--ac)] transition-colors cursor-pointer group text-left"
+                  title="Click to change monitoring station or city"
+                >
+                  <Compass className="w-3.5 h-3.5 text-[var(--ac)] group-hover:rotate-45 transition-transform" />
+                  <span className="font-medium text-[var(--ink)] underline decoration-dotted underline-offset-2">
+                    {currentLocation.name}
+                  </span>
+                  <span className="text-[10px] text-[var(--mut)] bg-[var(--bg)] px-1.5 py-0.2 rounded border border-[var(--line)] ml-1">
+                    Change
+                  </span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-1.5">
+                  <Compass className="w-3.5 h-3.5 text-[var(--ac)]" />
+                  <span className="font-medium text-[var(--ink)]">{currentLocation.name}</span>
+                </div>
+              )}
               <span className="font-mono text-[11px] text-[var(--mut)]">Updated {airData.updatedAt}</span>
             </div>
 

@@ -57,6 +57,7 @@ export interface UserProfile {
   commuteMode: 'walking' | 'cycling' | 'metro' | 'driving';
   sensitivityLevel: 'normal' | 'sensitive' | 'high_risk';
   dailyOutdoorGoalMinutes: number;
+  location?: string;
 }
 
 export interface ActivityRiskEstimate {
