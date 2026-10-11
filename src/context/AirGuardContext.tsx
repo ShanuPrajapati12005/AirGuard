@@ -49,7 +49,17 @@ const AirGuardContext = createContext<AirGuardContextType | undefined>(undefined
 
 export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [scenario, setScenario] = useState<ScenarioType>('normal');
-  const [currentLocation, setCurrentLocation] = useState<LocationPreset>(LOCATION_PRESETS[0]);
+  const [currentLocation, setCurrentLocation] = useState<LocationPreset>(() => {
+    try {
+      const saved = localStorage.getItem('airguard_current_location');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.warn('Failed to parse current location from localStorage:', e);
+    }
+    return LOCATION_PRESETS[0];
+  });
   const [airData, setAirData] = useState<AirQualityData>(() =>
     getScenarioData('normal', LOCATION_PRESETS[0])
   );
@@ -105,6 +115,11 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Update location and fetch real live atmospheric data for that coordinate
   const setLocation = useCallback(async (loc: LocationPreset) => {
     setCurrentLocation(loc);
+    try {
+      localStorage.setItem('airguard_current_location', JSON.stringify(loc));
+    } catch (e) {
+      console.warn('Failed to persist location:', e);
+    }
     setIsRefreshing(true);
 
     try {
@@ -126,10 +141,20 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [scenario]);
 
-  // Initial fetch for the default location on mount
+  // Initial fetch for the saved/default location on mount
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem('airguard_current_location');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setLocation(parsed);
+        return;
+      }
+    } catch (e) {
+      console.warn('Failed to load saved location on mount:', e);
+    }
     setLocation(LOCATION_PRESETS[0]);
-  }, []);
+  }, [setLocation]);
 
   // When scenario changes manually
   useEffect(() => {

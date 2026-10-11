@@ -73,6 +73,7 @@ const AppContent: React.FC = () => {
           <LandingHero
             onExploreDashboard={handleExploreDashboard}
             onOpenSettings={() => setIsSettingsOpen(true)}
+            onOpenLocation={() => setIsLocationOpen(true)}
           />
         </Suspense>
 

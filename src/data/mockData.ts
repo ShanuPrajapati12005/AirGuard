@@ -19,6 +19,7 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
   commuteMode: 'walking',
   sensitivityLevel: 'normal',
   dailyOutdoorGoalMinutes: 60,
+  location: 'Sector 62, Noida',
 };
 
 export const SCENARIO_PRESETS: Record<
