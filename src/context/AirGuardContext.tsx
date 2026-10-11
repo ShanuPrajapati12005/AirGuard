@@ -54,15 +54,53 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     getScenarioData('normal', LOCATION_PRESETS[0])
   );
   const [hourlyForecasts, setHourlyForecasts] = useState<HourlyForecast[]>(HOURLY_FORECASTS);
-  const [userProfile, setUserProfile] = useState<UserProfile>(DEFAULT_USER_PROFILE);
+  const [userProfile, setUserProfileState] = useState<UserProfile>(() => {
+    try {
+      const saved = localStorage.getItem('airguard_user_profile');
+      if (saved) {
+        return { ...DEFAULT_USER_PROFILE, ...JSON.parse(saved) };
+      }
+    } catch (e) {
+      console.warn('Failed to parse user profile from localStorage:', e);
+    }
+    return DEFAULT_USER_PROFILE;
+  });
   const [sensor, setSensor] = useState<SensorReading>(INITIAL_SENSOR);
   const [routes, setRoutes] = useState<RouteOption[]>(SMART_ROUTES);
   const [selectedRoute, setSelectedRoute] = useState<RouteOption>(SMART_ROUTES[1]);
   const [hotspots, setHotspots] = useState<Hotspot[]>(DEMO_HOTSPOTS);
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [apiKey, setApiKey] = useState<string>('');
+  const [apiKey, setApiKeyState] = useState<string>(() => {
+    try {
+      return localStorage.getItem('airguard_gemini_api_key') || '';
+    } catch {
+      return '';
+    }
+  });
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const setUserProfile: React.Dispatch<React.SetStateAction<UserProfile>> = useCallback((val) => {
+    setUserProfileState((prev) => {
+      const next = typeof val === 'function' ? (val as (prev: UserProfile) => UserProfile)(prev) : val;
+      try {
+        localStorage.setItem('airguard_user_profile', JSON.stringify(next));
+        localStorage.setItem('airguard_profile_configured', 'true');
+      } catch (e) {
+        console.warn('Failed to persist user profile:', e);
+      }
+      return next;
+    });
+  }, []);
+
+  const setApiKey = useCallback((key: string) => {
+    setApiKeyState(key);
+    try {
+      localStorage.setItem('airguard_gemini_api_key', key);
+    } catch (e) {
+      console.warn('Failed to persist API key:', e);
+    }
+  }, []);
 
   // Update location and fetch real live atmospheric data for that coordinate
   const setLocation = useCallback(async (loc: LocationPreset) => {

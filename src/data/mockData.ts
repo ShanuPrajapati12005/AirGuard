@@ -13,11 +13,11 @@ import {
 import { getAQICategory } from '../utils/aqiCalculator';
 
 export const DEFAULT_USER_PROFILE: UserProfile = {
-  name: 'Ritik',
-  age: 24,
-  healthConditions: ['Mild Asthma'],
+  name: '',
+  age: 26,
+  healthConditions: ['None'],
   commuteMode: 'walking',
-  sensitivityLevel: 'sensitive',
+  sensitivityLevel: 'normal',
   dailyOutdoorGoalMinutes: 60,
 };
 

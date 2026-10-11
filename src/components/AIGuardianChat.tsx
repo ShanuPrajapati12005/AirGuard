@@ -15,11 +15,12 @@ import { cn } from '@/lib/utils';
 export const AIGuardianChat: React.FC = () => {
   const { airData, userProfile, apiKey } = useAirGuard();
 
+  const greetingName = userProfile.name ? userProfile.name : 'there';
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'm-init',
       sender: 'assistant',
-      content: `Hello ${userProfile.name}! ðŸ‘‹ I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at ${airData.locationName}. How can I assist with your routine transit or outdoor exposure schedule today?`,
+      content: `Hello ${greetingName}! 👋 I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at ${airData.locationName}. How can I assist with your routine transit or outdoor exposure schedule today?`,
       timestamp: 'Just now',
     },
   ]);
@@ -96,7 +97,7 @@ export const AIGuardianChat: React.FC = () => {
 
         <div className="text-right text-[11px] text-[var(--mut)] hidden sm:block bg-[var(--bg)] px-3 py-1.5 rounded-[8px] border border-[var(--line)] font-mono">
           <div>Current AQI: <strong className="text-[var(--ac)]">{airData.aqi}</strong></div>
-          <div>User: <span className="text-[var(--ink)]">{userProfile.name}</span></div>
+          <div>User: <span className="text-[var(--ink)]">{userProfile.name || 'General'}</span></div>
         </div>
       </div>
 
@@ -170,7 +171,7 @@ export const AIGuardianChat: React.FC = () => {
 
               {isUser && (
                 <div className="w-7 h-7 rounded-[7px] bg-[var(--ink)] text-white flex items-center justify-center shrink-0 text-xs font-medium mt-1">
-                  {userProfile.name[0]}
+                  {userProfile.name ? userProfile.name[0].toUpperCase() : 'U'}
                 </div>
               )}
             </div>

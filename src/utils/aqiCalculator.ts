@@ -114,7 +114,11 @@ export function calculateExposureScore(
   let vulnerabilityMultiplier = 1.0;
   if (userProfile) {
     if (userProfile.age < 12 || userProfile.age > 60) vulnerabilityMultiplier += 0.25;
-    if (userProfile.healthConditions && userProfile.healthConditions.length > 0 && !userProfile.healthConditions.includes('None')) {
+    if (
+      userProfile.healthConditions &&
+      userProfile.healthConditions.length > 0 &&
+      userProfile.healthConditions.some((c) => c && c.trim().toLowerCase() !== 'none')
+    ) {
       vulnerabilityMultiplier += 0.35;
     }
     if (userProfile.sensitivityLevel === 'high_risk') vulnerabilityMultiplier += 0.2;

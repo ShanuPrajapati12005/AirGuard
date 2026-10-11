@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation, 
         <div>
           <div className="flex items-center gap-2.5">
             <h2 className="font-display text-base sm:text-lg font-medium text-[var(--ink)] tracking-tight">
-              Good afternoon, {userProfile.name}
+              Good afternoon, {userProfile.name || 'Friend'}
             </h2>
             <Badge variant="accent" className="gap-1.5 py-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--ac)] animate-pulse"></span>
@@ -152,9 +152,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings, onOpenLocation, 
           title="Open Profile & API Settings"
         >
           <div className="w-6 h-6 rounded-full bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center text-[10px] font-semibold">
-            {userProfile.name[0]}
+            {userProfile.name ? userProfile.name[0].toUpperCase() : 'U'}
           </div>
-          <span className="text-[12px] font-medium">{userProfile.name}</span>
+          <span className="text-[12px] font-medium">{userProfile.name || 'Profile'}</span>
         </Button>
       </div>
     </header>
