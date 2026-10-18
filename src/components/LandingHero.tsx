@@ -22,6 +22,8 @@ import {
   AlertCircle,
   User,
   MapPin,
+  Menu,
+  X,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { useTheme } from '../hooks/useTheme';
@@ -47,6 +49,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   // Interactive showcase state
   const [activeDemoRoute, setActiveDemoRoute] = useState<'A' | 'B'>('B');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const toggleFaq = (idx: number) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -113,15 +116,18 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
       {/* =========================================================================
           Sticky Navigation Bar
          ========================================================================= */}
+      {/* =========================================================================
+          Sticky Navigation Bar
+         ========================================================================= */}
       <header className="sticky top-0 z-40 bg-[var(--card)]/85 backdrop-blur-md border-b border-[var(--line)] shadow-xs">
-        <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-6 py-3.5 flex items-center justify-between">
+        <div className="max-w-[1240px] mx-auto w-full px-3.5 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between">
           {/* Logo & Brand */}
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={onExploreDashboard}>
-            <span className="w-8 h-8 rounded-[9px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center shadow-xs transition-transform group-hover:scale-105">
+          <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group" onClick={onExploreDashboard}>
+            <span className="w-8 h-8 rounded-[9px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center shadow-xs transition-transform group-hover:scale-105 shrink-0">
               <Wind className="w-4 h-4" strokeWidth={2.4} />
             </span>
-            <div className="flex items-center gap-2">
-              <span className="font-display text-xl font-medium tracking-tight text-[var(--ink)]">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="font-display text-lg sm:text-xl font-medium tracking-tight text-[var(--ink)]">
                 AirGuard
               </span>
               <span className="text-[10px] font-bold uppercase tracking-wider bg-[var(--ac)]/10 text-[var(--ac)] px-2 py-0.5 rounded-[5px] hidden sm:inline-block border border-[var(--ac)]/20">
@@ -130,7 +136,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </div>
           </div>
 
-          {/* Quick Nav Anchors */}
+          {/* Quick Nav Anchors for Desktop */}
           <nav className="hidden lg:flex items-center gap-6 text-xs font-medium text-[var(--mut)]">
             <a href="#telemetry" className="hover:text-[var(--ink)] transition-colors">
               Telemetry
@@ -150,13 +156,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           </nav>
 
           {/* Actions & Theme Toggle */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Theme Toggle Button */}
             <Button
               variant="outline"
               size="sm"
               onClick={toggleTheme}
-              className="h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all flex items-center gap-1.5"
+              className="h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all flex items-center gap-1.5 shrink-0"
               title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {theme === 'dark' ? (
@@ -178,14 +184,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={onOpenLocation}
-                className="h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all flex items-center gap-1.5"
+                className="hidden sm:flex h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all items-center gap-1.5"
                 title="Change telemetry location or station"
               >
                 <MapPin className="w-3.5 h-3.5 text-[var(--ac)]" />
-                <span className="hidden sm:inline max-w-[120px] truncate text-[11px] font-medium">
+                <span className="max-w-[120px] truncate text-[11px] font-medium">
                   {currentLocation.city || currentLocation.name}
                 </span>
-                <span className="sm:hidden text-[11px] font-medium">Location</span>
               </Button>
             )}
 
@@ -195,13 +200,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={onOpenSettings}
-                className="h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all flex items-center gap-1.5"
+                className="hidden sm:flex h-8 sm:h-9 px-2.5 sm:px-3 text-xs font-medium rounded-[8px] border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] shadow-2xs transition-all items-center gap-1.5"
                 title="Customize user profile and physiological parameters"
               >
                 <div className="w-5 h-5 rounded-full bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center text-[10px] font-semibold">
                   {userProfile.name ? userProfile.name[0].toUpperCase() : <User className="w-3 h-3" />}
                 </div>
-                <span className="hidden sm:inline text-[11px] font-medium">{userProfile.name || 'Set Profile'}</span>
+                <span className="text-[11px] font-medium truncate max-w-[80px]">{userProfile.name || 'Profile'}</span>
               </Button>
             )}
 
@@ -209,57 +214,143 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             <Button
               variant="primary"
               onClick={onExploreDashboard}
-              className="h-8 sm:h-9 text-xs font-semibold px-3.5 sm:px-4 rounded-[8px] shadow-sm flex items-center gap-1.5"
+              className="h-8 sm:h-9 text-xs font-semibold px-3 sm:px-4 rounded-[8px] shadow-sm flex items-center gap-1.5 shrink-0"
             >
               <span>Launch App</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
+
+            {/* Mobile Navigation Toggle Button */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+              className="lg:hidden h-8 w-8 text-[var(--ink)] border-[var(--line)] rounded-[8px] shrink-0"
+              aria-label="Toggle navigation"
+            >
+              {isMobileNavOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation Dropdown Menu */}
+        {isMobileNavOpen && (
+          <div className="lg:hidden border-t border-[var(--line)] bg-[var(--card)] px-4 py-4 space-y-3 shadow-lg animate-in slide-in-from-top duration-200">
+            <div className="grid grid-cols-2 gap-2 text-xs font-medium pb-2 border-b border-[var(--line)]">
+              <a
+                href="#telemetry"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="p-2 rounded-[6px] hover:bg-[var(--bg)] text-[var(--ink)]"
+              >
+                Telemetry
+              </a>
+              <a
+                href="#features"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="p-2 rounded-[6px] hover:bg-[var(--bg)] text-[var(--ink)]"
+              >
+                Intelligence Pillars
+              </a>
+              <a
+                href="#routes"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="p-2 rounded-[6px] hover:bg-[var(--bg)] text-[var(--ink)]"
+              >
+                Clean Routes
+              </a>
+              <a
+                href="#how-it-works"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="p-2 rounded-[6px] hover:bg-[var(--bg)] text-[var(--ink)]"
+              >
+                Methodology
+              </a>
+              <a
+                href="#faq"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="p-2 rounded-[6px] hover:bg-[var(--bg)] text-[var(--ink)]"
+              >
+                FAQ
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              {onOpenLocation && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsMobileNavOpen(false);
+                    onOpenLocation();
+                  }}
+                  className="flex-1 text-xs h-8 rounded-[8px] justify-center gap-1.5"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-[var(--ac)]" />
+                  <span className="truncate">{currentLocation.city || currentLocation.name}</span>
+                </Button>
+              )}
+
+              {onOpenSettings && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsMobileNavOpen(false);
+                    onOpenSettings();
+                  }}
+                  className="flex-1 text-xs h-8 rounded-[8px] justify-center gap-1.5"
+                >
+                  <User className="w-3.5 h-3.5 text-[var(--ac)]" />
+                  <span>Profile Settings</span>
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       {/* =========================================================================
           HERO SECTION
          ========================================================================= */}
-      <section className="max-w-[1240px] mx-auto w-full px-4 sm:px-6 pt-12 pb-16 lg:py-20 flex-1 flex flex-col lg:flex-row items-center justify-between gap-12 z-10">
+      <section className="max-w-[1240px] mx-auto w-full px-4 sm:px-6 pt-8 sm:pt-12 pb-12 sm:pb-16 lg:py-20 flex-1 flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 z-10">
         {/* Left Column: Narrative Headline */}
-        <div className="lg:w-1/2 space-y-6 sm:space-y-7">
-          <Badge variant="default" className="text-xs py-1 px-3 border border-[var(--line)] shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-[var(--ac2)] mr-1" />
-            <span>Personal Respiratory Intelligence • Open-Meteo Telemetry</span>
+        <div className="lg:w-1/2 space-y-5 sm:space-y-7 w-full">
+          <Badge variant="default" className="text-[11px] sm:text-xs py-1 px-2.5 sm:px-3 border border-[var(--line)] shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[var(--ac2)] mr-1 shrink-0" />
+            <span className="truncate">Personal Respiratory Intelligence • Open-Meteo Telemetry</span>
           </Badge>
 
-          <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-normal text-[var(--ink)] tracking-tight leading-[1.08]">
+          <h1 className="font-display text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-normal text-[var(--ink)] tracking-tight leading-[1.08] break-words">
             Breathe <span className="italic font-normal text-[var(--ac)]">Smarter.</span><br />
             Protect Every Breath.
           </h1>
 
-          <p className="text-lg sm:text-xl font-medium text-[var(--ink)] tracking-tight">
+          <p className="text-base sm:text-xl font-medium text-[var(--ink)] tracking-tight leading-snug">
             Your air quality. Your physiological exposure. Your routine decisions.
           </p>
 
-          <p className="text-sm sm:text-base text-[var(--mut)] leading-relaxed max-w-xl font-normal">
+          <p className="text-xs sm:text-base text-[var(--mut)] leading-relaxed max-w-xl font-normal">
             AirGuard converts raw pollution sensor metrics into proactive personal respiratory intelligence.
             By computing your individualized inhalation intake across commute corridors, cardio workout windows, and indoor environments,
             AirGuard answers: <strong className="text-[var(--ink)] font-semibold">"How does current air impact MY body right now?"</strong>
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 pt-2">
             <Button
               size="lg"
               variant="primary"
               onClick={onExploreDashboard}
-              className="text-sm font-semibold px-6 shadow-sm h-11 rounded-[9px]"
+              className="text-xs sm:text-sm font-semibold px-5 sm:px-6 shadow-sm h-11 rounded-[9px] justify-center"
             >
-              Launch Live Dashboard
+              <span>Launch Live Dashboard</span>
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <a href="#routes">
+            <a href="#routes" className="w-full xs:w-auto">
               <Button
                 size="lg"
                 variant="outline"
-                className="text-sm font-medium h-11 px-5 rounded-[9px]"
+                className="w-full xs:w-auto text-xs sm:text-sm font-medium h-11 px-5 rounded-[9px] justify-center"
               >
                 Explore Clean Routes
               </Button>
@@ -415,75 +506,75 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
             {/* Metric 1 */}
-            <div className="card card-3d p-4 bg-[var(--card)] border border-[var(--line)] text-center">
+            <div className="card card-3d p-3 xs:p-4 bg-[var(--card)] border border-[var(--line)] text-center">
               <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider block">PM2.5</span>
               <span className="font-display text-2xl font-normal text-rose-600 dark:text-rose-400 mt-1 block">
                 {airData.pm25}
               </span>
               <span className="text-[10px] text-[var(--mut)] block font-mono">µg/m³</span>
-              <span className="text-[10px] text-rose-600 dark:text-rose-400 font-semibold mt-1.5 inline-block bg-rose-500/10 px-2 py-0.5 rounded">
+              <span className="text-[9px] xs:text-[10px] text-rose-600 dark:text-rose-400 font-semibold mt-1.5 inline-block bg-rose-500/10 px-1.5 xs:px-2 py-0.5 rounded">
                 WHO Target: 15
               </span>
             </div>
 
             {/* Metric 2 */}
-            <div className="card card-3d p-4 bg-[var(--card)] border border-[var(--line)] text-center">
+            <div className="card card-3d p-3 xs:p-4 bg-[var(--card)] border border-[var(--line)] text-center">
               <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider block">PM10</span>
               <span className="font-display text-2xl font-normal text-amber-600 dark:text-amber-400 mt-1 block">
                 {airData.pm10}
               </span>
               <span className="text-[10px] text-[var(--mut)] block font-mono">µg/m³</span>
-              <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-1.5 inline-block bg-amber-500/10 px-2 py-0.5 rounded">
+              <span className="text-[9px] xs:text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-1.5 inline-block bg-amber-500/10 px-1.5 xs:px-2 py-0.5 rounded">
                 WHO Target: 45
               </span>
             </div>
 
             {/* Metric 3 */}
-            <div className="card card-3d p-4 bg-[var(--card)] border border-[var(--line)] text-center">
+            <div className="card card-3d p-3 xs:p-4 bg-[var(--card)] border border-[var(--line)] text-center">
               <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider block">NO2 (Diesel)</span>
               <span className="font-display text-2xl font-normal text-[var(--ink)] mt-1 block">
                 {airData.no2}
               </span>
               <span className="text-[10px] text-[var(--mut)] block font-mono">µg/m³</span>
-              <span className="text-[10px] text-[var(--mut)] font-medium mt-1.5 inline-block bg-[var(--bg)] px-2 py-0.5 rounded">
+              <span className="text-[9px] xs:text-[10px] text-[var(--mut)] font-medium mt-1.5 inline-block bg-[var(--bg)] px-1.5 xs:px-2 py-0.5 rounded">
                 Traffic Exhaust
               </span>
             </div>
 
             {/* Metric 4 */}
-            <div className="card card-3d p-4 bg-[var(--card)] border border-[var(--line)] text-center">
+            <div className="card card-3d p-3 xs:p-4 bg-[var(--card)] border border-[var(--line)] text-center">
               <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider block">Ozone (O3)</span>
               <span className="font-display text-2xl font-normal text-[var(--ink)] mt-1 block">
                 {airData.o3}
               </span>
               <span className="text-[10px] text-[var(--mut)] block font-mono">µg/m³</span>
-              <span className="text-[10px] text-[var(--ok)] font-medium mt-1.5 inline-block bg-emerald-500/10 px-2 py-0.5 rounded">
+              <span className="text-[9px] xs:text-[10px] text-[var(--ok)] font-medium mt-1.5 inline-block bg-emerald-500/10 px-1.5 xs:px-2 py-0.5 rounded">
                 Satisfactory
               </span>
             </div>
 
             {/* Metric 5 */}
-            <div className="card card-3d p-4 bg-[var(--card)] border border-[var(--line)] text-center">
+            <div className="card card-3d p-3 xs:p-4 bg-[var(--card)] border border-[var(--line)] text-center">
               <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider block">Temperature</span>
               <span className="font-display text-2xl font-normal text-[var(--ink)] mt-1 block">
                 {airData.temperature}°C
               </span>
               <span className="text-[10px] text-[var(--mut)] block font-mono">Ambient</span>
-              <span className="text-[10px] text-[var(--mut)] font-medium mt-1.5 inline-block bg-[var(--bg)] px-2 py-0.5 rounded">
+              <span className="text-[9px] xs:text-[10px] text-[var(--mut)] font-medium mt-1.5 inline-block bg-[var(--bg)] px-1.5 xs:px-2 py-0.5 rounded">
                 Dispersion layer
               </span>
             </div>
 
             {/* Metric 6 */}
-            <div className="card card-3d p-4 bg-[var(--card)] border border-[var(--line)] text-center">
+            <div className="card card-3d p-3 xs:p-4 bg-[var(--card)] border border-[var(--line)] text-center">
               <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider block">Humidity</span>
               <span className="font-display text-2xl font-normal text-[var(--ink)] mt-1 block">
                 {airData.humidity}%
               </span>
               <span className="text-[10px] text-[var(--mut)] block font-mono">Relative</span>
-              <span className="text-[10px] text-[var(--mut)] font-medium mt-1.5 inline-block bg-[var(--bg)] px-2 py-0.5 rounded">
+              <span className="text-[9px] xs:text-[10px] text-[var(--mut)] font-medium mt-1.5 inline-block bg-[var(--bg)] px-1.5 xs:px-2 py-0.5 rounded">
                 Hygroscopic
               </span>
             </div>
@@ -603,22 +694,22 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </p>
           </div>
 
-          <div className="card card-3d p-6 sm:p-8 bg-[var(--card)] border border-[var(--line)] shadow-[var(--sh-3d)]">
+          <div className="card card-3d p-4 sm:p-8 bg-[var(--card)] border border-[var(--line)] shadow-[var(--sh-3d)]">
             {/* Interactive Toggle Pills */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-[var(--line)]">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-6 border-b border-[var(--line)]">
               <div>
                 <span className="text-xs text-[var(--mut)] block">Active Origin to Destination:</span>
-                <span className="font-display text-base font-medium text-[var(--ink)]">
+                <span className="font-display text-sm sm:text-base font-medium text-[var(--ink)]">
                   Connaught Place ➔ South Campus Tech Corridor
                 </span>
               </div>
 
               {/* Selector Buttons */}
-              <div className="flex items-center gap-2 bg-[var(--bg)] p-1.5 rounded-[10px] border border-[var(--line)]">
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 bg-[var(--bg)] p-1.5 rounded-[10px] border border-[var(--line)] w-full sm:w-auto">
                 <button
                   onClick={() => setActiveDemoRoute('A')}
                   className={cn(
-                    "px-4 py-2 rounded-[8px] text-xs font-semibold transition-all cursor-pointer",
+                    "w-full xs:w-auto px-4 py-2 rounded-[8px] text-xs font-semibold transition-all cursor-pointer text-center",
                     activeDemoRoute === 'A'
                       ? "bg-rose-600 text-white shadow-xs"
                       : "text-[var(--mut)] hover:text-[var(--ink)]"
@@ -629,20 +720,20 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 <button
                   onClick={() => setActiveDemoRoute('B')}
                   className={cn(
-                    "px-4 py-2 rounded-[8px] text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5",
+                    "w-full xs:w-auto px-4 py-2 rounded-[8px] text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center",
                     activeDemoRoute === 'B'
                       ? "bg-[var(--ac)] text-[var(--onac)] shadow-xs"
                       : "text-[var(--mut)] hover:text-[var(--ink)]"
                   )}
                 >
                   <span>Route B (Green Canopy)</span>
-                  <span className="text-[10px] bg-white/20 px-1.5 py-0.2 rounded">-48% PM2.5</span>
+                  <span className="text-[10px] bg-white/20 px-1.5 py-0.2 rounded shrink-0">-48% PM2.5</span>
                 </button>
               </div>
             </div>
 
             {/* Comparison Details Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 my-8 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 my-6 sm:my-8 items-center">
               {/* Route Metric Cards */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center justify-between flex-wrap gap-2">
@@ -654,56 +745,56 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                   </span>
                 </div>
 
-                <h3 className="font-display text-2xl font-medium text-[var(--ink)]">
+                <h3 className="font-display text-xl sm:text-2xl font-medium text-[var(--ink)]">
                   {currentRouteData.name}
                 </h3>
 
-                <p className="text-sm text-[var(--mut)] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[var(--mut)] leading-relaxed">
                   {currentRouteData.benefit}
                 </p>
 
                 {/* 3 Metric Pills */}
-                <div className="grid grid-cols-3 gap-3 card bg-[var(--bg)] p-4 rounded-[10px] border border-[var(--line)] text-center">
-                  <div>
-                    <span className="text-[11px] text-[var(--mut)] block">Travel Time</span>
-                    <span className="font-display text-base font-semibold text-[var(--ink)] mt-0.5 block">
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 card bg-[var(--bg)] p-2.5 sm:p-4 rounded-[10px] border border-[var(--line)] text-center">
+                  <div className="min-w-0">
+                    <span className="text-[10px] sm:text-[11px] text-[var(--mut)] block truncate">Travel Time</span>
+                    <span className="font-display text-sm sm:text-base font-semibold text-[var(--ink)] mt-0.5 block truncate">
                       {currentRouteData.duration}
                     </span>
-                    <span className="text-[10px] text-[var(--mut)] font-mono">({currentRouteData.distance})</span>
+                    <span className="text-[9px] sm:text-[10px] text-[var(--mut)] font-mono block truncate">({currentRouteData.distance})</span>
                   </div>
 
-                  <div>
-                    <span className="text-[11px] text-[var(--mut)] block">Exposure Level</span>
+                  <div className="min-w-0">
+                    <span className="text-[10px] sm:text-[11px] text-[var(--mut)] block truncate">Exposure</span>
                     <span
-                      className="font-display text-base font-semibold mt-0.5 block"
+                      className="font-display text-sm sm:text-base font-semibold mt-0.5 block truncate"
                       style={{ color: currentRouteData.exposureColor }}
                     >
                       {currentRouteData.exposureLevel}
                     </span>
-                    <span className="text-[10px] text-[var(--mut)]">Toxicity index</span>
+                    <span className="text-[9px] sm:text-[10px] text-[var(--mut)] block truncate">Toxicity index</span>
                   </div>
 
-                  <div>
-                    <span className="text-[11px] text-[var(--mut)] block">Exposure Score</span>
+                  <div className="min-w-0">
+                    <span className="text-[10px] sm:text-[11px] text-[var(--mut)] block truncate">Score</span>
                     <span
-                      className="font-display text-base font-semibold mt-0.5 block"
+                      className="font-display text-sm sm:text-base font-semibold mt-0.5 block truncate"
                       style={{ color: currentRouteData.exposureColor }}
                     >
                       {currentRouteData.exposureScore}/100
                     </span>
-                    <span className="text-[10px] text-[var(--mut)]">Relative burden</span>
+                    <span className="text-[9px] sm:text-[10px] text-[var(--mut)] block truncate">Relative load</span>
                   </div>
                 </div>
 
                 {/* Traffic summary */}
-                <div className="flex items-center gap-2 text-xs text-[var(--mut)] pt-1">
-                  <span className="font-semibold text-[var(--ink)]">Micro-Environment:</span>
+                <div className="flex items-start sm:items-center gap-2 text-xs text-[var(--mut)] pt-1 flex-wrap">
+                  <span className="font-semibold text-[var(--ink)] shrink-0">Micro-Environment:</span>
                   <span>{currentRouteData.traffic}</span>
                 </div>
               </div>
 
               {/* Visual Inhalation Gauge / Comparison Graph */}
-              <div className="lg:col-span-5 card card-3d p-6 bg-[var(--bg)] border border-[var(--line)] space-y-5">
+              <div className="lg:col-span-5 card card-3d p-4 sm:p-6 bg-[var(--bg)] border border-[var(--line)] space-y-4 sm:space-y-5">
                 <div className="text-xs font-semibold uppercase tracking-wider text-[var(--mut)] flex items-center justify-between">
                   <span>Particulate Inhalation</span>
                   <span className="font-mono text-[11px]">PM2.5 Burden</span>

@@ -41,7 +41,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
   ];
 
   return (
-    <div className="card card-3d p-5 border border-[var(--line)] shadow-[var(--sh-3d)] flex flex-col justify-between h-full">
+    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)] flex flex-col justify-between h-full">
       {/* Header */}
       <div>
         <div className="flex items-center justify-between pb-3.5 border-b border-[var(--line)]">
@@ -59,7 +59,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
         </div>
 
         {/* Primary Advice */}
-        <div className="my-3.5 p-3.5 rounded-[9px] bg-[var(--bg)] border border-[var(--line)]">
+        <div className="my-3 sm:my-3.5 p-3 sm:p-3.5 rounded-[9px] bg-[var(--bg)] border border-[var(--line)]">
           <p className="text-xs text-[var(--ink)] leading-relaxed">
             {isHigh ? (
               <>
@@ -74,7 +74,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
         </div>
 
         {/* Activity Quick Status Grid */}
-        <div className="grid grid-cols-2 gap-2 mt-2">
+        <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 mt-2">
           {activities.map((act) => (
             <div
               key={act.name}
@@ -93,8 +93,8 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
       </div>
 
       {/* Action Footer */}
-      <div className="pt-3.5 mt-3.5 border-t border-[var(--line)] flex items-center justify-between">
-        <span className="text-[11px] text-[var(--mut)]">
+      <div className="pt-3 sm:pt-3.5 mt-3 sm:mt-3.5 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
+        <span className="text-[10px] sm:text-[11px] text-[var(--mut)] truncate max-w-[200px]">
           Profile: {userProfile.name || 'User'} ({userProfile.age || 26}y, {userProfile.healthConditions?.[0] || 'None'})
         </span>
         <Button

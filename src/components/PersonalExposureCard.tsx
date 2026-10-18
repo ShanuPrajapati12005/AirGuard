@@ -47,21 +47,21 @@ export const PersonalExposureCard: React.FC<PersonalExposureCardProps> = ({ onVi
       </div>
 
       {/* Main Score + Circular Dial */}
-      <div className="py-2 flex items-center justify-between gap-4">
-        <div>
+      <div className="py-2 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="min-w-0">
           <div className="text-[11px] font-medium text-[var(--mut)] uppercase tracking-wider mb-0.5">Exposure Score</div>
           <div className="flex items-baseline gap-1.5">
-            <span className="font-display text-6xl sm:text-7xl font-normal text-[var(--ink)] tracking-tight">{exposureScore}</span>
-            <span className="font-display text-xl font-normal text-[var(--mut)]">/ 100</span>
+            <span className="font-display text-5xl xs:text-6xl sm:text-7xl font-normal text-[var(--ink)] tracking-tight">{exposureScore}</span>
+            <span className="font-display text-base sm:text-xl font-normal text-[var(--mut)]">/ 100</span>
           </div>
           <p className="text-xs text-[var(--mut)] mt-1.5 flex items-center gap-1.5">
             <TrendingUp className="w-3.5 h-3.5 text-[var(--mut)] shrink-0" />
-            <span>Exposure is <strong className="text-[var(--ink)] font-medium">18% elevated</strong> vs baseline.</span>
+            <span className="truncate">Exposure is <strong className="text-[var(--ink)] font-medium">18% elevated</strong> vs baseline.</span>
           </p>
         </div>
 
         {/* Circular Progress Gauge */}
-        <div className="relative w-28 h-28 flex items-center justify-center shrink-0">
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <circle
               cx="50"

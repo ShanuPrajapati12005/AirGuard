@@ -26,12 +26,12 @@ export const MainDashboard: React.FC = () => {
   const currentPreset = SCENARIO_PRESETS[scenario];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-[1240px] mx-auto space-y-6">
+    <div className="p-3 sm:p-6 lg:p-8 pb-28 md:pb-10 max-w-[1240px] mx-auto space-y-4 sm:space-y-6">
       {/* Realtime Atmosphere Alert (only if active alert in condition) */}
       {currentPreset.alertTitle && (
-        <div className="card card-3d p-4 bg-rose-500/10 border border-rose-500/30 flex items-start justify-between gap-3 shadow-xs">
-          <div className="flex items-start gap-3">
-            <div className="p-2 bg-rose-500/20 rounded-[8px] text-rose-600 dark:text-rose-400 mt-0.5">
+        <div className="card card-3d p-3.5 sm:p-4 bg-rose-500/10 border border-rose-500/30 flex items-start justify-between gap-3 shadow-xs">
+          <div className="flex items-start gap-2.5 sm:gap-3">
+            <div className="p-2 bg-rose-500/20 rounded-[8px] text-rose-600 dark:text-rose-400 mt-0.5 shrink-0">
               <AlertTriangle className="w-4 h-4" />
             </div>
             <div>
@@ -40,9 +40,10 @@ export const MainDashboard: React.FC = () => {
             </div>
           </div>
           {scenario === 'school_alert' && (
-            <div className="hidden md:flex items-center gap-2 text-xs font-semibold bg-rose-500/20 text-rose-900 dark:text-rose-200 px-3 py-1.5 rounded-[8px] border border-rose-500/30">
-              <GraduationCap className="w-4 h-4" />
-              <span>Campus Protocol Activated</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold bg-rose-500/20 text-rose-900 dark:text-rose-200 px-2 sm:px-3 py-1 sm:py-1.5 rounded-[8px] border border-rose-500/30 shrink-0">
+              <GraduationCap className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">Campus Protocol Activated</span>
+              <span className="xs:hidden">Protocol</span>
             </div>
           )}
         </div>
@@ -50,12 +51,12 @@ export const MainDashboard: React.FC = () => {
 
       {/* Primary Dashboard View (When activeTab is 'dashboard') */}
       {activeTab === 'dashboard' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Top At-A-Glance Hero Section */}
-          <div className="card card-3d p-5 sm:p-6 shadow-[var(--sh-3d)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:divide-x divide-[var(--line)]">
+          <div className="card card-3d p-4 sm:p-6 shadow-[var(--sh-3d)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:divide-x divide-[var(--line)]">
               <MainAQICard />
-              <div className="pl-0 md:pl-8">
+              <div className="pl-0 md:pl-8 border-t border-[var(--line)] pt-6 md:border-t-0 md:pt-0">
                 <PersonalExposureCard onViewDetailed={() => setActiveTab('exposure')} />
               </div>
             </div>

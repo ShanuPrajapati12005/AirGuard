@@ -66,55 +66,55 @@ export const LiveSensorMonitor: React.FC = () => {
       </div>
 
       {/* Hardware Telemetry Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 my-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 my-3 sm:my-4">
         {/* PM2.5 */}
-        <div className="flex flex-col">
+        <div className="flex flex-col card p-2.5 sm:p-3 bg-[var(--bg)] border border-[var(--line)]">
           <div className="flex items-center gap-1.5 text-[10px] text-[var(--mut)] font-medium uppercase tracking-wider">
             <span>PM2.5 INDOOR</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--ok)] animate-pulse"></span>
           </div>
-          <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
-            {sensor.pm25} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">Âµg/mÂ³</span>
+          <div className="font-display text-xl sm:text-2xl font-normal text-[var(--ink)] mt-0.5">
+            {sensor.pm25} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">µg/m³</span>
           </div>
         </div>
 
         {/* PM10 */}
-        <div className="flex flex-col">
+        <div className="flex flex-col card p-2.5 sm:p-3 bg-[var(--bg)] border border-[var(--line)]">
           <div className="flex items-center gap-1.5 text-[10px] text-[var(--mut)] font-medium uppercase tracking-wider">
             <span>PM10</span>
           </div>
-          <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
-            {sensor.pm10} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">Âµg/mÂ³</span>
+          <div className="font-display text-xl sm:text-2xl font-normal text-[var(--ink)] mt-0.5">
+            {sensor.pm10} <span className="font-sans text-[10px] font-normal text-[var(--mut)]">µg/m³</span>
           </div>
         </div>
 
         {/* Temperature */}
-        <div className="flex flex-col">
+        <div className="flex flex-col card p-2.5 sm:p-3 bg-[var(--bg)] border border-[var(--line)]">
           <div className="flex items-center gap-1.5 text-[10px] text-[var(--mut)] font-medium uppercase tracking-wider">
             <span>TEMP</span>
           </div>
-          <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
-            {sensor.temperature}Â°C
+          <div className="font-display text-xl sm:text-2xl font-normal text-[var(--ink)] mt-0.5">
+            {sensor.temperature}°C
           </div>
         </div>
 
         {/* Humidity */}
-        <div className="flex flex-col">
+        <div className="flex flex-col card p-2.5 sm:p-3 bg-[var(--bg)] border border-[var(--line)]">
           <div className="flex items-center gap-1.5 text-[10px] text-[var(--mut)] font-medium uppercase tracking-wider">
             <span>HUMIDITY</span>
           </div>
-          <div className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5">
+          <div className="font-display text-xl sm:text-2xl font-normal text-[var(--ink)] mt-0.5">
             {sensor.humidity}%
           </div>
         </div>
       </div>
 
       {/* Live Stream Chart */}
-      <div className="mt-2 card bg-[var(--ink)] rounded-[12px] p-4 text-[var(--onac)] border border-[var(--ink)] relative overflow-hidden">
+      <div className="mt-2 card bg-[var(--ink)] rounded-[12px] p-3 sm:p-4 text-[var(--onac)] border border-[var(--ink)] relative overflow-hidden">
         <div className="flex items-center justify-between mb-3 relative z-10">
           <div className="flex items-center gap-2">
             <Cpu className="w-3.5 h-3.5 text-[var(--ac)]" />
-            <span className="font-medium text-xs text-white/90">Real-time Telemetry Stream</span>
+            <span className="font-medium text-xs text-white/90">Real-time Stream</span>
           </div>
           <div className="text-[10px] text-white/70 flex items-center gap-1.5 bg-white/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--ok)] animate-ping"></span>
@@ -122,7 +122,7 @@ export const LiveSensorMonitor: React.FC = () => {
           </div>
         </div>
 
-        <div className="h-44 w-full relative z-10">
+        <div className="h-36 sm:h-44 w-full relative z-10 min-w-0">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={sensor.history} margin={{ top: 5, right: 10, left: -25, bottom: 0 }}>
               <XAxis dataKey="timestamp" stroke="rgba(255,255,255,0.4)" fontSize={10} tickLine={false} tickMargin={8} />
@@ -157,14 +157,14 @@ export const LiveSensorMonitor: React.FC = () => {
       </div>
 
       {/* Indoor vs Outdoor Comparison Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4 pt-4 border-t border-[var(--line)]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 mt-4 pt-4 border-t border-[var(--line)]">
         <div className="card p-3 bg-[var(--bg)] border border-[var(--line)]">
           <div className="text-[10px] text-[var(--mut)] mb-1 flex items-center justify-between uppercase tracking-wider">
             <span>INDOOR TELEMETRY</span>
             <Badge variant="secondary" className="text-[9px] px-1.5 py-0.2">MODERATE</Badge>
           </div>
-          <div className="font-display text-lg font-medium text-[var(--ink)]">
-            PM2.5: {sensor.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">Âµg/mÂ³</span>
+          <div className="font-display text-base sm:text-lg font-medium text-[var(--ink)]">
+            PM2.5: {sensor.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">µg/m³</span>
           </div>
           <p className="text-[11px] text-[var(--mut)] mt-0.5">HEPA purifier active in bedroom</p>
         </div>
@@ -174,8 +174,8 @@ export const LiveSensorMonitor: React.FC = () => {
             <span>OUTDOOR TELEMETRY</span>
             <Badge variant="destructive" className="text-[9px] px-1.5 py-0.2">HIGH</Badge>
           </div>
-          <div className="font-display text-lg font-medium text-[var(--ink)]">
-            PM2.5: {airData.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">Âµg/mÂ³</span>
+          <div className="font-display text-base sm:text-lg font-medium text-[var(--ink)]">
+            PM2.5: {airData.pm25} <span className="font-sans text-[10px] text-[var(--mut)]">µg/m³</span>
           </div>
           <p className="text-[11px] text-[var(--mut)] mt-0.5">
             Outdoor air is {Math.round((airData.pm25 / Math.max(sensor.pm25, 1)) * 100 - 100)}% dirtier

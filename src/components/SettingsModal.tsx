@@ -200,8 +200,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-in fade-in duration-200">
-      <div className="card bg-[var(--card)] rounded-[12px] max-w-lg w-full p-6 shadow-2xl border border-[var(--line)] relative flex flex-col max-h-[92vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
+      <div className="card bg-[var(--card)] rounded-[12px] max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-[var(--line)] relative flex flex-col max-h-[92vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-[var(--line)] shrink-0">
           <div className="flex items-center gap-3">

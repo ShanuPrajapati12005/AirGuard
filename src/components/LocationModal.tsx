@@ -95,19 +95,19 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
   const displayedLocations = searchResults.length > 0 ? searchResults : LOCATION_PRESETS;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-      <div className="card bg-[var(--card)] rounded-[12px] max-w-lg w-full p-6 shadow-xl border border-[var(--line)] flex flex-col max-h-[85vh] relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-3 sm:p-4">
+      <div className="card bg-[var(--card)] rounded-[12px] max-w-lg w-full p-4 sm:p-6 shadow-xl border border-[var(--line)] flex flex-col max-h-[90vh] sm:max-h-[85vh] relative overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-[var(--line)]">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 font-bold shadow-2xs">
+        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[var(--line)]">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 shrink-0 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 font-bold shadow-2xs">
               <MapPin className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="font-display text-base font-medium text-[var(--ink)] tracking-tight">
+            <div className="min-w-0">
+              <h3 className="font-display text-base font-medium text-[var(--ink)] tracking-tight truncate">
                 Select Telemetry Station
               </h3>
-              <p className="text-xs text-[var(--mut)] mt-0.5">
+              <p className="text-xs text-[var(--mut)] mt-0.5 truncate">
                 Query global meteorological stations or resolve device coordinates
               </p>
             </div>
@@ -116,14 +116,14 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px] h-8 w-8"
+            className="text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px] h-8 w-8 shrink-0"
           >
             <X className="w-4 h-4" />
           </Button>
         </div>
 
         {/* Search Bar + GPS */}
-        <div className="mt-4 space-y-2.5">
+        <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-2.5">
           <div className="relative">
             <Search className="w-3.5 h-3.5 text-[var(--mut)] absolute left-3 top-3" />
             <Input
@@ -145,12 +145,12 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
             variant="outline"
           >
             <Compass className={cn("w-3.5 h-3.5 text-[var(--ac)]", isDetecting && "animate-spin")} />
-            <span>{isDetecting ? 'Resolving device coordinates...' : 'Acquire Current Device GPS'}</span>
+            <span className="truncate">{isDetecting ? 'Resolving device coordinates...' : 'Acquire Current Device GPS'}</span>
           </Button>
         </div>
 
         {/* Location List */}
-        <div className="flex-1 overflow-y-auto mt-4 space-y-2 pr-1 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto mt-3 sm:mt-4 space-y-2 pr-1 custom-scrollbar">
           <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-[var(--mut)] mb-1 px-1">
             <span>{searchResults.length > 0 ? `Results (${searchResults.length})` : 'Preset Meteorological Hubs'}</span>
             {isApplying && (
@@ -168,16 +168,16 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
                 key={loc.id}
                 onClick={() => handleSelect(loc)}
                 className={cn(
-                  "card p-3 transition-all cursor-pointer flex items-center justify-between shadow-2xs",
+                  "card p-2.5 sm:p-3 transition-all cursor-pointer flex items-center justify-between shadow-2xs",
                   isSelected
                     ? "border-[var(--ac)] bg-[var(--ac)]/5"
                     : "border-[var(--line)] bg-[var(--card)] hover:border-[var(--ac)]/40 hover:bg-[var(--bg)]"
                 )}
               >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-display text-sm font-medium text-[var(--ink)]">{loc.name}</span>
-                    <span className="text-[10px] font-mono text-[var(--mut)] bg-[var(--bg)] px-1.5 py-0.2 rounded border border-[var(--line)]">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                    <span className="font-display text-sm font-medium text-[var(--ink)] truncate">{loc.name}</span>
+                    <span className="text-[10px] font-mono text-[var(--mut)] bg-[var(--bg)] px-1.5 py-0.2 rounded border border-[var(--line)] shrink-0">
                       {loc.city}
                     </span>
                   </div>
@@ -186,7 +186,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0 ml-3">
+                <div className="flex items-center gap-2 shrink-0 ml-2.5 sm:ml-3">
                   {isSelected && (
                     <div className="w-5 h-5 rounded-full bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center shadow-xs">
                       <Check className="w-3 h-3 stroke-[3]" />
