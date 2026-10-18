@@ -17,7 +17,7 @@ export const ActivityRiskCalculator: React.FC = () => {
   const result = calculateExposureScore(airData.aqi, selectedDuration, selectedActivity, userProfile);
 
   return (
-    <div className="card card-3d p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
+    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
@@ -39,19 +39,19 @@ export const ActivityRiskCalculator: React.FC = () => {
       </div>
 
       {/* Selectors */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 my-3 sm:my-4">
         {/* Activity selection */}
         <div>
           <label className="text-[11px] font-medium text-[var(--mut)] mb-1.5 block">
             Physical Exertion Tier
           </label>
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-2 xs:grid-cols-3 gap-1.5">
             {activities.map((act) => (
               <button
                 key={act}
                 onClick={() => setSelectedActivity(act)}
                 className={cn(
-                  "py-1.5 px-2 rounded-[8px] text-[11px] font-medium transition-all border cursor-pointer",
+                  "py-1.5 px-1.5 sm:px-2 rounded-[8px] text-[10px] sm:text-[11px] font-medium transition-all border cursor-pointer truncate",
                   selectedActivity === act
                     ? "bg-[var(--ac)] text-[var(--onac)] border-[var(--ac)] shadow-2xs"
                     : "bg-[var(--bg)] text-[var(--mut)] border-[var(--line)] hover:text-[var(--ink)] hover:border-[var(--mut)]"
@@ -74,7 +74,7 @@ export const ActivityRiskCalculator: React.FC = () => {
                 key={dur}
                 onClick={() => setSelectedDuration(dur)}
                 className={cn(
-                  "py-1.5 px-2 rounded-[8px] text-[11px] font-medium transition-all border cursor-pointer",
+                  "py-1.5 px-1.5 sm:px-2 rounded-[8px] text-[10px] sm:text-[11px] font-medium transition-all border cursor-pointer",
                   selectedDuration === dur
                     ? "bg-[var(--ink)] text-white border-[var(--ink)] shadow-2xs"
                     : "bg-[var(--bg)] text-[var(--mut)] border-[var(--line)] hover:text-[var(--ink)] hover:border-[var(--mut)]"
@@ -88,14 +88,14 @@ export const ActivityRiskCalculator: React.FC = () => {
       </div>
 
       {/* Exposure Score Result Bar */}
-      <div className="card p-4 bg-[var(--bg)] border border-[var(--line)]">
-        <div className="flex items-center justify-between mb-3">
+      <div className="card p-3.5 sm:p-4 bg-[var(--bg)] border border-[var(--line)]">
+        <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2.5 mb-3">
           <div>
             <span className="text-[10px] text-[var(--mut)] uppercase tracking-wider block">
               Calculated Inhalation Load
             </span>
             <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="font-display text-3xl font-normal text-[var(--ink)]">{result.score}%</span>
+              <span className="font-display text-2xl sm:text-3xl font-normal text-[var(--ink)]">{result.score}%</span>
               <span
                 className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full border"
                 style={{ backgroundColor: `${result.color}15`, color: result.color, borderColor: `${result.color}35` }}
@@ -104,7 +104,7 @@ export const ActivityRiskCalculator: React.FC = () => {
               </span>
             </div>
           </div>
-          <div className="text-right text-[11px] text-[var(--mut)] bg-[var(--card)] p-2 rounded-[8px] border border-[var(--line)]">
+          <div className="text-left xs:text-right text-[10px] sm:text-[11px] text-[var(--mut)] bg-[var(--card)] p-2 rounded-[8px] border border-[var(--line)] self-stretch xs:self-auto">
             <div>Current AQI: <strong className="text-[var(--ink)]">{airData.aqi}</strong></div>
             <div>Sensitivity: <strong className="text-[var(--ink)] capitalize">{userProfile.sensitivityLevel}</strong></div>
           </div>

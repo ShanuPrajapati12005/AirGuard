@@ -30,7 +30,7 @@ export const SmartRouteComparison: React.FC = () => {
   const routeList = routes && routes.length > 0 ? routes : SMART_ROUTES;
 
   return (
-    <div className="card card-3d p-5 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)]">
+    <div className="card card-3d p-3.5 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>

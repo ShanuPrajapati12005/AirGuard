@@ -67,7 +67,7 @@ export const AIGuardianChat: React.FC = () => {
       const errorMsg: ChatMessage = {
         id: `ai-err-${Date.now()}`,
         sender: 'assistant',
-        content: `âš ï¸ Note: The assistant encountered a temporary connectivity delay. Please retry your inquiry or verify credentials in Preferences.`,
+        content: `⚠️ Note: The assistant encountered a temporary connectivity delay. Please retry your inquiry or verify credentials in Preferences.`,
         timestamp: 'Just now',
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -77,21 +77,21 @@ export const AIGuardianChat: React.FC = () => {
   };
 
   return (
-    <div className="card card-3d flex flex-col h-[600px] border border-[var(--line)] shadow-[var(--sh-3d)] overflow-hidden">
+    <div className="card card-3d flex flex-col h-[calc(100vh-220px)] min-h-[440px] max-h-[640px] border border-[var(--line)] shadow-[var(--sh-3d)] overflow-hidden">
       {/* Header */}
-      <div className="p-4 bg-[var(--card)] border-b border-[var(--line)] flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-[8px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center font-bold shadow-2xs">
+      <div className="p-3.5 sm:p-4 bg-[var(--card)] border-b border-[var(--line)] flex items-center justify-between">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-8 h-8 rounded-[8px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center font-bold shadow-2xs shrink-0">
             <Bot className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-display text-base font-medium tracking-tight text-[var(--ink)] flex items-center gap-2">
+            <h3 className="font-display text-sm sm:text-base font-medium tracking-tight text-[var(--ink)] flex items-center gap-2">
               AirGuard Copilot
-              <Badge variant="accent" className="text-[10px] uppercase font-semibold">
+              <Badge variant="accent" className="text-[9px] sm:text-[10px] uppercase font-semibold">
                 AI Synthesis
               </Badge>
             </h3>
-            <p className="text-[11px] text-[var(--mut)]">Personalized respiratory decision support</p>
+            <p className="text-[10px] sm:text-[11px] text-[var(--mut)]">Personalized respiratory decision support</p>
           </div>
         </div>
 
@@ -102,7 +102,7 @@ export const AIGuardianChat: React.FC = () => {
       </div>
 
       {/* Suggested Questions Pills */}
-      <div className="bg-[var(--bg)] border-b border-[var(--line)] px-4 py-2.5 flex items-center gap-2 overflow-x-auto text-xs">
+      <div className="bg-[var(--bg)] border-b border-[var(--line)] px-3 sm:px-4 py-2 sm:py-2.5 flex items-center gap-1.5 sm:gap-2 overflow-x-auto text-xs no-scrollbar">
         <Sparkles className="w-3.5 h-3.5 text-[var(--ac2)] shrink-0" />
         <span className="text-[10px] text-[var(--mut)] font-semibold uppercase tracking-wider shrink-0">Prompts:</span>
         {suggestedQuestions.map((sq) => (
@@ -111,7 +111,7 @@ export const AIGuardianChat: React.FC = () => {
             variant="outline"
             size="sm"
             onClick={() => handleSend(sq)}
-            className="h-7 px-2.5 rounded-full text-[11px] font-normal text-[var(--ink)] hover:border-[var(--ac)] hover:bg-[var(--card)] whitespace-nowrap"
+            className="h-6 sm:h-7 px-2 sm:px-2.5 rounded-full text-[10px] sm:text-[11px] font-normal text-[var(--ink)] hover:border-[var(--ac)] hover:bg-[var(--card)] whitespace-nowrap shrink-0"
           >
             {sq}
           </Button>
@@ -119,23 +119,23 @@ export const AIGuardianChat: React.FC = () => {
       </div>
 
       {/* Message History */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--bg)]/40">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3.5 sm:space-y-4 bg-[var(--bg)]/40">
         {messages.map((m) => {
           const isUser = m.sender === 'user';
           return (
             <div
               key={m.id}
-              className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
+              className={`flex gap-2 sm:gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
             >
               {!isUser && (
-                <div className="w-7 h-7 rounded-[7px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center shrink-0 text-xs font-bold mt-1 border border-[var(--ac)]/20 shadow-2xs">
-                  <Bot className="w-4 h-4" />
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-[7px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center shrink-0 text-xs font-bold mt-1 border border-[var(--ac)]/20 shadow-2xs">
+                  <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
               )}
 
               <div
                 className={cn(
-                  "max-w-[85%] rounded-[12px] px-4 py-3 text-xs leading-relaxed",
+                  "max-w-[90%] sm:max-w-[85%] rounded-[12px] px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs leading-relaxed",
                   isUser
                     ? "bg-[var(--ink)] text-white shadow-xs"
                     : "card bg-[var(--card)] text-[var(--ink)] border border-[var(--line)] shadow-2xs"
@@ -143,11 +143,11 @@ export const AIGuardianChat: React.FC = () => {
               >
                 <div className="whitespace-pre-wrap font-sans">
                   {m.content.split('\n').map((line, idx) => {
-                    if (line.startsWith('â€¢ ') || line.startsWith('- ')) {
+                    if (line.startsWith('• ') || line.startsWith('â€¢ ') || line.startsWith('- ')) {
                       return (
                         <div key={idx} className="ml-2 my-1 flex items-start gap-1.5">
-                          <span className={cn("font-bold", isUser ? "text-white/60" : "text-[var(--ac)]")}>â€¢</span>
-                          <span>{line.replace(/^[â€¢-]\s*/, '')}</span>
+                          <span className={cn("font-bold", isUser ? "text-white/60" : "text-[var(--ac)]")}>•</span>
+                          <span>{line.replace(/^([•â€¢-]\s*)/, '')}</span>
                         </div>
                       );
                     }
@@ -170,7 +170,7 @@ export const AIGuardianChat: React.FC = () => {
               </div>
 
               {isUser && (
-                <div className="w-7 h-7 rounded-[7px] bg-[var(--ink)] text-white flex items-center justify-center shrink-0 text-xs font-medium mt-1">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-[7px] bg-[var(--ink)] text-white flex items-center justify-center shrink-0 text-xs font-medium mt-1">
                   {userProfile.name ? userProfile.name[0].toUpperCase() : 'U'}
                 </div>
               )}
@@ -195,7 +195,7 @@ export const AIGuardianChat: React.FC = () => {
       </div>
 
       {/* Input Bar */}
-      <div className="p-3.5 bg-[var(--card)] border-t border-[var(--line)] flex items-center gap-2.5">
+      <div className="p-2.5 sm:p-3.5 bg-[var(--card)] border-t border-[var(--line)] flex items-center gap-2 sm:gap-2.5">
         <Input
           type="text"
           value={input}
@@ -203,17 +203,17 @@ export const AIGuardianChat: React.FC = () => {
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') handleSend();
           }}
-          placeholder="Ask anything (e.g. Can I walk outside with asthma today?)"
-          className="flex-1 bg-[var(--bg)] border-[var(--line)] h-9 text-xs rounded-[9px] focus-visible:ring-[var(--ac)]"
+          placeholder="Ask anything (e.g. Can I walk outside today?)..."
+          className="flex-1 min-w-0 bg-[var(--bg)] border-[var(--line)] h-9 text-xs rounded-[9px] focus-visible:ring-[var(--ac)]"
         />
         <Button
           variant="primary"
           onClick={() => handleSend()}
           disabled={!input.trim() || isTyping}
-          className="h-9 px-4 text-xs font-semibold rounded-[9px]"
+          className="h-9 px-3.5 sm:px-4 text-xs font-semibold rounded-[9px] shrink-0"
         >
-          Send
-          <Send className="w-3.5 h-3.5 ml-1.5" />
+          <span>Send</span>
+          <Send className="w-3.5 h-3.5 ml-1 sm:ml-1.5" />
         </Button>
       </div>
     </div>

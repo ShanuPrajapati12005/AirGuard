@@ -23,7 +23,7 @@ export const InsightsHistory: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Weekly Summary Metrics Header */}
-      <div className="card card-3d p-5 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)]">
+      <div className="card card-3d p-3.5 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
           <div>
             <div className="flex items-center gap-2">
@@ -40,7 +40,7 @@ export const InsightsHistory: React.FC = () => {
           </div>
 
           {/* Gamification Streak Banner */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -51,14 +51,14 @@ export const InsightsHistory: React.FC = () => {
               <span>Export CSV</span>
             </Button>
             <Badge variant="accent" className="gap-2 px-3 py-1 font-semibold text-xs">
-            <Flame className="w-3.5 h-3.5 text-[var(--ac2)] fill-[var(--ac2)]" />
-            <span>5-Day Clean Path Streak</span>
-          </Badge>
+              <Flame className="w-3.5 h-3.5 text-[var(--ac2)] fill-[var(--ac2)]" />
+              <span>5-Day Clean Path Streak</span>
+            </Badge>
           </div>
         </div>
 
         {/* 4 Summary Stat Boxes */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 my-4">
           <div className="card p-3 bg-[var(--bg)] border border-[var(--line)]">
             <span className="text-[10px] text-[var(--mut)] block uppercase tracking-wider">Average AQI</span>
             <span className="font-display text-2xl font-normal text-[var(--ink)] mt-0.5 block">{WEEKLY_DATA.avgAqi}</span>
@@ -91,7 +91,7 @@ export const InsightsHistory: React.FC = () => {
           <h4 className="font-display text-xs font-medium text-[var(--ink)] mb-3">
             7-Day Exposure Load vs Ambient Station AQI
           </h4>
-          <div className="h-60 w-full">
+          <div className="h-48 sm:h-60 w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={WEEKLY_DATA.daysData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
@@ -111,7 +111,7 @@ export const InsightsHistory: React.FC = () => {
       </div>
 
       {/* Daily Exposure Timeline */}
-      <div className="card p-5 sm:p-6 border border-[var(--line)] shadow-[var(--sh)]">
+      <div className="card p-3.5 sm:p-6 border border-[var(--line)] shadow-[var(--sh)]">
         <div className="flex items-center justify-between pb-3.5 border-b border-[var(--line)]">
           <div>
             <h3 className="font-display text-base font-medium text-[var(--ink)]">
@@ -121,10 +121,10 @@ export const InsightsHistory: React.FC = () => {
               Chronological log correlating commute waypoints with encountered particulate load
             </p>
           </div>
-          <Badge variant="secondary" className="text-xs font-medium">Today's Timeline</Badge>
+          <Badge variant="secondary" className="text-xs font-medium shrink-0">Today's Timeline</Badge>
         </div>
 
-        <div className="relative pl-6 border-l-2 border-[var(--line)] space-y-5 mt-6 ml-2">
+        <div className="relative pl-5 sm:pl-6 border-l-2 border-[var(--line)] space-y-4 sm:space-y-5 mt-5 sm:mt-6 ml-2">
           {DAILY_TIMELINE.map((item, idx) => {
             const isHigh = item.exposure === 'High' || item.exposure === 'Very High';
             return (
@@ -132,7 +132,7 @@ export const InsightsHistory: React.FC = () => {
                 {/* Node indicator */}
                 <div
                   className={cn(
-                    "absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full border-2 border-[var(--card)] shadow-xs transition-transform group-hover:scale-125",
+                    "absolute -left-[27px] sm:-left-[31px] top-1 w-3.5 h-3.5 rounded-full border-2 border-[var(--card)] shadow-xs transition-transform group-hover:scale-125",
                     isHigh ? "bg-rose-500" : item.exposure === 'Moderate' ? "bg-[var(--ac2)]" : "bg-[var(--ok)]"
                   )}
                 />
@@ -143,7 +143,7 @@ export const InsightsHistory: React.FC = () => {
                       <span className="text-base">{item.icon}</span>
                       <span className="font-display text-sm font-medium text-[var(--ink)]">{item.location}</span>
                     </div>
-                    <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                       <Badge
                         variant={isHigh ? "destructive" : item.exposure === 'Moderate' ? "default" : "accent"}
                         className="text-[10px] uppercase font-semibold"
@@ -156,7 +156,7 @@ export const InsightsHistory: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-xs font-normal text-[var(--mut)] self-start sm:self-center mt-2 sm:mt-0 bg-[var(--card)] px-2.5 py-1 rounded-[6px] border border-[var(--line)] font-mono">
-                    <span className="text-[var(--ink)]">{item.time}</span> <span className="opacity-40 mx-1">â€¢</span> {item.duration}
+                    <span className="text-[var(--ink)]">{item.time}</span> <span className="opacity-40 mx-1">•</span> {item.duration}
                   </div>
                 </div>
               </div>

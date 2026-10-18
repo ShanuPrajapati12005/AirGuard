@@ -74,7 +74,7 @@ export const InteractivePollutionMap: React.FC = () => {
   };
 
   return (
-    <div className="card p-5 border border-[var(--line)] shadow-[var(--sh)]">
+    <div className="card p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh)]">
       {/* Map Header & Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
@@ -92,25 +92,25 @@ export const InteractivePollutionMap: React.FC = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-2.5 bg-[var(--bg)] px-3 py-1.5 rounded-full border border-[var(--line)] text-xs shadow-2xs">
-          <span className="text-[10px] text-[var(--mut)] uppercase font-semibold">Scale:</span>
-          <span className="flex items-center gap-1.5 text-[var(--ok)] font-medium">
-            <span className="w-2 h-2 rounded-full bg-[var(--ok)]"></span> Good
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5 bg-[var(--bg)] px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[var(--line)] text-[10px] sm:text-xs shadow-2xs">
+          <span className="text-[9px] sm:text-[10px] text-[var(--mut)] uppercase font-semibold">Scale:</span>
+          <span className="flex items-center gap-1 text-[var(--ok)] font-medium">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[var(--ok)]"></span> Good
           </span>
-          <span className="flex items-center gap-1.5 text-[var(--ac2)] font-medium">
-            <span className="w-2 h-2 rounded-full bg-[var(--ac2)]"></span> Mod
+          <span className="flex items-center gap-1 text-[var(--ac2)] font-medium">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[var(--ac2)]"></span> Mod
           </span>
-          <span className="flex items-center gap-1.5 text-orange-600 font-medium">
-            <span className="w-2 h-2 rounded-full bg-orange-500"></span> Poor
+          <span className="flex items-center gap-1 text-orange-600 font-medium">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-orange-500"></span> Poor
           </span>
-          <span className="flex items-center gap-1.5 text-rose-600 font-medium">
-            <span className="w-2 h-2 rounded-full bg-rose-500"></span> Severe
+          <span className="flex items-center gap-1 text-rose-600 font-medium">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-rose-500"></span> Severe
           </span>
         </div>
       </div>
 
       {/* Map Canvas Container */}
-      <div className="relative w-full h-[400px] rounded-[12px] overflow-hidden mt-4 border border-[var(--line)]">
+      <div className="relative w-full h-[320px] sm:h-[400px] rounded-[12px] overflow-hidden mt-3 sm:mt-4 border border-[var(--line)]">
         <MapContainer
           center={centerCoords}
           zoom={13}
@@ -187,25 +187,25 @@ export const InteractivePollutionMap: React.FC = () => {
         </MapContainer>
 
         {/* Floating Active Route Badge */}
-        <div className="absolute top-3.5 right-3.5 card bg-[var(--card)]/90 backdrop-blur-md p-3 rounded-[10px] border border-[var(--line)] shadow-md z-[1000] text-xs">
-          <div className="font-medium text-[var(--ink)] flex items-center gap-2">
-            <Navigation className="w-3.5 h-3.5 text-[var(--ac)]" />
-            <span>Active Overlay: {selectedRoute.tag}</span>
+        <div className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 max-w-[calc(100%-1.5rem)] sm:max-w-xs card bg-[var(--card)]/90 backdrop-blur-md p-2 sm:p-3 rounded-[9px] border border-[var(--line)] shadow-md z-[1000] text-[10px] sm:text-xs">
+          <div className="font-medium text-[var(--ink)] flex items-center gap-1.5 sm:gap-2 truncate">
+            <Navigation className="w-3.5 h-3.5 text-[var(--ac)] shrink-0" />
+            <span className="truncate">Active: {selectedRoute.tag}</span>
           </div>
-          <div className="text-[11px] text-[var(--mut)] mt-0.5 font-mono">
-            {selectedRoute.durationMinutes} min • Exposure: {selectedRoute.exposureScore}/100
+          <div className="text-[10px] sm:text-[11px] text-[var(--mut)] mt-0.5 font-mono truncate">
+            {selectedRoute.durationMinutes} min • Score: {selectedRoute.exposureScore}/100
           </div>
         </div>
       </div>
 
       {/* Hotspots Quick Cards Strip */}
-      <div className="mt-5">
-        <h4 className="text-[11px] font-medium uppercase tracking-wider text-[var(--mut)] mb-2.5 flex items-center gap-1.5 ml-1">
+      <div className="mt-4 sm:mt-5">
+        <h4 className="text-[10px] sm:text-[11px] font-medium uppercase tracking-wider text-[var(--mut)] mb-2 flex items-center gap-1.5 ml-1">
           <AlertOctagon className="w-3.5 h-3.5 text-[var(--ac2)]" />
           <span>Local Microclimate Hotspots</span>
         </h4>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5">
           {hotspots.slice(0, 4).map((h) => {
             const color = getHotspotColor(h.aqi);
             const isChosen = selectedHotspot?.id === h.id;

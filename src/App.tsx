@@ -50,6 +50,7 @@ const AppContent: React.FC = () => {
     }
   });
   const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleCloseSettings = () => {
     setIsSettingsOpen(false);
@@ -105,14 +106,18 @@ const AppContent: React.FC = () => {
       <Sidebar
         onOpenSettings={() => setIsSettingsOpen(true)}
         onGoToLanding={() => setShowLanding(true)}
+        isMobileOpen={isMobileMenuOpen}
+        onCloseMobile={() => setIsMobileMenuOpen(false)}
+        onOpenLocation={() => setIsLocationOpen(true)}
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 z-10">
+      <div className="flex-1 flex flex-col min-w-0 z-10 overflow-x-hidden">
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenLocation={() => setIsLocationOpen(true)}
           onGoToLanding={() => setShowLanding(true)}
+          onToggleMobileMenu={() => setIsMobileMenuOpen(prev => !prev)}
         />
 
         <main className="flex-1 overflow-y-auto relative">

@@ -20,7 +20,7 @@ export const BestTimePlanner: React.FC = () => {
   const data = hourlyForecasts && hourlyForecasts.length > 0 ? hourlyForecasts : HOURLY_FORECASTS;
 
   return (
-    <div className="card card-3d p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
+    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
@@ -38,33 +38,33 @@ export const BestTimePlanner: React.FC = () => {
         </div>
 
         {/* Recommended Pill */}
-        <Badge variant="accent" className="gap-1.5 px-3 py-1 font-semibold text-[11px]">
+        <Badge variant="accent" className="gap-1.5 px-2.5 sm:px-3 py-1 font-semibold text-[10px] sm:text-[11px]">
           <Star className="w-3 h-3 fill-[var(--ac)] text-[var(--ac)]" />
           <span>Recommended: 06:00 – 07:30 AM</span>
         </Badge>
       </div>
 
       {/* Hourly Quick Strip */}
-      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 my-5">
+      <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2 my-4 sm:my-5">
         {data.slice(0, 8).map((f) => (
           <div
             key={f.time}
             className={cn(
-              "card p-2 text-center transition-all shadow-2xs",
+              "card p-1.5 sm:p-2 text-center transition-all shadow-2xs",
               f.recommended
                 ? "bg-[var(--ac)]/10 border-[var(--ac)]/30"
                 : "bg-[var(--bg)] border-[var(--line)]"
             )}
           >
-            <div className="text-[10px] text-[var(--mut)]">{f.time}</div>
+            <div className="text-[9px] sm:text-[10px] text-[var(--mut)] font-mono">{f.time}</div>
             <div
-              className="font-display text-sm font-medium my-0.5"
+              className="font-display text-xs sm:text-sm font-medium my-0.5"
               style={{ color: f.color }}
             >
               {f.aqi}
             </div>
             <div
-              className="text-[9px] font-medium uppercase tracking-wider truncate"
+              className="text-[8px] sm:text-[9px] font-medium uppercase tracking-wider truncate"
               style={{ color: f.color }}
             >
               {f.level}
@@ -74,7 +74,7 @@ export const BestTimePlanner: React.FC = () => {
       </div>
 
       {/* Interactive Area Chart */}
-      <div className="h-56 w-full pt-2">
+      <div className="h-44 sm:h-56 w-full pt-2 min-w-0">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>

@@ -63,6 +63,11 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -72,6 +77,8 @@ body {
   line-height: 1.55;
   letter-spacing: -0.003em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
 #root {
@@ -82,7 +89,9 @@ body {
   padding: 0 !important;
   border: none !important;
   text-align: left !important;
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow-x: hidden !important;
 }
 
 /* Typography */
@@ -346,3 +355,19 @@ input:focus, select:focus, textarea:focus {
   z-index: 10;
   border: 1px solid var(--line);
 }
+
+/* Safe Area Inset Utilities for Mobile Devices (iOS notch & Android gesture bars) */
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
+}
+
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top, 0px), 8px);
+}
+
+/* Touch improvements */
+button, a, input, select {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+

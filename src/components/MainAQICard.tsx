@@ -31,28 +31,30 @@ export const MainAQICard: React.FC = () => {
       </div>
 
       {/* Main Metric & Gauge */}
-      <div className="py-2 flex items-center justify-between gap-6">
-        <div>
+      <div className="py-2 flex items-center justify-between gap-3 sm:gap-6">
+        <div className="min-w-0">
           <div className="text-[11px] font-medium text-[var(--mut)] uppercase tracking-wider mb-0.5">AQI Index</div>
           <div className={cn(
-            "font-display text-6xl sm:text-7xl font-normal tracking-tight transition-opacity duration-300",
+            "font-display text-5xl xs:text-6xl sm:text-7xl font-normal tracking-tight transition-opacity duration-300",
             isRefreshing ? 'opacity-40' : 'opacity-100'
           )} style={{ color: airData.categoryColor }}>
             {airData.aqi}
           </div>
-          <p className="text-xs text-[var(--mut)] mt-1.5 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: airData.categoryColor }} />
-            {airData.category === 'good' && 'Clean & healthy conditions'}
-            {airData.category === 'satisfactory' && 'Acceptable for most individuals'}
-            {airData.category === 'moderate' && 'Discomfort for sensitive profiles'}
-            {airData.category === 'poor' && 'Avoid prolonged outdoor exertion'}
-            {airData.category === 'verypoor' && 'Hazardous particulate concentration'}
-            {airData.category === 'severe' && 'Emergency level atmospheric hazard'}
+          <p className="text-xs text-[var(--mut)] mt-1.5 flex items-center gap-1.5 sm:gap-2">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: airData.categoryColor }} />
+            <span className="truncate">
+              {airData.category === 'good' && 'Clean & healthy conditions'}
+              {airData.category === 'satisfactory' && 'Acceptable for most individuals'}
+              {airData.category === 'moderate' && 'Discomfort for sensitive profiles'}
+              {airData.category === 'poor' && 'Avoid prolonged outdoor exertion'}
+              {airData.category === 'verypoor' && 'Hazardous particulate concentration'}
+              {airData.category === 'severe' && 'Emergency level atmospheric hazard'}
+            </span>
           </p>
         </div>
 
         {/* Circular Gauge Graphic */}
-        <div className="relative w-28 h-28 flex items-center justify-center shrink-0">
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             {/* Background ring */}
             <circle
