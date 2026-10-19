@@ -17,7 +17,7 @@ export const ActivityRiskCalculator: React.FC = () => {
   const result = calculateExposureScore(airData.aqi, selectedDuration, selectedActivity, userProfile);
 
   return (
-    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
+    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)] h-full flex flex-col justify-between">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
@@ -76,7 +76,7 @@ export const ActivityRiskCalculator: React.FC = () => {
                 className={cn(
                   "py-1.5 px-1.5 sm:px-2 rounded-[8px] text-[10px] sm:text-[11px] font-medium transition-all border cursor-pointer",
                   selectedDuration === dur
-                    ? "bg-[var(--ink)] text-white border-[var(--ink)] shadow-2xs"
+                    ? "bg-[var(--ac)] text-[var(--onac)] border-[var(--ac)] shadow-2xs font-semibold"
                     : "bg-[var(--bg)] text-[var(--mut)] border-[var(--line)] hover:text-[var(--ink)] hover:border-[var(--mut)]"
                 )}
               >

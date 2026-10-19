@@ -30,7 +30,7 @@ export const SmartRouteComparison: React.FC = () => {
   const routeList = routes && routes.length > 0 ? routes : SMART_ROUTES;
 
   return (
-    <div className="card card-3d p-3.5 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)]">
+    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
@@ -102,7 +102,7 @@ export const SmartRouteComparison: React.FC = () => {
       </div>
 
       {/* Routes Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 max-h-[480px] overflow-y-auto pr-1">
         {routeList.map((route) => {
           const isSelected = selectedRoute.id === route.id;
           return (

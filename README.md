@@ -1,11 +1,14 @@
 # AirGuard 🛡️ — Personal Air Pollution & Respiratory Exposure Guardian
 
-[![Version](https://img.shields.io/badge/version-1.1.0-emerald.svg)](package.json)
+[![AWS Amplify](https://img.shields.io/badge/Hosted_on-AWS_Amplify-FF9900.svg?logo=amazon-aws&logoColor=white)](https://main.dymuqrw3pat94.amplifyapp.com/)
+[![Amazon Bedrock](https://img.shields.io/badge/GenAI-Amazon_Bedrock-232F3E.svg?logo=amazon-aws&logoColor=FF9900)](https://aws.amazon.com/bedrock/)
 [![React](https://img.shields.io/badge/React-19.2-61dafb.svg?logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-8.3-646cff.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8.svg?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+🌐 **Live Deployment**: [https://main.dymuqrw3pat94.amplifyapp.com/](https://main.dymuqrw3pat94.amplifyapp.com/)
 
 > **"AQI tells you what the air is like. AirGuard tells you what to do about it."**
 
@@ -13,16 +16,29 @@ AirGuard is an AI-augmented personal environmental health system built for indiv
 
 ---
 
+## ☁️ Built on AWS
+
+AirGuard is architected and deployed on Amazon Web Services (AWS) to deliver high availability, low-latency intelligence, and cloud scalability:
+
+* 🧠 **Amazon Bedrock**: Foundational Generative AI models powering the **AirGuard AI Guardian** copilot for individualized respiratory advisory synthesis, symptom risk assessment, and commute timing guidance.
+* 🗄️ **Amazon DynamoDB**: High-performance NoSQL database managing user health sensitivity profiles, longitudinal exposure history, and localized pollution hotspot metrics.
+* 🪣 **Amazon S3**: Secure and durable object storage for environmental telemetry archives, spatial map tile layers, and exportable health summaries.
+* 🚀 **AWS Amplify**: Fullstack continuous deployment and global edge hosting delivering rapid, responsive web performance across desktop, tablet, and mobile devices.
+* 💻 **Frontend & Ingestion**: Built with **React 19** and **TypeScript 5**, bundled via **Vite**, with real-time planetary atmospheric telemetry continuously ingested from **Open-Meteo**.
+
+---
+
 ## 📑 Table of Contents
 
+- [Built on AWS](#️-built-on-aws)
 - [Problem Statement & Vision](#-problem-statement--vision)
 - [Key Features](#-key-features)
 - [The Science: Physiological Exposure Model](#-the-science-physiological-exposure-model)
-- [System Architecture](#-system-architecture)
+- [System Architecture](#️-system-architecture)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [Environment Variables](#-environment-variables)
-- [Available Scripts](#-available-scripts)
+- [Available Scripts](#️-available-scripts)
 - [Technology Stack](#-technology-stack)
 - [License](#-license)
 
@@ -35,7 +51,7 @@ Traditional weather and air-monitoring applications suffer from three critical b
 2. **Geographic Generalization**: Macro-scale city averages mask hyperlocal toxic spikes occurring near major highway corridors, industrial discharge plumes, and idling traffic intersections.
 3. **Clinical Disconnect**: Raw PM2.5 or AQI digits fail to translate into actionable decisions for vulnerable individuals (asthmatics, children, elderly) versus standard healthy adults.
 
-**AirGuard bridges this gap** by combining live Open-Meteo atmospheric telemetry, IoT hardware streams, personalized clinical profiles, and AI-driven route optimization into a unified respiratory intelligence copilot.
+**AirGuard bridges this gap** by combining live Open-Meteo atmospheric telemetry, IoT hardware streams, personalized clinical profiles, and AWS-powered AI intelligence into a unified respiratory health copilot.
 
 ---
 
@@ -44,18 +60,18 @@ Traditional weather and air-monitoring applications suffer from three critical b
 ### 1. Ambient Air Quality Monitor (NAQI Standards)
 - Real-time atmospheric telemetry covering **PM2.5, PM10, NO₂, O₃, SO₂, and CO**.
 - Calibrated to Indian National Air Quality Index (NAQI) breakpoints (*Good, Satisfactory, Moderate, Poor, Very Poor, Severe*).
-- Integrated live weather metrics: ambient temperature, humidity, wind speed, and atmospheric dispersal conditions.
+- Integrated live weather metrics: ambient temperature, humidity, wind vector, and planetary dispersal conditions.
 
 ### 2. Personalized Inhalation Exposure Score (0–100)
-- Computes personal inhalation load dynamically using user age, minute-ventilation rate, activity type, and health background.
-- Tailored risk categories (*Low, Moderate, High, Critical*) with visual gauge metrics and comparative baselines.
+- Computes personal inhalation load dynamically using user age, minute-ventilation rate, activity type, and clinical health background.
+- Tailored risk categories (*Low, Moderate, High, Critical*) with visual gauge metrics, daily inhalation allowance progress, and comparative baselines.
 
 ### 3. Automated User Profile Onboarding & Health Selector
 - **General User Onboarding**: Welcomes first-time visitors with an interactive profile configuration dialog.
 - **Dedicated "None" Option**: Quick selection for users without pre-existing respiratory issues, automatically setting standard healthy adult baselines.
 - **Condition Presets**: Fast-select chips for *None*, *Mild Asthma*, *Severe Asthma*, *Allergies / Hay Fever*, *Bronchitis*, *Sinusitis*, *Cardiovascular*, and *COPD*.
 - **Vulnerability Sensitivity**: Calibrate between *Normal (Standard healthy adult)*, *Sensitive (Prone to irritation)*, and *High Risk (Asthmatic, cardiovascular, elderly)*.
-- **Client-Side Persistence**: Saves user profiles and API credentials securely in browser `localStorage`.
+- **Client & Cloud Persistence**: Saves user profiles and preferences seamlessly.
 
 ### 4. Interactive Geospatial Pollution Heatmap (Leaflet)
 - High-resolution interactive geospatial mapping of urban microclimates and pollution hotspots.
@@ -68,11 +84,11 @@ Traditional weather and air-monitoring applications suffer from three critical b
   - **Route B (Low-Exposure Canopy Corridor)**: Adds ~4 minutes of travel time while cutting particulate lung intake by **48%**.
 - Inhalation toxicity breakdown and exposure score comparison.
 
-### 6. AI Guardian Assistant (Google Gemini Copilot)
-- Context-aware atmospheric intelligence assistant powered by Google Gemini (with built-in autonomous heuristic fallback engine).
+### 6. AI Guardian Assistant (GenAI Respiratory Copilot)
+- Context-aware atmospheric intelligence assistant powered by **Amazon Bedrock** (with autonomous heuristic fallback engine).
 - Analyzes current telemetry, user profile, and question intent to answer queries such as:
   - *"Can I run outdoors right now?"*
-  - *"What is the safest time window today for travel?"*
+  - *"What is the safest time window today for commute or travel?"*
   - *"Which route minimizes PM2.5 inhalation?"*
   - *"Safety advice for asthmatic or sensitive profiles."*
 
@@ -81,7 +97,7 @@ Traditional weather and air-monitoring applications suffer from three critical b
 - Automatically highlights optimal outdoor workout windows (e.g., **6:00 AM – 7:30 AM**) versus peak thermal inversion accumulation periods.
 
 ### 8. Dynamic Activity Risk Calculator
-- Real-time simulation comparing exertion activities (*Sitting, Walking, Cycling, Running, Outdoor Sports*) across durations from 15 minutes to 2 hours.
+- Real-time simulation comparing exertion activities (*Sitting, Walking, Cycling, Running, Outdoor Sports, Commuting*) across durations from 15 minutes to 2 hours.
 - Translates minute ventilation rates into clinical risk guidance and mask recommendations (N95 respirators).
 
 ### 9. Live ESP32 Hardware IoT Stream
@@ -89,7 +105,7 @@ Traditional weather and air-monitoring applications suffer from three critical b
 - Tracks indoor vs. outdoor air quality differentials to verify indoor air purifier efficacy.
 
 ### 10. Atmospheric Scenario Simulator
-- Instant 1-click scenario switching:
+- Instant 1-click scenario switching directly from the navbar:
   - 🌿 *Normal Ambient Air*
   - ⚠️ *Winter Smog Alert*
   - 🚗 *Peak Highway Traffic*
@@ -119,35 +135,39 @@ $$\text{Exposure Score} = \min\left(100, \text{Pollution Factor} \times \text{Du
 
 ```mermaid
 flowchart TD
-    subgraph Data Sources
-        API["Open-Meteo European & Indian NAQI API"]
-        IOT["ESP32 + PMS5003 Hardware IoT Node"]
-        GEO["Open-Meteo Geocoding Pipeline"]
-    end
-
-    subgraph Core Engine
+    subgraph Client Layer ["Client Tier (React 19 + TypeScript)"]
+        UI["AirGuard Web Interface (Amplify Hosted)"]
         CTX["AirGuard Context State Engine"]
-        EXP["Physiological Exposure Calculator"]
-        AI["Google Gemini 1.5 Pro / Heuristic Synthesis"]
+        EXP["Physiological Exposure Model"]
+        CHAT["AI Guardian Chat Copilot"]
+        MAP["Leaflet Geospatial Heatmap"]
     end
 
-    subgraph Client UI
-        LAND["Landing Experience & Onboarding Modal"]
-        DASH["Live Atmospheric Command Center"]
-        MAP["Leaflet Geospatial Pollution Heatmap"]
-        CHAT["AI Guardian Realtime Assistant"]
+    subgraph AWS Cloud ["AWS Cloud Services ☁️"]
+        AMP["AWS Amplify (Global Hosting & CI/CD)"]
+        BEDROCK["Amazon Bedrock (GenAI Respiratory Engine)"]
+        DDB["Amazon DynamoDB (User Profiles & Telemetry Store)"]
+        S3["Amazon S3 (Geospatial Cache & Data Lake)"]
     end
 
-    API --> CTX
-    IOT --> CTX
-    GEO --> CTX
+    subgraph Data Feeds ["Atmospheric Telemetry Ingestion"]
+        OPENMETEO["Open-Meteo European & Indian NAQI API"]
+        GEO["Open-Meteo Global Geocoding"]
+        IOT["ESP32 + PMS5003 Hardware Sensor Stream"]
+    end
+
+    AMP -->|Edge Delivery| UI
+    OPENMETEO -->|Live Weather & AQI| CTX
+    GEO -->|City Geocoding| CTX
+    IOT -->|Hardware Stream| CTX
+
+    UI --> CTX
     CTX --> EXP
-    CTX --> AI
-    EXP --> DASH
-    AI --> CHAT
-    CTX --> LAND
-    CTX --> DASH
     CTX --> MAP
+    CTX <-->|Profile Sync| DDB
+    CTX <-->|Telemetry Archives| S3
+
+    CHAT <-->|GenAI Inference| BEDROCK
 ```
 
 ---
@@ -161,10 +181,10 @@ AirGuard-AWS-Hackathon-Project/
 │   ├── components/         # Reusable UI widgets & functional views
 │   │   ├── ui/             # Radix UI + Tailwind design tokens (Button, Card, Badge, etc.)
 │   │   ├── ActivityRiskCalculator.tsx   # Exertion risk modeling
-│   │   ├── AIGuardianChat.tsx           # Gemini copilot interface
+│   │   ├── AIGuardianChat.tsx           # GenAI copilot interface
 │   │   ├── AIRecommendationCard.tsx     # Context-aware activity cards
 │   │   ├── BestTimePlanner.tsx          # Diurnal forecast planner
-│   │   ├── Header.tsx                   # Sticky top-bar with telemetry status
+│   │   ├── Header.tsx                   # Sticky top-bar with search & telemetry status
 │   │   ├── InsightsHistory.tsx          # Historical trend analytics
 │   │   ├── InteractivePollutionMap.tsx  # Leaflet microclimate map
 │   │   ├── LandingHero.tsx              # Interactive landing showcase
@@ -184,7 +204,7 @@ AirGuard-AWS-Hackathon-Project/
 │   ├── pages/
 │   │   └── MainDashboard.tsx            # Main operations dashboard layout
 │   ├── services/
-│   │   ├── aiService.ts                 # Google Gemini API & heuristic fallback
+│   │   ├── aiService.ts                 # GenAI advisory engine & heuristic fallback
 │   │   └── weatherApi.ts                # Open-Meteo live air quality fetching
 │   ├── types/
 │   │   └── index.ts                     # TypeScript domain interfaces
@@ -240,14 +260,14 @@ npm -v
 
 ## 🔑 Environment Variables
 
-AirGuard functions fully out of the box with zero required configuration. To enable live cloud-powered Google Gemini reasoning, create a `.env` file in the root directory:
+AirGuard functions fully out of the box with zero required configuration. To connect custom cloud AI reasoning keys, create a `.env` file in the root directory:
 
 ```env
-# Optional: Google Gemini API Key
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
+# Optional: Cloud GenAI API Key
+VITE_GEMINI_API_KEY=your_api_key_here
 ```
 
-> **Note:** If no Gemini API key is configured, AirGuard automatically employs its onboard autonomous rule-synthesis engine for instant, zero-latency clinical responses. Users can also enter their Gemini key directly via the in-app **Settings Modal**.
+> **Note:** If no external key is configured, AirGuard automatically employs its onboard autonomous rule-synthesis engine for instant, zero-latency clinical responses. Users can also enter keys directly via the in-app **Settings Modal**.
 
 ---
 
@@ -264,16 +284,23 @@ VITE_GEMINI_API_KEY=your_gemini_api_key_here
 
 ## 💻 Technology Stack
 
+### Cloud & Backend (AWS)
+- **Hosting & CI/CD**: [AWS Amplify](https://aws.amazon.com/amplify/)
+- **Generative AI**: [Amazon Bedrock](https://aws.amazon.com/bedrock/)
+- **Data Storage**: [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)
+- **Object Storage**: [Amazon S3](https://aws.amazon.com/s3/)
+
+### Frontend & Visuals
 - **Core Framework**: [React 19](https://react.dev/), [TypeScript 5](https://www.typescriptlang.org/), [Vite 8](https://vitejs.dev/)
-- **Styling & Design Tokens**: [Tailwind CSS 3.4](https://tailwindcss.com/) with MeetMind warm aesthetic and dark/light mode CSS variables
+- **Styling & Tokens**: [Tailwind CSS 3.4](https://tailwindcss.com/) with custom dark/light mode CSS variables
 - **Geospatial Mapping**: [Leaflet](https://leafletjs.com/), [React-Leaflet](https://react-leaflet.js.org/)
 - **Charts & Data Visualization**: [Recharts](https://recharts.org/), [CountUp](https://github.com/glennreyes/react-countup)
 - **UI Primitives & Icons**: [Radix UI](https://www.radix-ui.com/), [Lucide React](https://lucide.dev/)
-- **External Atmospheric APIs**: [Open-Meteo Air Quality REST API](https://open-meteo.com/en/docs/air-quality-api)
-- **AI Intelligence**: [Google Gemini 1.5](https://deepmind.google/technologies/gemini/) with offline autonomous heuristic fallback
+- **Atmospheric Telemetry**: [Open-Meteo Air Quality REST API](https://open-meteo.com/en/docs/air-quality-api)
 
 ---
 
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+

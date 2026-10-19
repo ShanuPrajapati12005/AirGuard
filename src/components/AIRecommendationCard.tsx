@@ -41,59 +41,57 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ onAs
   ];
 
   return (
-    <div className="card card-3d p-3.5 sm:p-5 border border-[var(--line)] shadow-[var(--sh-3d)] flex flex-col justify-between h-full">
+    <div className="card card-3d p-3.5 sm:p-4 border border-[var(--line)] shadow-[var(--sh-3d)] flex flex-col space-y-3">
       {/* Header */}
-      <div>
-        <div className="flex items-center justify-between pb-3.5 border-b border-[var(--line)]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 shadow-2xs">
-              <Bot className="w-4 h-4" />
-            </div>
-            <h3 className="font-display text-sm font-medium tracking-tight text-[var(--ink)]">
-              AI Guardian Guidance
-            </h3>
+      <div className="flex items-center justify-between pb-3 border-b border-[var(--line)]">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-[8px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center border border-[var(--ac)]/20 shadow-2xs">
+            <Bot className="w-4 h-4" />
           </div>
-          <Badge variant="accent" className="text-[10px] uppercase font-semibold">
-            Realtime AI
-          </Badge>
+          <h3 className="font-display text-sm font-medium tracking-tight text-[var(--ink)]">
+            AI Guardian Guidance
+          </h3>
         </div>
+        <Badge variant="accent" className="text-[10px] uppercase font-semibold">
+          Realtime AI
+        </Badge>
+      </div>
 
-        {/* Primary Advice */}
-        <div className="my-3 sm:my-3.5 p-3 sm:p-3.5 rounded-[9px] bg-[var(--bg)] border border-[var(--line)]">
-          <p className="text-xs text-[var(--ink)] leading-relaxed">
-            {isHigh ? (
-              <>
-                <strong className="font-semibold text-[var(--ink)]">Atmospheric toxicity elevated ({airData.aqi} AQI).</strong> Postpone intensive outdoor cardio to prevent particulate alveolar penetration.
-              </>
-            ) : (
-              <>
-                <strong className="font-semibold text-[var(--ink)]">Air conditions stable ({airData.aqi} AQI).</strong> Outdoor schedule is clear; keep travel transits outside peak corridor hours.
-              </>
-            )}
-          </p>
-        </div>
+      {/* Primary Advice */}
+      <div className="p-3 rounded-[9px] bg-[var(--bg)] border border-[var(--line)]">
+        <p className="text-xs text-[var(--ink)] leading-relaxed">
+          {isHigh ? (
+            <>
+              <strong className="font-semibold text-[var(--ink)]">Atmospheric toxicity elevated ({airData.aqi} AQI).</strong> Postpone intensive outdoor cardio to prevent particulate alveolar penetration.
+            </>
+          ) : (
+            <>
+              <strong className="font-semibold text-[var(--ink)]">Air conditions stable ({airData.aqi} AQI).</strong> Outdoor schedule is clear; keep travel transits outside peak corridor hours.
+            </>
+          )}
+        </p>
+      </div>
 
-        {/* Activity Quick Status Grid */}
-        <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 mt-2">
-          {activities.map((act) => (
-            <div
-              key={act.name}
-              className="card p-2 bg-[var(--card)] hover:border-[var(--ac)]/40 flex items-center justify-between transition-colors shadow-2xs"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-sm">{act.icon}</span>
-                <span className="text-xs font-medium text-[var(--ink)]">{act.name}</span>
-              </div>
-              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${act.color}`}>
-                {act.status}
-              </span>
+      {/* Activity Quick Status Grid */}
+      <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 max-h-[190px] overflow-y-auto pr-0.5">
+        {activities.map((act) => (
+          <div
+            key={act.name}
+            className="card p-2 bg-[var(--card)] hover:border-[var(--ac)]/40 flex items-center justify-between transition-colors shadow-2xs"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-sm shrink-0">{act.icon}</span>
+              <span className="text-xs font-medium text-[var(--ink)] truncate">{act.name}</span>
             </div>
-          ))}
-        </div>
+            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border shrink-0 ${act.color}`}>
+              {act.status}
+            </span>
+          </div>
+        ))}
       </div>
 
       {/* Action Footer */}
-      <div className="pt-3 sm:pt-3.5 mt-3 sm:mt-3.5 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
+      <div className="pt-2.5 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
         <span className="text-[10px] sm:text-[11px] text-[var(--mut)] truncate max-w-[200px]">
           Profile: {userProfile.name || 'User'} ({userProfile.age || 26}y, {userProfile.healthConditions?.[0] || 'None'})
         </span>

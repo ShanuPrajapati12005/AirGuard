@@ -77,7 +77,7 @@ export const AIGuardianChat: React.FC = () => {
   };
 
   return (
-    <div className="card card-3d flex flex-col h-[calc(100vh-220px)] min-h-[440px] max-h-[640px] border border-[var(--line)] shadow-[var(--sh-3d)] overflow-hidden">
+    <div className="card card-3d flex flex-col h-[calc(100vh-300px)] md:h-[calc(100vh-160px)] min-h-[440px] max-h-[700px] border border-[var(--line)] shadow-[var(--sh-3d)] overflow-hidden">
       {/* Header */}
       <div className="p-3.5 sm:p-4 bg-[var(--card)] border-b border-[var(--line)] flex items-center justify-between">
         <div className="flex items-center gap-2.5 sm:gap-3">
@@ -137,7 +137,7 @@ export const AIGuardianChat: React.FC = () => {
                 className={cn(
                   "max-w-[90%] sm:max-w-[85%] rounded-[12px] px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs leading-relaxed",
                   isUser
-                    ? "bg-[var(--ink)] text-white shadow-xs"
+                    ? "bg-[var(--ac)] text-[var(--onac)] shadow-xs"
                     : "card bg-[var(--card)] text-[var(--ink)] border border-[var(--line)] shadow-2xs"
                 )}
               >
@@ -146,7 +146,7 @@ export const AIGuardianChat: React.FC = () => {
                     if (line.startsWith('• ') || line.startsWith('â€¢ ') || line.startsWith('- ')) {
                       return (
                         <div key={idx} className="ml-2 my-1 flex items-start gap-1.5">
-                          <span className={cn("font-bold", isUser ? "text-white/60" : "text-[var(--ac)]")}>•</span>
+                          <span className={cn("font-bold", isUser ? "opacity-75" : "text-[var(--ac)]")}>•</span>
                           <span>{line.replace(/^([•â€¢-]\s*)/, '')}</span>
                         </div>
                       );
@@ -156,7 +156,7 @@ export const AIGuardianChat: React.FC = () => {
                       <p key={idx} className={idx > 0 ? "mt-2" : ""}>
                         {parts.map((part, pIdx) => {
                           if (part.startsWith('**') && part.endsWith('**')) {
-                            return <strong key={pIdx} className={isUser ? "text-white font-semibold" : "text-[var(--ink)] font-semibold"}>{part.slice(2, -2)}</strong>;
+                            return <strong key={pIdx} className={isUser ? "text-[var(--onac)] font-semibold" : "text-[var(--ink)] font-semibold"}>{part.slice(2, -2)}</strong>;
                           }
                           return part;
                         })}
@@ -164,13 +164,13 @@ export const AIGuardianChat: React.FC = () => {
                     );
                   })}
                 </div>
-                <div className={cn("text-[9px] mt-1.5 font-mono text-right", isUser ? "text-white/60" : "text-[var(--mut)]")}>
+                <div className={cn("text-[9px] mt-1.5 font-mono text-right", isUser ? "opacity-75" : "text-[var(--mut)]")}>
                   {m.timestamp}
                 </div>
               </div>
 
               {isUser && (
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-[7px] bg-[var(--ink)] text-white flex items-center justify-center shrink-0 text-xs font-medium mt-1">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-[7px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center shrink-0 text-xs font-medium mt-1">
                   {userProfile.name ? userProfile.name[0].toUpperCase() : 'U'}
                 </div>
               )}

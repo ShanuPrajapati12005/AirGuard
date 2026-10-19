@@ -26,7 +26,7 @@ export const MainDashboard: React.FC = () => {
   const currentPreset = SCENARIO_PRESETS[scenario];
 
   return (
-    <div className="p-3 sm:p-6 lg:p-8 pb-28 md:pb-10 max-w-[1240px] mx-auto space-y-4 sm:space-y-6">
+    <div className="p-2 sm:p-4 lg:p-6 pb-24 md:pb-8 max-w-[1240px] mx-auto space-y-4 sm:space-y-6">
       {/* Realtime Atmosphere Alert (only if active alert in condition) */}
       {currentPreset.alertTitle && (
         <div className="card card-3d p-3.5 sm:p-4 bg-rose-500/10 border border-rose-500/30 flex items-start justify-between gap-3 shadow-xs">
@@ -62,7 +62,7 @@ export const MainDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 sm:gap-6 items-start">
             <div className="xl:col-span-2 space-y-6">
               {/* Interactive Map Section */}
               <div className="space-y-2.5">
@@ -102,9 +102,13 @@ export const MainDashboard: React.FC = () => {
       {/* Dedicated Section Tabs */}
       {activeTab === 'live-air' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <MainAQICard />
-            <LiveSensorMonitor />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            <div className="card card-3d p-4 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)] h-full flex flex-col justify-between">
+              <MainAQICard extended />
+            </div>
+            <div className="h-full">
+              <LiveSensorMonitor />
+            </div>
           </div>
           <BestTimePlanner />
         </div>
@@ -112,9 +116,13 @@ export const MainDashboard: React.FC = () => {
 
       {activeTab === 'exposure' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <PersonalExposureCard onViewDetailed={() => {}} />
-            <ActivityRiskCalculator />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            <div className="card card-3d p-4 sm:p-6 border border-[var(--line)] shadow-[var(--sh-3d)] h-full flex flex-col justify-between">
+              <PersonalExposureCard onViewDetailed={() => {}} extended />
+            </div>
+            <div className="h-full">
+              <ActivityRiskCalculator />
+            </div>
           </div>
           <InsightsHistory />
         </div>
@@ -122,13 +130,15 @@ export const MainDashboard: React.FC = () => {
 
       {activeTab === 'map' && (
         <div className="space-y-6">
-          <React.Suspense fallback={
-            <div className="h-[400px] w-full flex items-center justify-center card">
-              <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
-            </div>
-          }>
-            <InteractivePollutionMap />
-          </React.Suspense>
+          <div className="card card-3d p-2 shadow-[var(--sh-3d)]">
+            <React.Suspense fallback={
+              <div className="h-[400px] w-full flex items-center justify-center bg-[var(--bg)] rounded-[10px]">
+                <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
+              </div>
+            }>
+              <InteractivePollutionMap />
+            </React.Suspense>
+          </div>
         </div>
       )}
 
@@ -171,7 +181,7 @@ export const MainDashboard: React.FC = () => {
       )}
 
       {/* Footer / About Section */}
-      <footer className="mt-14 pt-6 border-t border-[var(--line)] text-xs text-[var(--mut)] space-y-3">
+      <footer className="mt-8 sm:mt-12 pt-6 border-t border-[var(--line)] text-xs text-[var(--mut)] space-y-3">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h5 className="font-display font-medium text-[var(--ink)] text-[14px]">About AirGuard</h5>

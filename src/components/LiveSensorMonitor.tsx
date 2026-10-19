@@ -20,7 +20,7 @@ export const LiveSensorMonitor: React.FC = () => {
   const anomalies = validateSensorReading(sensor);
 
   return (
-    <div className="card card-3d p-5 border border-[var(--line)] shadow-[var(--sh-3d)]">
+    <div className="card card-3d p-5 border border-[var(--line)] shadow-[var(--sh-3d)] h-full flex flex-col justify-between">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3.5 border-b border-[var(--line)]">
         <div>
@@ -110,7 +110,7 @@ export const LiveSensorMonitor: React.FC = () => {
       </div>
 
       {/* Live Stream Chart */}
-      <div className="mt-2 card bg-[var(--ink)] rounded-[12px] p-3 sm:p-4 text-[var(--onac)] border border-[var(--ink)] relative overflow-hidden">
+      <div className="mt-2 card bg-[#121417] rounded-[12px] p-3 sm:p-4 text-white border border-[#272a30] dark:border-[var(--line)] relative overflow-hidden">
         <div className="flex items-center justify-between mb-3 relative z-10">
           <div className="flex items-center gap-2">
             <Cpu className="w-3.5 h-3.5 text-[var(--ac)]" />

@@ -371,3 +371,38 @@ button, a, input, select {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Scrollbar hide utility (used in horizontal pill strips) */
+.no-scrollbar {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;               /* Chrome / Safari / Opera */
+}
+
+/* Consistent focus rings for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+}
+
+/* Subtle modern scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--mut) 25%, transparent);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--mut) 45%, transparent);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--mut) 25%, transparent) transparent;
+}
+

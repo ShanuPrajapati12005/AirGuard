@@ -107,7 +107,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   ];
 
   return (
-    <div className="min-h-screen text-[var(--ink)] flex flex-col justify-between relative overflow-x-hidden">
+    <div className="min-h-screen text-[var(--ink)] flex flex-col justify-between relative">
       {/* Ambient atmospheric gradients */}
       <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[var(--ac)]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 -right-40 w-[550px] h-[550px] bg-[var(--ac2)]/10 rounded-full blur-3xl pointer-events-none" />
@@ -119,8 +119,8 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
       {/* =========================================================================
           Sticky Navigation Bar
          ========================================================================= */}
-      <header className="sticky top-0 z-40 bg-[var(--card)]/85 backdrop-blur-md border-b border-[var(--line)] shadow-xs">
-        <div className="max-w-[1240px] mx-auto w-full px-3.5 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between">
+      <header className="fixed top-2.5 sm:top-4 inset-x-2.5 sm:inset-x-4 max-w-[1240px] mx-auto z-40 bg-[var(--card)]/90 backdrop-blur-md border border-[var(--line)] rounded-[16px] shadow-[var(--sh-3d)] transition-all">
+        <div className="w-full px-3.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between">
           {/* Logo & Brand */}
           <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group" onClick={onExploreDashboard}>
             <span className="w-8 h-8 rounded-[9px] bg-[var(--ac)] text-[var(--onac)] flex items-center justify-center shadow-xs transition-transform group-hover:scale-105 shrink-0">
@@ -235,7 +235,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
 
         {/* Mobile Navigation Dropdown Menu */}
         {isMobileNavOpen && (
-          <div className="lg:hidden border-t border-[var(--line)] bg-[var(--card)] px-4 py-4 space-y-3 shadow-lg animate-in slide-in-from-top duration-200">
+          <div className="lg:hidden border-t border-[var(--line)] bg-[var(--card)] px-4 py-4 space-y-3 rounded-b-[16px] shadow-lg animate-in slide-in-from-top duration-200">
             <div className="grid grid-cols-2 gap-2 text-xs font-medium pb-2 border-b border-[var(--line)]">
               <a
                 href="#telemetry"
@@ -308,6 +308,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           </div>
         )}
       </header>
+
+      {/* Spacer compensates for the fixed floating navbar height */}
+      <div className="h-[68px] sm:h-[80px] shrink-0" />
 
       {/* =========================================================================
           HERO SECTION
@@ -477,7 +480,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </div>
 
             {/* AI Callout Preview */}
-            <div className="card card-3d p-3.5 bg-[var(--ink)] text-[var(--onac)] border border-[var(--ink)] flex items-start gap-3 shadow-md">
+            <div className="card card-3d p-3.5 bg-[#121417] text-white border border-[#272a30] dark:border-[var(--line)] flex items-start gap-3 shadow-md">
               <div className="w-6 h-6 rounded-full bg-[var(--ac)]/20 text-[var(--ac)] flex items-center justify-center shrink-0 mt-0.5">
                 <Bot className="w-3.5 h-3.5" />
               </div>

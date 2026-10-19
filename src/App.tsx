@@ -33,7 +33,16 @@ const FullPageLoader = () => (
 );
 
 const AppContent: React.FC = () => {
-  const [showLanding, setShowLanding] = useState(true);
+  const [showLanding, setShowLanding] = useState<boolean>(() => {
+    try {
+      // Stay on dashboard if user navigated there, even on page refresh
+      const inDashboard = localStorage.getItem('airguard_in_dashboard') === 'true' || 
+                          sessionStorage.getItem('airguard_in_dashboard') === 'true';
+      return !inDashboard;
+    } catch {
+      return true;
+    }
+  });
   const [isFirstTime] = useState<boolean>(() => {
     try {
       return !localStorage.getItem('airguard_profile_configured');
@@ -41,14 +50,7 @@ const AppContent: React.FC = () => {
       return false;
     }
   });
-  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(() => {
-    try {
-      // Auto-show popup for general users when they visit the website
-      return !localStorage.getItem('airguard_profile_configured');
-    } catch {
-      return true;
-    }
-  });
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -63,13 +65,35 @@ const AppContent: React.FC = () => {
 
   const handleExploreDashboard = () => {
     setShowLanding(false);
+    try {
+      localStorage.setItem('airguard_in_dashboard', 'true');
+      sessionStorage.setItem('airguard_in_dashboard', 'true');
+      // Show profile popup only on first dashboard entry
+      if (!localStorage.getItem('airguard_profile_configured')) {
+        setIsSettingsOpen(true);
+      }
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleGoToLanding = () => {
+    setShowLanding(true);
+    try {
+      localStorage.removeItem('airguard_in_dashboard');
+      sessionStorage.removeItem('airguard_in_dashboard');
+    } catch {
+      // ignore
+    }
   };
 
   if (showLanding) {
     return (
-      <div className="relative min-h-screen bg-[var(--bg)] text-[var(--ink)]">
-        <div className="animated-grid" />
-        <div className="animated-pattern" />
+    <div className="relative min-h-screen bg-[var(--bg)] text-[var(--ink)]">
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="animated-grid" />
+          <div className="animated-pattern" />
+        </div>
         <Suspense fallback={<FullPageLoader />}>
           <LandingHero
             onExploreDashboard={handleExploreDashboard}
@@ -98,32 +122,32 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen bg-[var(--bg)] text-[var(--ink)] font-sans">
+    <div className="relative flex h-screen w-full overflow-hidden bg-[var(--bg)] text-[var(--ink)] font-sans">
       <div className="animated-grid" />
       <div className="animated-pattern" />
 
-      {/* Persistent Sidebar */}
+      {/* Persistent Floating Sidebar */}
       <Sidebar
         onOpenSettings={() => setIsSettingsOpen(true)}
-        onGoToLanding={() => setShowLanding(true)}
+        onGoToLanding={handleGoToLanding}
         isMobileOpen={isMobileMenuOpen}
         onCloseMobile={() => setIsMobileMenuOpen(false)}
         onOpenLocation={() => setIsLocationOpen(true)}
       />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 z-10 overflow-x-hidden">
+      {/* Main Content Area: Floating Header + Scrolling Body */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden p-2.5 sm:p-3 sm:pl-2 gap-2.5 sm:gap-3 z-10">
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenLocation={() => setIsLocationOpen(true)}
-          onGoToLanding={() => setShowLanding(true)}
+          onGoToLanding={handleGoToLanding}
           onToggleMobileMenu={() => setIsMobileMenuOpen(prev => !prev)}
         />
 
-        <main className="flex-1 overflow-y-auto relative">
+        <main className="flex-1 min-h-0 overflow-y-auto rounded-[14px]">
           <ErrorBoundary FallbackComponent={FallbackComponent}>
             <Suspense fallback={
-              <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg)]/60 backdrop-blur-xs z-10">
+              <div className="min-h-[400px] flex items-center justify-center bg-[var(--bg)]/60 backdrop-blur-xs">
                 <Loader2 className="w-6 h-6 text-[var(--ac)] animate-spin" />
               </div>
             }>
