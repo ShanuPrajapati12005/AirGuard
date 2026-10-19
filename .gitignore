@@ -26,4 +26,15 @@ dist-ssr
 # Additional ignores
 ui-design-system-export/
 .env
+.env.*
 plannig.txt
+planning.txt
+*.txt
+
+# Local automation & simulation scripts
+*.ps1
+
+# Local scratch documentation & diagrams (official is in AirGuard-Workflow/)
+/WORKFLOW.md
+/docs/
+public/diagrams/
