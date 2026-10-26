@@ -10,6 +10,10 @@ const MainDashboard = React.lazy(() => import('./pages/MainDashboard').then(modu
 const LandingHero = React.lazy(() => import('./components/LandingHero').then(module => ({ default: module.LandingHero })));
 const SettingsModal = React.lazy(() => import('./components/SettingsModal').then(module => ({ default: module.SettingsModal })));
 const LocationModal = React.lazy(() => import('./components/LocationModal').then(module => ({ default: module.LocationModal })));
+import { Toaster } from 'sonner';
+
+const AirPollutionReportModal = React.lazy(() => import('./components/AirPollutionReportModal').then(module => ({ default: module.AirPollutionReportModal })));
+const NotificationCenterModal = React.lazy(() => import('./components/NotificationCenterModal').then(module => ({ default: module.NotificationCenterModal })));
 
 const FallbackComponent = ({ error, resetErrorBoundary }: any) => (
   <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--bg)] text-[var(--ink)] p-4">
@@ -43,16 +47,12 @@ const AppContent: React.FC = () => {
       return true;
     }
   });
-  const [isFirstTime] = useState<boolean>(() => {
-    try {
-      return !localStorage.getItem('airguard_profile_configured');
-    } catch {
-      return false;
-    }
-  });
+  const [isFirstTime] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const handleCloseSettings = () => {
     setIsSettingsOpen(false);
@@ -63,15 +63,13 @@ const AppContent: React.FC = () => {
     }
   };
 
+  // Direct, smooth navigation to Dashboard without any blocking popups
   const handleExploreDashboard = () => {
     setShowLanding(false);
     try {
       localStorage.setItem('airguard_in_dashboard', 'true');
       sessionStorage.setItem('airguard_in_dashboard', 'true');
-      // Show profile popup only on first dashboard entry
-      if (!localStorage.getItem('airguard_profile_configured')) {
-        setIsSettingsOpen(true);
-      }
+      localStorage.setItem('airguard_profile_configured', 'true');
     } catch {
       // ignore
     }
@@ -89,7 +87,7 @@ const AppContent: React.FC = () => {
 
   if (showLanding) {
     return (
-    <div className="relative min-h-screen bg-[var(--bg)] text-[var(--ink)]">
+      <div className="relative min-h-screen bg-[var(--bg)] text-[var(--ink)]">
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="animated-grid" />
           <div className="animated-pattern" />
@@ -140,6 +138,8 @@ const AppContent: React.FC = () => {
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenLocation={() => setIsLocationOpen(true)}
+          onOpenReport={() => setIsReportOpen(true)}
+          onOpenNotification={() => setIsNotificationOpen(true)}
           onGoToLanding={handleGoToLanding}
           onToggleMobileMenu={() => setIsMobileMenuOpen(prev => !prev)}
         />
@@ -170,6 +170,15 @@ const AppContent: React.FC = () => {
             isOpen={isLocationOpen}
             onClose={() => setIsLocationOpen(false)}
           />
+          <AirPollutionReportModal
+            key={isReportOpen ? 'report-open-dashboard' : 'report-closed-dashboard'}
+            isOpen={isReportOpen}
+            onClose={() => setIsReportOpen(false)}
+          />
+          <NotificationCenterModal
+            isOpen={isNotificationOpen}
+            onClose={() => setIsNotificationOpen(false)}
+          />
         </Suspense>
       </ErrorBoundary>
     </div>
@@ -181,6 +190,7 @@ export default function App() {
     <ErrorBoundary FallbackComponent={FallbackComponent}>
       <AirGuardProvider>
         <AppContent />
+        <Toaster position="top-right" richColors />
       </AirGuardProvider>
     </ErrorBoundary>
   );

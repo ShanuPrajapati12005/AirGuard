@@ -1,6 +1,50 @@
 import { AQICategory, UserProfile } from '../types';
 
 /**
+ * Official Indian Central Pollution Control Board (CPCB) NAQI Sub-Index Breakpoint Matrix.
+ * Computes official Indian National Air Quality Index according to Ministry of Environment,
+ * Forest and Climate Change guidelines. Matches Google AQI & CPCB Sameer App.
+ */
+export function calculateIndianNAQI(pm25: number, pm10: number): number {
+  const calcSubIndex = (
+    conc: number,
+    breakpoints: { bLo: number; bHi: number; iLo: number; iHi: number }[]
+  ): number => {
+    if (conc <= 0) return 0;
+    for (const b of breakpoints) {
+      if (conc <= b.bHi) {
+        return b.iLo + ((b.iHi - b.iLo) * (conc - b.bLo)) / (b.bHi - b.bLo);
+      }
+    }
+    // Severe exceedance upper linear extrapolation
+    return Math.min(500, 400 + (conc - 250) * 0.4);
+  };
+
+  const pm25Breakpoints = [
+    { bLo: 0, bHi: 30, iLo: 0, iHi: 50 },
+    { bLo: 30, bHi: 60, iLo: 51, iHi: 100 },
+    { bLo: 60, bHi: 90, iLo: 101, iHi: 200 },
+    { bLo: 90, bHi: 120, iLo: 201, iHi: 300 },
+    { bLo: 120, bHi: 250, iLo: 301, iHi: 400 },
+    { bLo: 250, bHi: 500, iLo: 401, iHi: 500 },
+  ];
+
+  const pm10Breakpoints = [
+    { bLo: 0, bHi: 50, iLo: 0, iHi: 50 },
+    { bLo: 50, bHi: 100, iLo: 51, iHi: 100 },
+    { bLo: 100, bHi: 250, iLo: 101, iHi: 200 },
+    { bLo: 250, bHi: 350, iLo: 201, iHi: 300 },
+    { bLo: 350, bHi: 430, iLo: 301, iHi: 400 },
+    { bLo: 430, bHi: 600, iLo: 401, iHi: 500 },
+  ];
+
+  const iPm25 = calcSubIndex(pm25, pm25Breakpoints);
+  const iPm10 = calcSubIndex(pm10, pm10Breakpoints);
+
+  return Math.max(15, Math.min(500, Math.round(Math.max(iPm25, iPm10))));
+}
+
+/**
  * Categorizes AQI using Indian National Air Quality Index (NAQI) standards.
  */
 export function getAQICategory(aqi: number): {

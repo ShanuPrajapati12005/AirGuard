@@ -42,6 +42,8 @@ interface AirGuardContextType {
   setActiveTab: (tab: string) => void;
   apiKey: string;
   setApiKey: (key: string) => void;
+  waqiToken: string;
+  setWaqiToken: (token: string) => void;
   connectSensor: () => void;
 }
 
@@ -88,6 +90,13 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return '';
     }
   });
+  const [waqiToken, setWaqiTokenState] = useState<string>(() => {
+    try {
+      return localStorage.getItem('airguard_waqi_token') || '';
+    } catch {
+      return '';
+    }
+  });
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const setUserProfile: React.Dispatch<React.SetStateAction<UserProfile>> = useCallback((val) => {
@@ -112,6 +121,15 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, []);
 
+  const setWaqiToken = useCallback((token: string) => {
+    setWaqiTokenState(token);
+    try {
+      localStorage.setItem('airguard_waqi_token', token);
+    } catch (e) {
+      console.warn('Failed to persist WAQI token:', e);
+    }
+  }, []);
+
   // Update location and fetch real live atmospheric data for that coordinate
   const setLocation = useCallback(async (loc: LocationPreset) => {
     setCurrentLocation(loc);
@@ -124,7 +142,7 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     try {
       const [lat, lon] = loc.coordinates;
-      const live = await fetchLiveAirQuality(lat, lon, `${loc.name}, ${loc.city}`);
+      const live = await fetchLiveAirQuality(lat, lon, `${loc.name}, ${loc.city}`, waqiToken);
       setAirData(live.airData);
       if (live.hourly.length > 0) setHourlyForecasts(live.hourly);
       if (live.hotspots.length > 0) setHotspots(live.hotspots);
@@ -139,7 +157,7 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } finally {
       setIsRefreshing(false);
     }
-  }, [scenario]);
+  }, [scenario, waqiToken]);
 
   // Initial fetch for the saved/default location on mount
   useEffect(() => {
@@ -156,10 +174,27 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setLocation(LOCATION_PRESETS[0]);
   }, [setLocation]);
 
-  // When scenario changes manually
+  // When waqiToken changes in Settings, trigger immediate telemetry refresh
   useEffect(() => {
-    setAirData(getScenarioData(scenario, currentLocation));
-  }, [scenario, currentLocation]);
+    if (currentLocation) {
+      const [lat, lon] = currentLocation.coordinates;
+      fetchLiveAirQuality(lat, lon, `${currentLocation.name}, ${currentLocation.city}`, waqiToken)
+        .then((live) => {
+          setAirData(live.airData);
+          if (live.hourly.length > 0) setHourlyForecasts(live.hourly);
+          if (live.hotspots.length > 0) setHotspots(live.hotspots);
+        })
+        .catch((err) => console.warn('Refresh on waqiToken update failed:', err));
+    }
+  }, [waqiToken]);
+
+  // When scenario changes manually (location has its own live fetch via setLocation)
+  const currentLocationRef = React.useRef(currentLocation);
+  currentLocationRef.current = currentLocation;
+  useEffect(() => {
+    setAirData(getScenarioData(scenario, currentLocationRef.current));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenario]);
 
   // Live simulated hardware sensor fluctuations every 3 seconds
   useEffect(() => {
@@ -199,7 +234,7 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setIsRefreshing(true);
     try {
       const [lat, lon] = currentLocation.coordinates;
-      const live = await fetchLiveAirQuality(lat, lon, `${currentLocation.name}, ${currentLocation.city}`);
+      const live = await fetchLiveAirQuality(lat, lon, `${currentLocation.name}, ${currentLocation.city}`, waqiToken);
       setAirData(live.airData);
       if (live.hourly.length > 0) setHourlyForecasts(live.hourly);
     } catch {
@@ -246,6 +281,8 @@ export const AirGuardProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setActiveTab,
         apiKey,
         setApiKey,
+        waqiToken,
+        setWaqiToken,
         connectSensor,
       }}
     >

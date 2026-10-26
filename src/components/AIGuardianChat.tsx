@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Send,
   Bot,
@@ -14,13 +14,14 @@ import { cn } from '@/lib/utils';
 
 export const AIGuardianChat: React.FC = () => {
   const { airData, userProfile, apiKey } = useAirGuard();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const greetingName = userProfile.name ? userProfile.name : 'there';
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'm-init',
       sender: 'assistant',
-      content: `Hello ${greetingName}! 👋 I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at ${airData.locationName}. How can I assist with your routine transit or outdoor exposure schedule today?`,
+      content: `Hello ${greetingName}! 👋 I am **AirGuard Guardian**, your personal atmospheric health copilot.\n\nCurrent ambient telemetry reflects **${airData.aqi} AQI (${airData.categoryLabel})** at **${airData.locationName}**.\n\nYou can ask me about your personal health profile, your local area's air quality, safe exercise hours, or clean commute routes. How can I help you today?`,
       timestamp: 'Just now',
     },
   ]);
@@ -29,14 +30,18 @@ export const AIGuardianChat: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
 
   const suggestedQuestions = [
+    'How is the air in my area right now?',
+    'What is my personal health risk?',
     'Can I run outdoors right now?',
     'What is the cleanest window today?',
     'Which route minimizes PM2.5?',
-    'Why is smog elevated this afternoon?',
-    'Advice for mild asthma profile',
-    'Is school commute safe for kids today?',
-    'N95 vs surgical mask filtration efficiency',
+    'N95 vs surgical mask efficiency',
   ];
+
+  // Auto-scroll on new messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
 
   const handleSend = async (questionText?: string) => {
     const textToSend = questionText || input;
@@ -111,7 +116,7 @@ export const AIGuardianChat: React.FC = () => {
             variant="outline"
             size="sm"
             onClick={() => handleSend(sq)}
-            className="h-6 sm:h-7 px-2 sm:px-2.5 rounded-full text-[10px] sm:text-[11px] font-normal text-[var(--ink)] hover:border-[var(--ac)] hover:bg-[var(--card)] whitespace-nowrap shrink-0"
+            className="h-6 sm:h-7 px-2 sm:px-2.5 rounded-full text-[10px] sm:text-[11px] font-normal text-[var(--ink)] hover:border-[var(--ac)] hover:bg-[var(--card)] whitespace-nowrap shrink-0 cursor-pointer"
           >
             {sq}
           </Button>
@@ -143,17 +148,27 @@ export const AIGuardianChat: React.FC = () => {
               >
                 <div className="whitespace-pre-wrap font-sans">
                   {m.content.split('\n').map((line, idx) => {
-                    if (line.startsWith('• ') || line.startsWith('â€¢ ') || line.startsWith('- ')) {
+                    const isBullet = line.startsWith('• ') || line.startsWith('- ') || line.startsWith('* ');
+                    if (isBullet) {
+                      const cleanText = line.replace(/^[•\-*]\s*/, '');
+                      const parts = cleanText.split(/(\*\*.*?\*\*)/g);
                       return (
-                        <div key={idx} className="ml-2 my-1 flex items-start gap-1.5">
-                          <span className={cn("font-bold", isUser ? "opacity-75" : "text-[var(--ac)]")}>•</span>
-                          <span>{line.replace(/^([•â€¢-]\s*)/, '')}</span>
+                        <div key={idx} className="ml-2 my-1.5 flex items-start gap-2">
+                          <span className={cn("font-bold text-xs shrink-0 mt-0.5", isUser ? "opacity-75" : "text-[var(--ac)]")}>•</span>
+                          <span className="flex-1 leading-normal">
+                            {parts.map((part, pIdx) => {
+                              if (part.startsWith('**') && part.endsWith('**')) {
+                                return <strong key={pIdx} className={isUser ? "text-[var(--onac)] font-semibold" : "text-[var(--ink)] font-semibold"}>{part.slice(2, -2)}</strong>;
+                              }
+                              return part;
+                            })}
+                          </span>
                         </div>
                       );
                     }
                     const parts = line.split(/(\*\*.*?\*\*)/g);
                     return (
-                      <p key={idx} className={idx > 0 ? "mt-2" : ""}>
+                      <p key={idx} className={idx > 0 ? "mt-2 leading-relaxed" : "leading-relaxed"}>
                         {parts.map((part, pIdx) => {
                           if (part.startsWith('**') && part.endsWith('**')) {
                             return <strong key={pIdx} className={isUser ? "text-[var(--onac)] font-semibold" : "text-[var(--ink)] font-semibold"}>{part.slice(2, -2)}</strong>;
@@ -192,6 +207,7 @@ export const AIGuardianChat: React.FC = () => {
             </div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Bar */}
@@ -210,7 +226,7 @@ export const AIGuardianChat: React.FC = () => {
           variant="primary"
           onClick={() => handleSend()}
           disabled={!input.trim() || isTyping}
-          className="h-9 px-3.5 sm:px-4 text-xs font-semibold rounded-[9px] shrink-0"
+          className="h-9 px-3.5 sm:px-4 text-xs font-semibold rounded-[9px] shrink-0 cursor-pointer"
         >
           <span>Send</span>
           <Send className="w-3.5 h-3.5 ml-1 sm:ml-1.5" />
@@ -219,4 +235,3 @@ export const AIGuardianChat: React.FC = () => {
     </div>
   );
 };
-

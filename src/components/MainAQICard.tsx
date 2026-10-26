@@ -20,12 +20,22 @@ export const MainAQICard: React.FC<MainAQICardProps> = ({ extended = false }) =>
       {/* Top Header */}
       <div>
         <div className="flex items-center justify-between pb-3">
-          <div>
-            <h3 className="font-display text-base font-medium text-[var(--ink)] tracking-tight">Ambient Air Quality</h3>
-            <span className="text-[11px] font-normal text-[var(--mut)]">Station Telemetry</span>
+          <div className="min-w-0 pr-2">
+            <h3 className="font-display text-base font-medium text-[var(--ink)] tracking-tight truncate">
+              Ambient Air Quality
+            </h3>
+            <span className="text-[11px] font-normal text-[var(--mut)] flex items-center gap-1.5 truncate">
+              <span className={cn(
+                "w-1.5 h-1.5 rounded-full shrink-0",
+                airData.provider === 'waqi' ? "bg-emerald-500 animate-pulse" : "bg-[var(--ac)]"
+              )} />
+              <span className="truncate" title={airData.stationName || 'Indian NAQI (CPCB Calibrated)'}>
+                {airData.stationName ? airData.stationName : 'CPCB NAQI Standard (Live)'}
+              </span>
+            </span>
           </div>
           <div
-            className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border shadow-2xs"
+            className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border shadow-2xs shrink-0"
             style={{
               backgroundColor: `${airData.categoryColor}15`,
               borderColor: `${airData.categoryColor}40`,
@@ -186,11 +196,17 @@ export const MainAQICard: React.FC<MainAQICardProps> = ({ extended = false }) =>
         </div>
 
         <div className="pt-3 flex items-center justify-between text-[10px] text-[var(--mut)]">
-          <span>Continuous station feed</span>
+          <span className="flex items-center gap-1">
+            <span>Continuous station feed</span>
+            {airData.provider === 'waqi' && (
+              <span className="text-[9px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded border border-emerald-500/20">
+                CPCB / WAQI
+              </span>
+            )}
+          </span>
           <span className="font-mono">{airData.updatedAt ? `Updated ${airData.updatedAt}` : 'Live Telemetry'}</span>
         </div>
       </div>
     </div>
   );
 };
-

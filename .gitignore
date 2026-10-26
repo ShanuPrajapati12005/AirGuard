@@ -38,3 +38,9 @@ planning.txt
 /WORKFLOW.md
 /docs/
 public/diagrams/
+
+# Temporary & local scripts
+*.py
+*.pyc
+__pycache__/
+*.tmp

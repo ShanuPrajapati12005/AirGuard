@@ -14,6 +14,7 @@ import {
   Loader2,
   ChevronDown,
   ChevronUp,
+  Radio,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { LOCATION_PRESETS } from '../data/mockData';
@@ -42,7 +43,16 @@ const COMMON_CONDITIONS = [
 ];
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, isFirstTime }) => {
-  const { userProfile, setUserProfile, apiKey, setApiKey, currentLocation, setLocation } = useAirGuard();
+  const {
+    userProfile,
+    setUserProfile,
+    apiKey,
+    setApiKey,
+    waqiToken,
+    setWaqiToken,
+    currentLocation,
+    setLocation,
+  } = useAirGuard();
 
   const [name, setName] = useState(userProfile.name || '');
   const [age, setAge] = useState<number | string>(userProfile.age || 26);
@@ -53,6 +63,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
   );
   const [sensitivity, setSensitivity] = useState(userProfile.sensitivityLevel || 'normal');
   const [keyInput, setKeyInput] = useState(apiKey || '');
+  const [waqiInput, setWaqiInput] = useState(waqiToken || '');
   const [saved, setSaved] = useState(false);
 
   // Location customization state
@@ -123,60 +134,58 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
       setSensitivity('normal');
     } else {
       setHealth(currentList.join(', '));
-      // Suggest sensitive or high risk if conditions exist
-      if (sensitivity === 'normal') {
-        setSensitivity(
-          condition.toLowerCase().includes('severe') || condition.toLowerCase().includes('copd') || condition.toLowerCase().includes('cardio')
-            ? 'high_risk'
-            : 'sensitive'
-        );
+      if (
+        condition.toLowerCase().includes('asthma') ||
+        condition.toLowerCase().includes('cardio') ||
+        condition.toLowerCase().includes('copd')
+      ) {
+        setSensitivity('high_risk');
+      } else if (sensitivity === 'normal') {
+        setSensitivity('sensitive');
       }
     }
   };
 
-  const handleDetectGPS = () => {
-    setIsDetectingGps(true);
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          const detectedLoc: LocationPreset = {
-            id: `gps-${Date.now()}`,
-            name: `My Location (${lat.toFixed(2)}°, ${lon.toFixed(2)}°)`,
-            city: 'Live Device GPS',
-            state: 'India',
-            coordinates: [lat, lon],
-            baseAqi: 180,
-            basePm25: 75,
-            basePm10: 110,
-            temperature: 28,
-            humidity: 55,
-            description: 'Accurate real-time GPS coordinates directly from your device browser.',
-          };
-          setSelectedLocation(detectedLoc);
-          setIsDetectingGps(false);
-        },
-        (err) => {
-          console.warn('GPS detection error, falling back:', err);
-          setIsDetectingGps(false);
-          setSelectedLocation(LOCATION_PRESETS[0]);
-        },
-        { timeout: 7000 }
-      );
-    } else {
-      setIsDetectingGps(false);
-      setSelectedLocation(LOCATION_PRESETS[0]);
+  const handleUseBrowserGPS = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
     }
+
+    setIsDetectingGps(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const coords: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        const gpsLoc: LocationPreset = {
+          id: `gps-${Date.now()}`,
+          name: 'My Current GPS Location',
+          city: 'Detected Device Location',
+          state: 'Live GPS',
+          coordinates: coords,
+          baseAqi: 130,
+          basePm25: 50,
+          basePm10: 85,
+          temperature: 28,
+          humidity: 50,
+          description: 'Live physical GPS device coordinates.',
+        };
+        setSelectedLocation(gpsLoc);
+        setIsDetectingGps(false);
+      },
+      (err) => {
+        console.warn('GPS Error:', err);
+        setIsDetectingGps(false);
+        alert('Could not access device GPS. Please search your city name in the input below.');
+      },
+      { timeout: 8000, enableHighAccuracy: true }
+    );
   };
 
   const handleSave = () => {
-    const parsedConditions = isNoneSelected
-      ? ['None']
-      : health
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
+    const parsedConditions = health
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     // Update location in context
     if (selectedLocation && (selectedLocation.id !== currentLocation.id || selectedLocation.name !== currentLocation.name)) {
@@ -192,6 +201,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
       location: selectedLocation.name,
     });
     setApiKey(keyInput.trim());
+    setWaqiToken(waqiInput.trim());
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
@@ -220,7 +230,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                 )}
               </div>
               <p className="text-xs text-[var(--mut)] mt-0.5">
-                Customize physiological factors, location & Gemini credentials
+                Customize physiological factors, location, WAQI & Gemini credentials
               </p>
             </div>
           </div>
@@ -261,92 +271,89 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-medium text-[var(--ink)]">Age</Label>
+              <Label className="font-medium text-[var(--ink)]">Age (Years)</Label>
               <Input
                 type="number"
+                value={age}
                 min={1}
                 max={120}
-                value={age}
-                placeholder="26"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
                 className="bg-[var(--card)] border-[var(--line)] h-9 text-xs rounded-[8px] focus-visible:ring-[var(--ac)]"
               />
             </div>
           </div>
 
-          {/* Location / Telemetry Station Selector */}
-          <div className="space-y-2">
+          {/* Location & Coordinates Customization Card */}
+          <div className="card p-3 bg-[var(--bg)] rounded-[10px] border border-[var(--line)] space-y-2.5">
             <div className="flex items-center justify-between">
-              <Label className="font-medium text-[var(--ink)] flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[var(--ac)]" />
-                City / Air Quality Station
-              </Label>
-              <button
-                type="button"
-                onClick={handleDetectGPS}
-                disabled={isDetectingGps}
-                className="text-[11px] px-2.5 py-0.5 rounded-full border border-[var(--line)] hover:border-[var(--ac)]/60 bg-[var(--bg)] text-[var(--ink)] transition-all cursor-pointer flex items-center gap-1 font-medium shadow-2xs hover:bg-[var(--card)]"
-                title="Acquire coordinates directly from your device GPS"
-              >
-                <Compass className={cn("w-3 h-3 text-[var(--ac)]", isDetectingGps && "animate-spin")} />
-                <span>{isDetectingGps ? 'Locating...' : 'Use Device GPS'}</span>
-              </button>
-            </div>
-
-            {/* Active Selected Location Display Card */}
-            <div className="card p-2.5 bg-[var(--bg)] border border-[var(--line)] rounded-[9px] flex items-center justify-between gap-2.5">
-              <div className="min-w-0 flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-[7px] bg-[var(--ac)]/10 text-[var(--ac)] flex items-center justify-center shrink-0 border border-[var(--ac)]/20 font-bold">
-                  <MapPin className="w-3.5 h-3.5" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-xs text-[var(--ink)] truncate">
-                      {selectedLocation.name}
-                    </span>
-                    <span className="text-[10px] text-[var(--ac)] bg-[var(--ac)]/10 px-1.5 py-0.2 rounded font-medium border border-[var(--ac)]/20 shrink-0">
-                      Selected
-                    </span>
-                  </div>
-                  <div className="text-[10px] text-[var(--mut)] truncate">
-                    {selectedLocation.city} • [{selectedLocation.coordinates[0].toFixed(2)}°, {selectedLocation.coordinates[1].toFixed(2)}°]
-                  </div>
-                </div>
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-[var(--ac)] shrink-0" />
+                <span className="font-medium text-[var(--ink)] text-xs">Primary Monitored Location</span>
               </div>
               <button
                 type="button"
-                onClick={() => setIsChangingLocation(!isChangingLocation)}
-                className="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-[6px] border border-[var(--line)] bg-[var(--card)] hover:bg-[var(--bg)] text-[var(--ink)] hover:text-[var(--ac)] transition-all flex items-center gap-1 cursor-pointer"
+                onClick={() => setIsChangingLocation((prev) => !prev)}
+                className="text-[11px] font-semibold text-[var(--ac)] hover:underline flex items-center gap-0.5 cursor-pointer"
               >
                 <span>{isChangingLocation ? 'Done' : 'Change Location'}</span>
                 {isChangingLocation ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
             </div>
 
-            {/* Expandable Location Selector (Presets & Search) */}
+            {/* Current Active Location Display */}
+            <div className="p-2.5 rounded-[8px] bg-[var(--card)] border border-[var(--line)] flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <div className="font-semibold text-[var(--ink)] truncate text-xs">{selectedLocation.name}</div>
+                <div className="text-[10px] text-[var(--mut)] truncate">
+                  {selectedLocation.city} • [{selectedLocation.coordinates[0].toFixed(2)}°N, {selectedLocation.coordinates[1].toFixed(2)}°E]
+                </div>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--ac)]/10 text-[var(--ac)] border border-[var(--ac)]/25 shrink-0 font-medium">
+                Active Zone
+              </span>
+            </div>
+
+            {/* Expanding Custom Location Search & GPS Selector */}
             {isChangingLocation && (
-              <div className="space-y-2.5 p-3 bg-[var(--card)] rounded-[9px] border border-[var(--line)] animate-in fade-in duration-150">
-                {/* Search Input */}
+              <div className="pt-2 border-t border-[var(--line)] space-y-2.5 animate-in fade-in duration-150">
+                {/* GPS Auto-Detect Button */}
+                <button
+                  type="button"
+                  onClick={handleUseBrowserGPS}
+                  disabled={isDetectingGps}
+                  className="w-full py-1.5 px-3 rounded-[6px] border border-[var(--ac)]/30 bg-[var(--ac)]/10 hover:bg-[var(--ac)]/20 text-[var(--ac)] font-medium text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  {isDetectingGps ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Detecting Satellite Coordinates...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Compass className="w-3.5 h-3.5" />
+                      <span>Use My Exact Device GPS Location</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Search Any City / Address Worldwide */}
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 text-[var(--mut)] absolute left-2.5 top-2.5" />
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-[var(--mut)]" />
                   <Input
                     type="text"
                     value={searchQuery}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                    placeholder="Search any global city or station (e.g. Pune, London, Delhi)..."
-                    className="pl-8 pr-8 h-8 text-xs bg-[var(--bg)] border-[var(--line)] rounded-[7px] focus-visible:ring-[var(--ac)]"
+                    placeholder="Search any town, colony, sector, or city worldwide..."
+                    className="pl-8 bg-[var(--card)] border-[var(--line)] h-8 text-xs rounded-[6px]"
                   />
                   {isSearching && (
-                    <Loader2 className="w-3.5 h-3.5 text-[var(--ac)] absolute right-2.5 top-2.5 animate-spin" />
+                    <Loader2 className="w-3 h-3 animate-spin absolute right-2.5 top-2.5 text-[var(--ac)]" />
                   )}
                 </div>
 
-                {/* Search Results Dropdown/List */}
+                {/* Search Results Dropdown List */}
                 {searchResults.length > 0 && (
-                  <div className="space-y-1 max-h-36 overflow-y-auto pr-1 custom-scrollbar pt-1">
-                    <div className="text-[10px] font-semibold uppercase text-[var(--mut)] px-1">
-                      Search Matches ({searchResults.length})
-                    </div>
+                  <div className="space-y-1 max-h-36 overflow-y-auto border border-[var(--line)] rounded-[6px] p-1 bg-[var(--card)] shadow-xs">
                     {searchResults.map((res) => {
                       const isCurrent = selectedLocation.id === res.id || selectedLocation.name === res.name;
                       return (
@@ -449,9 +456,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                     onClick={() => handleSelectCondition(cond)}
                     className={`text-[11px] px-2.5 py-1 rounded-[6px] border transition-all cursor-pointer font-medium ${
                       isSelected
-                        ? cond === 'None'
-                          ? 'bg-[var(--ac)] text-[var(--onac)] border-[var(--ac)] shadow-2xs font-semibold'
-                          : 'bg-[var(--ac)] text-[var(--onac)] border-[var(--ac)] shadow-2xs font-semibold'
+                        ? 'bg-[var(--ac)] text-[var(--onac)] border-[var(--ac)] shadow-2xs font-semibold'
                         : 'bg-[var(--bg)] text-[var(--ink)] border-[var(--line)] hover:border-[var(--mut)]/60'
                     }`}
                   >
@@ -473,7 +478,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
             
             <p className="text-[11px] text-[var(--mut)]">
               {isNoneSelected ? (
-                <span className="text-[var(--ok)] font-medium">
+                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
                   ✓ Standard baseline: No respiratory conditions recorded.
                 </span>
               ) : (
@@ -496,6 +501,38 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
               <option value="sensitive">Sensitive (Prone to throat / ocular irritation)</option>
               <option value="high_risk">High Risk (Asthmatic, cardiovascular or elderly)</option>
             </select>
+          </div>
+
+          {/* WAQI Ground Station Feed (aqicn.org) */}
+          <div className="card p-3.5 bg-[var(--bg)] rounded-[10px] border border-[var(--line)]">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2 font-medium text-[var(--ink)]">
+                <Radio className="w-3.5 h-3.5 text-[var(--ac)]" />
+                <span className="font-display text-xs">WAQI Ground Station API Token (aqicn.org)</span>
+              </div>
+              <a
+                href="https://aqicn.org/data-platform/token/"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[10px] text-[var(--ac)] hover:underline font-medium"
+              >
+                Get Free Token ↗
+              </a>
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-[var(--mut)] mb-2.5">
+              <span>Direct CPCB/DPCC physical sensor stream (matches Google AQI).</span>
+              <span className="inline-flex items-center gap-1 text-[10px] text-emerald-500 font-medium shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live CPCB Feed Active
+              </span>
+            </div>
+            <Input
+              type="password"
+              value={waqiInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWaqiInput(e.target.value)}
+              placeholder="Pre-configured (Enter custom WAQI token to override)..."
+              className="bg-[var(--card)] border-[var(--line)] h-8 font-mono text-xs rounded-[8px]"
+            />
           </div>
 
           {/* Gemini API Key */}

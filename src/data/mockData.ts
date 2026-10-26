@@ -156,7 +156,7 @@ export const LOCATION_PRESETS: LocationPreset[] = [
     name: 'Park Street / Victoria',
     city: 'Kolkata',
     state: 'West Bengal',
-    coordinates: [22.5516, 78.3512],
+    coordinates: [22.5726, 88.3639],
     baseAqi: 220,
     basePm25: 115,
     basePm10: 160,

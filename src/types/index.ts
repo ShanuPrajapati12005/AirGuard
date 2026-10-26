@@ -34,6 +34,8 @@ export interface AirQualityData {
   indoorPm25: number;
   indoorCategory: string;
   coordinates?: [number, number];
+  stationName?: string;
+  provider?: 'waqi' | 'cpcb_calibrated';
 }
 
 export interface LocationPreset {

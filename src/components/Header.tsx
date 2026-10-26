@@ -12,6 +12,8 @@ import {
   Activity,
   Moon,
   Sun,
+  FileText,
+  Bell,
 } from 'lucide-react';
 import { useAirGuard } from '../context/AirGuardContext';
 import { useTheme } from '../hooks/useTheme';
@@ -29,6 +31,8 @@ import { Badge } from '@/components/ui/badge';
 interface HeaderProps {
   onOpenSettings: () => void;
   onOpenLocation: () => void;
+  onOpenReport?: () => void;
+  onOpenNotification?: () => void;
   onGoToLanding?: () => void;
   onToggleMobileMenu?: () => void;
 }
@@ -36,6 +40,8 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   onOpenSettings,
   onOpenLocation,
+  onOpenReport,
+  onOpenNotification,
   onGoToLanding,
   onToggleMobileMenu,
 }) => {
@@ -219,6 +225,35 @@ export const Header: React.FC<HeaderProps> = ({
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[var(--ac)]' : ''}`} />
           </Button>
 
+          {/* Official Area Compliance Report Button */}
+          {onOpenReport && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onOpenReport}
+              className="hidden sm:inline-flex h-8 gap-1.5 text-xs font-semibold px-2.5 rounded-[8px] bg-[var(--bg)] hover:bg-[var(--card)] border-[var(--line)] text-[var(--ink)] shadow-2xs hover:border-[var(--ac)]/50 transition-all cursor-pointer"
+              title="Generate Official Area Air Pollution Compliance Audit Report"
+            >
+              <FileText className="w-3.5 h-3.5 text-[var(--ac)]" />
+              <span className="hidden xl:inline">Area Report</span>
+            </Button>
+          )}
+
+          {/* Health Notifications Bell with Unread Badge */}
+          {onOpenNotification && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onOpenNotification}
+              className="relative h-8 w-8 text-[var(--mut)] hover:text-[var(--ink)] rounded-[8px] bg-[var(--bg)] border-[var(--line)] shadow-2xs transition-all cursor-pointer"
+              title="Health Alerts & Smart Notifications"
+              aria-label="Health Notifications"
+            >
+              <Bell className="w-3.5 h-3.5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 animate-pulse ring-2 ring-[var(--card)]" />
+            </Button>
+          )}
+
           {/* Quick Settings Button */}
           <Button
             variant="outline"
@@ -305,6 +340,26 @@ export const Header: React.FC<HeaderProps> = ({
                     <User className="w-3.5 h-3.5 text-[var(--mut)]" />
                     Edit Profile & Health Settings
                   </button>
+
+                  {onOpenReport && (
+                    <button
+                      onClick={() => { setProfileOpen(false); onOpenReport(); }}
+                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-[12px] font-medium text-[var(--ink)] hover:bg-[var(--bg)] transition-colors cursor-pointer"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-[var(--ac)]" />
+                      Official Area Compliance Report
+                    </button>
+                  )}
+
+                  {onOpenNotification && (
+                    <button
+                      onClick={() => { setProfileOpen(false); onOpenNotification(); }}
+                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[8px] text-[12px] font-medium text-[var(--ink)] hover:bg-[var(--bg)] transition-colors cursor-pointer"
+                    >
+                      <Bell className="w-3.5 h-3.5 text-rose-500" />
+                      Health Alerts & Notifications
+                    </button>
+                  )}
 
                   <button
                     onClick={() => { setProfileOpen(false); if (onGoToLanding) onGoToLanding(); }}
